@@ -21,17 +21,23 @@ class _Verifying_EmailState extends State<Verifying_Email> {
   void initState() {
     user = auth.currentUser;
     user?.sendEmailVerification();
-    timer = Timer.periodic(Duration(seconds: 500), (timer) {
-
+    timer = Timer.periodic(const Duration(seconds: 1), (timer) {
+      checkVerifyingEmail();
     });
     super.initState();
+  }
+  @override
+  void dispose() {
+   timer?.cancel();
+    super.dispose();
   }
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: Center(child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          Text('We send Verifying_Email To ${auth.currentUser} Check your Email'),
+          Text('We send Verifying_Email To ${user?.email} Check your Email'),
         ],
       )),
     );
@@ -44,8 +50,6 @@ class _Verifying_EmailState extends State<Verifying_Email> {
     if(user!.emailVerified){
       Navigator.of(context).pushReplacement(
           MaterialPageRoute(builder: (context) => const HomePage()));
-
-
     }
   }
 
