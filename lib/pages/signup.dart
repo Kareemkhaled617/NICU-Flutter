@@ -4,7 +4,6 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:google_sign_in/google_sign_in.dart';
-import 'package:project/pages/homepage.dart';
 import 'package:project/pages/login.dart';
 import 'package:project/pages/verifying_email.dart';
 import 'package:project/widgets/button.dart';
@@ -21,10 +20,6 @@ class Sign_Up extends StatefulWidget {
 class _Sign_UpState extends State<Sign_Up> {
   final GlobalKey<FormState> _formKey = GlobalKey();
 
-  // TextEditingController _emailController = TextEditingController();
-  // TextEditingController _passwordController = TextEditingController();
-  // TextEditingController _phoneController = TextEditingController();
-  // TextEditingController _nameController = TextEditingController();
   late String _emailController;
   late String _passwordController;
   String? _phoneController;
@@ -32,7 +27,9 @@ class _Sign_UpState extends State<Sign_Up> {
   CollectionReference? addUser;
   User? user = FirebaseAuth.instance.currentUser;
 
-
+  GoogleSignInAccount? _user;
+  String? _name1;
+  String? _id1;
 
   @override
   Widget build(BuildContext context) {
@@ -237,8 +234,8 @@ class _Sign_UpState extends State<Sign_Up> {
                         ),
                         GestureDetector(
                           onTap: () async {
-                            UserCredential cred = await signUpUsingGoogle();
-                            print(cred);
+                            signUpUsingGoogle();
+                            print('done');
                           },
                           child: const CircleAvatar(
                             backgroundColor: Colors.white,
@@ -310,17 +307,30 @@ class _Sign_UpState extends State<Sign_Up> {
   Future<UserCredential> signUpUsingGoogle() async {
     final GoogleSignInAccount? googleSignInAccount =
         await GoogleSignIn().signIn();
+    _user = googleSignInAccount;
+    print(googleSignInAccount!.email);
+    print(googleSignInAccount.displayName);
+    print(googleSignInAccount.photoUrl);
+    addDataGoogle();
     final GoogleSignInAuthentication googleSignInAuthentication =
-        await googleSignInAccount!.authentication;
+        await googleSignInAccount.authentication;
     final OAuthCredential credential = GoogleAuthProvider.credential(
         accessToken: googleSignInAuthentication.accessToken,
         idToken: googleSignInAuthentication.idToken);
+    // await addDataGoogle(
+    //     googleSignInAccount.email,
+    //     googleSignInAccount.displayName,
+    //     googleSignInAccount.photoUrl,
+    //     googleSignInAccount.id);
     return await FirebaseAuth.instance.signInWithCredential(credential);
   }
 
   signUp() async {
     try {
-      if (_emailController.isNotEmpty && _passwordController.isNotEmpty) {
+      if (_emailController.isNotEmpty &&
+          _passwordController.isNotEmpty &&
+          _nameController!.isNotEmpty &&
+          _phoneController!.isNotEmpty) {
         UserCredential userCredential = await FirebaseAuth.instance
             .createUserWithEmailAndPassword(
                 email: _emailController, password: _passwordController);
@@ -362,7 +372,7 @@ class _Sign_UpState extends State<Sign_Up> {
       setState(() {
         user = userID;
       });
-      await addData();
+      await addDataEmail();
       if (response != null) {
         Navigator.of(context).pushReplacement(
             MaterialPageRoute(builder: (context) => const Verifying_Email()));
@@ -373,15 +383,25 @@ class _Sign_UpState extends State<Sign_Up> {
     }
   }
 
-  addData() async {
+  addDataEmail() async {
     addUser = FirebaseFirestore.instance.collection('users');
     addUser?.doc('${user?.uid}').set({
       'Email': _emailController,
       'Username': _nameController,
       'Phone': _phoneController,
       'ID': user?.uid,
+      'Image': 'null'
     });
   }
 
-
+  addDataGoogle() async {
+    addUser = FirebaseFirestore.instance.collection('users');
+    addUser?.add({
+      'Email': '_name1',
+      // 'Username': _name,
+      // 'Phone': 'null',
+      // 'ID': _id,
+      // 'Image': _image
+    });
+  }
 }

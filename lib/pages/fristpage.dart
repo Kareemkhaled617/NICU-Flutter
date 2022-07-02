@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:project/pages/signup.dart';
 import 'package:project/widgets/button.dart';
 
 import '../resources/color_manger.dart';
@@ -72,7 +73,10 @@ class first_screen extends StatelessWidget {
                 ),
                 MyButton(
                     title: 'Sign Up',
-                    onTap: () {},
+                    onTap: () {
+                      Navigator.of(context).push(MaterialPageRoute(
+                          builder: (context) => Sign_Up()));
+                    },
                     color: Colors.white,
                 color1:ColorManager.primary,)
               ],

@@ -97,7 +97,7 @@ class _LoginPageState extends State<LoginPage> {
                             _passwordController = val;
                           });
                         },
-                        hint: 'Enter Password',
+                        hint: 'Password',
                         label: 'Password',
                         pIcon: Icon(
                           Icons.lock_outline,
@@ -122,6 +122,28 @@ class _LoginPageState extends State<LoginPage> {
                       color: Colors.white,
                       color1: ColorManager.primary,
                     ),
+                    const SizedBox(
+                      height: 20.0,
+                    ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: const [
+                        Expanded(
+                          child: Divider(
+                            thickness: 1.5,
+                            endIndent: 5,
+                            color: Colors.grey,
+                          ),
+                        ),
+                        Text('OR',style: TextStyle(fontSize: 15,fontWeight:FontWeight.w700),),
+                        Expanded(
+                          child: Divider(
+                            thickness: 1.5,
+                            indent: 5,
+                            color: Colors.grey,
+                          ),
+                        ),
+                      ],),
                     const SizedBox(
                       height: 10.0,
                     ),
@@ -187,6 +209,8 @@ class _LoginPageState extends State<LoginPage> {
                           ),
                         ],
                       ),
+
+
                   ],
                 ),
               ),
