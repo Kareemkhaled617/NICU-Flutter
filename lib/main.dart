@@ -3,6 +3,8 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:project/pages/fristpage.dart';
 import 'package:project/pages/homepage.dart';
+import 'package:project/pages/signup.dart';
+
 
 bool? isLogin;
 
@@ -29,8 +31,8 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       title: 'Flutter Demo',
       theme: ThemeData(),
-        home: isLogin == false ? const first_screen() : const HomePage(),
-       //  home:  Verifying_Email(),
+         home: isLogin == false ? const first_screen() : const HomePage(),
+        //  home: Sign_Up(),
     );
   }
 }

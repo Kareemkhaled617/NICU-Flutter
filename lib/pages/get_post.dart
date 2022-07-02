@@ -30,6 +30,8 @@ class _GetPostState extends State<GetPost> {
   int commentLenght = 0;
   DocumentReference? addPost;
   String? name;
+  String? imageProfole;
+
   bool comment = false;
   int currentIndex = 0;
   bool isLiked = false;
@@ -91,18 +93,26 @@ class _GetPostState extends State<GetPost> {
                                       Row(
                                         mainAxisAlignment:
                                             MainAxisAlignment.spaceBetween,
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
                                         children: [
                                           Row(
                                             children: [
-                                              const CircleAvatar(
+                                              snapshot.data?.docs[index]
+                                              ['imageProfile'] !='null'? CircleAvatar(
                                                 radius: 28,
-                                                backgroundImage: NetworkImage(
-                                                    'https://images.unsplash.com/photo-1633332755192-727a05c4013d?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8MXx8dXNlcnxlbnwwfHwwfHw%3D&auto=format&fit=crop&w=500&q=60'),
-                                              ),
+                                                backgroundImage: NetworkImage(snapshot.data?.docs[index]
+                                                ['imageProfile']),
+                                              ):const CircleAvatar(
+                                               radius: 28,
+                                              child: Icon(Icons.person),
+                                             ),
                                               const SizedBox(
                                                 width: 12,
                                               ),
                                               Column(
+                                                crossAxisAlignment:
+                                                    CrossAxisAlignment.start,
                                                 children: [
                                                   Text(
                                                       snapshot.data?.docs[index]
@@ -635,71 +645,69 @@ class _GetPostState extends State<GetPost> {
               child: Stack(
                 children: [
                   Container(
-                    margin: const EdgeInsets.only(left: 10, right: 10),
-                    padding: const EdgeInsets.only(top: 10, bottom: 10),
-                    decoration: BoxDecoration(
-                        color: Colors.grey.shade500,
-                        borderRadius: BorderRadius.circular(10),
-                        border: Border.all(color: Colors.black, width: 1.3)),
-                    child:  ListView.separated(
-                            separatorBuilder: (context, i) => const Divider(
-                              color: Colors.white,
-                              thickness: 1.2,
-                              indent: 18,
-                              endIndent: 18,
+                      margin: const EdgeInsets.only(left: 10, right: 10),
+                      padding: const EdgeInsets.only(top: 10, bottom: 10),
+                      decoration: BoxDecoration(
+                          color: Colors.grey.shade500,
+                          borderRadius: BorderRadius.circular(10),
+                          border: Border.all(color: Colors.black, width: 1.3)),
+                      child: ListView.separated(
+                        separatorBuilder: (context, i) => const Divider(
+                          color: Colors.white,
+                          thickness: 1.2,
+                          indent: 18,
+                          endIndent: 18,
+                        ),
+                        shrinkWrap: true,
+                        itemCount: snapshot.data!.size,
+                        itemBuilder: (BuildContext context, int index) {
+                          return ListTile(
+                            title: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Text(
+                                  '${snapshot.data?.docs[index]['name']}',
+                                  style: GoogleFonts.roboto(
+                                      fontSize: 22,
+                                      color: Colors.white,
+                                      fontWeight: FontWeight.w800),
+                                ),
+                                Text(
+                                  '${snapshot.data?.docs[index]['time']}',
+                                  style: GoogleFonts.b612(
+                                    fontSize: 18,
+                                    color: Colors.grey.shade200,
+                                  ),
+                                ),
+                              ],
                             ),
-                            shrinkWrap: true,
-                            itemCount: snapshot.data!.size,
-                            itemBuilder: (BuildContext context, int index) {
-                              return ListTile(
-                                title: Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
-                                  children: [
-                                    Text(
-                                      '${snapshot.data?.docs[index]['name']}',
-                                      style: GoogleFonts.roboto(
-                                          fontSize: 22,
-                                          color: Colors.white,
-                                          fontWeight: FontWeight.w800),
-                                    ),
-                                    Text(
-                                      '${snapshot.data?.docs[index]['time']}',
-                                      style: GoogleFonts.b612(
-                                        fontSize: 18,
-                                        color: Colors.grey.shade200,
-                                      ),
-                                    ),
-                                  ],
+                            leading: const CircleAvatar(
+                              radius: 23,
+                              backgroundImage: NetworkImage(
+                                  'https://images.unsplash.com/photo-1656524489358-21713cae15f5?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxlZGl0b3JpYWwtZmVlZHw0fHx8ZW58MHx8fHw%3D&auto=format&fit=crop&w=500&q=60'),
+                            ),
+                            subtitle: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  '${snapshot.data?.docs[index]['date']}',
+                                  style: GoogleFonts.b612(
+                                    fontSize: 18,
+                                    color: Colors.grey.shade200,
+                                  ),
                                 ),
-                                leading: const CircleAvatar(
-                                  radius: 23,
-                                  backgroundImage: NetworkImage(
-                                      'https://images.unsplash.com/photo-1656524489358-21713cae15f5?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxlZGl0b3JpYWwtZmVlZHw0fHx8ZW58MHx8fHw%3D&auto=format&fit=crop&w=500&q=60'),
+                                Text(
+                                  '${snapshot.data?.docs[index]['description']}',
+                                  style: GoogleFonts.artifika(
+                                    fontSize: 20,
+                                    color: Colors.black87,
+                                  ),
                                 ),
-                                subtitle: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Text(
-                                      '${snapshot.data?.docs[index]['date']}',
-                                      style: GoogleFonts.b612(
-                                        fontSize: 18,
-                                        color: Colors.grey.shade200,
-                                      ),
-                                    ),
-                                    Text(
-                                      '${snapshot.data?.docs[index]['description']}',
-                                      style: GoogleFonts.artifika(
-                                        fontSize: 20,
-                                        color: Colors.black87,
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                              );
-                            },
-                          )
-                  ),
+                              ],
+                            ),
+                          );
+                        },
+                      )),
                   Positioned(
                     left: MediaQuery.of(context).size.width / 10,
                     bottom: 0,
@@ -735,9 +743,11 @@ class _GetPostState extends State<GetPost> {
               ),
             );
           } else {
-            return Container(color: Colors.red,
-            width: 200,
-            height: 200,);
+            return Container(
+              color: Colors.red,
+              width: 200,
+              height: 200,
+            );
             // return Center(
             //   child: Stack(
             //     children: [
@@ -808,6 +818,7 @@ class _GetPostState extends State<GetPost> {
         .then((value) {
       setState(() {
         name = value['Username'];
+         imageProfole = value['Image'];
       });
     });
   }
@@ -839,6 +850,7 @@ class _GetPostState extends State<GetPost> {
         'name': name,
         'Description': postController.text,
         'imageurl': imageUrl,
+        'imageProfile':imageProfole,
         'user': currentUser,
         'time': DateFormat('hh:mm a').format(DateTime.now()).toString(),
         'date': DateFormat('yyyy-MM-dd').format(DateTime.now()).toString(),
@@ -850,6 +862,7 @@ class _GetPostState extends State<GetPost> {
         'name': name,
         'Description': postController.text,
         'imageurl': 'null',
+        'imageProfile':imageProfole,
         'user': currentUser,
         'time': DateFormat('hh:mm a').format(DateTime.now()).toString(),
         'date': DateFormat('yyyy-MM-dd').format(DateTime.now()).toString(),

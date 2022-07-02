@@ -4,6 +4,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:google_sign_in/google_sign_in.dart';
+import 'package:project/pages/homepage.dart';
 import 'package:project/pages/login.dart';
 import 'package:project/pages/verifying_email.dart';
 import 'package:project/widgets/button.dart';
@@ -177,7 +178,6 @@ class _Sign_UpState extends State<Sign_Up> {
                         color: Colors.white,
                         onTap: () async {
                           _submit();
-                          // await addData();
                         },
                         color1: ColorManager.primary),
                     Row(
@@ -234,7 +234,19 @@ class _Sign_UpState extends State<Sign_Up> {
                         ),
                         GestureDetector(
                           onTap: () async {
-                            signUpUsingGoogle();
+                            var _credential =
+                                await signUpUsingGoogle().then((value) =>
+                                    addDataGoogle(
+                                        _user!.email,
+                                        _user!.displayName,
+                                        _user!.photoUrl,
+                                        _user!.id,
+                                        value.user!.uid));
+                            if (_user?.id!= null) {
+                              Navigator.of(context).pushReplacement(
+                                  MaterialPageRoute(
+                                      builder: (context) => const HomePage()));
+                            }
                             print('done');
                           },
                           child: const CircleAvatar(
@@ -307,21 +319,18 @@ class _Sign_UpState extends State<Sign_Up> {
   Future<UserCredential> signUpUsingGoogle() async {
     final GoogleSignInAccount? googleSignInAccount =
         await GoogleSignIn().signIn();
-    _user = googleSignInAccount;
+    setState(() {
+      _user = googleSignInAccount;
+    });
     print(googleSignInAccount!.email);
     print(googleSignInAccount.displayName);
     print(googleSignInAccount.photoUrl);
-    addDataGoogle();
     final GoogleSignInAuthentication googleSignInAuthentication =
         await googleSignInAccount.authentication;
     final OAuthCredential credential = GoogleAuthProvider.credential(
         accessToken: googleSignInAuthentication.accessToken,
         idToken: googleSignInAuthentication.idToken);
-    // await addDataGoogle(
-    //     googleSignInAccount.email,
-    //     googleSignInAccount.displayName,
-    //     googleSignInAccount.photoUrl,
-    //     googleSignInAccount.id);
+    print(credential.idToken?.isNotEmpty);
     return await FirebaseAuth.instance.signInWithCredential(credential);
   }
 
@@ -394,14 +403,15 @@ class _Sign_UpState extends State<Sign_Up> {
     });
   }
 
-  addDataGoogle() async {
+  addDataGoogle(String email, String? displayName, String? photoUrl, String id,
+      String? userID) async {
     addUser = FirebaseFirestore.instance.collection('users');
-    addUser?.add({
-      'Email': '_name1',
-      // 'Username': _name,
-      // 'Phone': 'null',
-      // 'ID': _id,
-      // 'Image': _image
+    addUser?.doc('${userID}').set({
+      'Email': email,
+      'Username': displayName,
+      'Phone': 'null',
+      'ID': id,
+      'Image': photoUrl
     });
   }
 }
