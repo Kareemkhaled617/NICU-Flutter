@@ -2,6 +2,7 @@ import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 import 'package:project/pages/homepage.dart';
 import 'package:project/pages/signup.dart';
 import 'package:project/resources/color_manger.dart';
@@ -15,6 +16,9 @@ class LoginPage extends StatefulWidget {
 }
 
 class _LoginPageState extends State<LoginPage> {
+
+  final FirebaseAuth _auth = FirebaseAuth.instance;
+  final GoogleSignIn _googleSignIn = GoogleSignIn();
   final GlobalKey<FormState> _formKey = GlobalKey();
   bool pass=true;
   late String _emailController;
@@ -200,7 +204,13 @@ class _LoginPageState extends State<LoginPage> {
                             ),
                           ),
                           GestureDetector(
-                            onTap: () {},
+                            onTap: () async{
+                             var log= await signInWithGoogle();
+                              if (log?.uid != null) {
+                                Navigator.of(context).pushReplacement(
+                                    MaterialPageRoute(builder: (context) => const HomePage()));
+                              }
+                            },
                             child: const CircleAvatar(
                               backgroundColor: Colors.white,
                               radius: 28,
@@ -256,6 +266,18 @@ class _LoginPageState extends State<LoginPage> {
       print(e);
     }
   }
+
+  Future<User?> signInWithGoogle() async {
+    GoogleSignInAccount? googleSignInAccount = await _googleSignIn.signIn();
+    GoogleSignInAuthentication googleSignInAuthentication =
+    await googleSignInAccount!.authentication;
+    OAuthCredential authCredential = GoogleAuthProvider.credential(
+        idToken: googleSignInAuthentication.idToken,
+        accessToken: googleSignInAuthentication.accessToken);
+    UserCredential authResult = await _auth.signInWithCredential(authCredential);
+    return _auth.currentUser;
+  }
+
 
   TextFormField buildTextFormField(
       {required String hint,

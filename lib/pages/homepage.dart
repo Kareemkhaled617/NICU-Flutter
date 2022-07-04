@@ -3,6 +3,7 @@ import 'package:diamond_bottom_bar/diamond_bottom_bar.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 import 'package:project/pages/login.dart';
 import 'package:project/pages/notification.dart';
 import 'package:project/pages/profile.dart';
@@ -131,6 +132,7 @@ class _HomePageState extends State<HomePage> {
             }),
             CustomListTile(Icons.lock, 'Log out', ()async {
               await FirebaseAuth.instance.signOut();
+              await GoogleSignIn().signOut();
               Navigator.of(context).pushReplacement(MaterialPageRoute(
                   builder: (context) => const LoginPage()));
             }),

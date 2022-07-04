@@ -242,17 +242,6 @@ class _GetPostState extends State<GetPost> {
                                                 });
                                               },
                                             ),
-                                            // Text(
-                                            //   '${FirebaseFirestore.instance.collection('Post').doc(snapshot.data?.docs[index]
-                                            //   ['docID']).collection('comments').get()}',
-                                            //   style: GoogleFonts.lato(
-                                            //     textStyle: const TextStyle(
-                                            //       fontSize: 20,
-                                            //       fontWeight: FontWeight.w600,
-                                            //       color: Colors.black54,
-                                            //     ),
-                                            //   ),
-                                            // ),
                                             const SizedBox(
                                               width: 60,
                                             ),
@@ -261,7 +250,9 @@ class _GetPostState extends State<GetPost> {
                                                 Icons.save_outlined,
                                                 size: 30,
                                               ),
-                                              onPressed: () async {},
+                                              onPressed: () async {
+                                                // savePost(snapshot.data?.docs[index]['docID']);
+                                              },
                                             ),
                                           ],
                                         ),
@@ -986,4 +977,15 @@ class _GetPostState extends State<GetPost> {
       );
     });
   }
+  //
+  // savePost(String docId )async{
+  //   var currentUser = FirebaseAuth.instance.currentUser?.uid;
+  //   addPost = FirebaseFirestore.instance.collection('users').doc('$currentUser');
+  //   addPost?.collection().add({
+  //     'time': DateFormat('hh:mm a').format(DateTime.now()).toString(),
+  //     'date': DateFormat('yyyy-MM-dd').format(DateTime.now()).toString(),
+  //     'docID': docId,
+  //   });
+
+  // }
 }

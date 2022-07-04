@@ -322,15 +322,11 @@ class _Sign_UpState extends State<Sign_Up> {
     setState(() {
       _user = googleSignInAccount;
     });
-    print(googleSignInAccount!.email);
-    print(googleSignInAccount.displayName);
-    print(googleSignInAccount.photoUrl);
     final GoogleSignInAuthentication googleSignInAuthentication =
-        await googleSignInAccount.authentication;
+        await googleSignInAccount!.authentication;
     final OAuthCredential credential = GoogleAuthProvider.credential(
         accessToken: googleSignInAuthentication.accessToken,
         idToken: googleSignInAuthentication.idToken);
-    print(credential.idToken?.isNotEmpty);
     return await FirebaseAuth.instance.signInWithCredential(credential);
   }
 
