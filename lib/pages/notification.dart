@@ -1,3 +1,4 @@
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
@@ -10,6 +11,13 @@ class Notification_Page extends StatefulWidget {
 }
 
 class _NotificationState extends State<Notification_Page> {
+  
+  @override
+  void initState() {
+    configurationCallBacks();
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -77,5 +85,10 @@ class _NotificationState extends State<Notification_Page> {
         ],
       ),
     );
+  }
+
+  void configurationCallBacks() {
+
+    FirebaseMessaging.onMessage;
   }
 }

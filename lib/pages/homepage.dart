@@ -1,19 +1,21 @@
-
 import 'package:diamond_bottom_bar/diamond_bottom_bar.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:google_sign_in/google_sign_in.dart';
+import 'package:overlay_support/overlay_support.dart';
+import 'package:project/model/notification_model.dart';
 import 'package:project/pages/login.dart';
 import 'package:project/pages/notification.dart';
 import 'package:project/pages/profile.dart';
 import 'package:project/pages/setting.dart';
 import 'package:project/resources/color_manger.dart';
 
-import 'get_post.dart';
 import '../map/map.dart';
 import '../widgets/custom_list_tile.dart';
 import 'chat.dart';
+import 'get_post.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({Key? key}) : super(key: key);
@@ -23,6 +25,42 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
+  late final FirebaseMessaging _fbm;
+    // int _notificationCount=0;
+  late NotificationModel _notificationModel;
+
+  void notificationConfigure() async {
+    _fbm = FirebaseMessaging.instance;
+    NotificationSettings _setting = await _fbm.requestPermission(
+      alert: true,
+      sound: true,
+      badge: true,
+      provisional: false,
+    );
+    if (_setting.authorizationStatus == AuthorizationStatus.authorized) {
+      print('authorizationStatus is Done');
+
+      FirebaseMessaging.onMessage.listen((message) {
+        NotificationModel notificationModel = NotificationModel(
+          title: message.notification!.title,
+          body: message.notification!.body,
+          dateTilte: message.data['title'],
+          dateBody: message.data['body'],
+        );
+        setState(() {
+          // _notificationCount++;
+          _notificationModel = notificationModel;
+        });
+        showSimpleNotification(
+          Text(_notificationModel.title!),
+          subtitle: Text(_notificationModel.body!),
+        );
+      });
+    }else{
+       print('Deniy');
+    }
+  }
+
   int currentIndex = 0;
   final List _title = ['Posts', 'Notification', 'Location', 'Chat', 'Profile'];
   final List _pages = [
@@ -33,6 +71,14 @@ class _HomePageState extends State<HomePage> {
     const Profile()
   ];
 
+@override
+  void initState() {
+
+  notificationConfigure();
+  // _notificationCount=0;
+    _fbm.getToken().then((value) => print(value));
+    super.initState();
+  }
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -102,7 +148,8 @@ class _HomePageState extends State<HomePage> {
                     child: IconButton(
                       icon: const Icon(
                         Icons.person,
-                      ), onPressed: () {  },
+                      ),
+                      onPressed: () {},
                     ),
                   ),
                   const SizedBox(
@@ -110,36 +157,33 @@ class _HomePageState extends State<HomePage> {
                   ),
                   const Text(
                     'Profile',
-                    style:  TextStyle(
+                    style: TextStyle(
                       fontSize: 24,
                     ),
                   ),
-
                 ],
               ),
-
             ),
             CustomListTile(Icons.person, 'Profile', () {}),
             CustomListTile(Icons.notifications, 'Notifications', () {}),
             CustomListTile(Icons.bookmark, 'BookMark', () {}),
             CustomListTile(Icons.settings, 'Settings', () {
-              Navigator.of(context).push(MaterialPageRoute(
-                  builder: (context) => const SettingPage()));
+              Navigator.of(context).push(
+                  MaterialPageRoute(builder: (context) => const SettingPage()));
             }),
             CustomListTile(Icons.payment_rounded, 'Payment', () {
-              Navigator.of(context).push(MaterialPageRoute(
-                  builder: (context) => const SettingPage()));
+              Navigator.of(context).push(
+                  MaterialPageRoute(builder: (context) => const SettingPage()));
             }),
-            CustomListTile(Icons.lock, 'Log out', ()async {
+            CustomListTile(Icons.lock, 'Log out', () async {
               await FirebaseAuth.instance.signOut();
               await GoogleSignIn().signOut();
-              Navigator.of(context).pushReplacement(MaterialPageRoute(
-                  builder: (context) => const LoginPage()));
+              Navigator.of(context).pushReplacement(
+                  MaterialPageRoute(builder: (context) => const LoginPage()));
             }),
           ],
         ),
       ),
-
     );
   }
 }

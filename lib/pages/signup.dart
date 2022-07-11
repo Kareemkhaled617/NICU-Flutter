@@ -29,8 +29,6 @@ class _Sign_UpState extends State<Sign_Up> {
   User? user = FirebaseAuth.instance.currentUser;
 
   GoogleSignInAccount? _user;
-  String? _name1;
-  String? _id1;
 
   @override
   Widget build(BuildContext context) {
