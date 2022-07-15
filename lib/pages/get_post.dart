@@ -65,8 +65,8 @@ class _GetPostState extends State<GetPost> {
                 if (snapshot.connectionState == ConnectionState.waiting) {
                   return const Center(
                       child: CircularProgressIndicator(
-                        strokeWidth: 4,
-                      ));
+                    strokeWidth: 4,
+                  ));
                 }
                 return Stack(
                   children: [
@@ -75,505 +75,496 @@ class _GetPostState extends State<GetPost> {
                       width: double.maxFinite,
                       child: snapshot.hasData
                           ? ScrollablePositionedList.builder(
-                        initialScrollIndex: currentIndex,
-                        itemCount: snapshot.data!.size,
-                        itemBuilder: (context, index) {
-                          return Container(
-                            margin: const EdgeInsets.only(
-                                bottom: 10, right: 3, left: 3),
-                            padding: const EdgeInsets.only(
-                                left: 10, top: 5, right: 10, bottom: 15),
-                            width: double.maxFinite,
-                            decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(15),
-                                border: Border.all(
-                                    color: ColorManager.primary,
-                                    width: 2)),
-                            child: Column(
-                              children: [
-                                Row(
-                                  mainAxisAlignment:
-                                  MainAxisAlignment.spaceBetween,
-                                  crossAxisAlignment:
-                                  CrossAxisAlignment.start,
-                                  children: [
-                                    Row(
-                                      children: [
-                                        snapshot.data?.docs[index]
-                                        ['imageProfile'] !=
-                                            'null'
-                                            ? CircleAvatar(
-                                          radius: 28,
-                                          backgroundImage:
-                                          NetworkImage(snapshot
-                                              .data
-                                              ?.docs[index]
-                                          ['imageProfile']),
-                                        )
-                                            : const CircleAvatar(
-                                          radius: 28,
-                                          child: Icon(Icons.person),
-                                        ),
-                                        const SizedBox(
-                                          width: 12,
-                                        ),
-                                        Column(
-                                          crossAxisAlignment:
-                                          CrossAxisAlignment.start,
-                                          children: [
-                                            Text(
-                                                snapshot.data?.docs[index]
-                                                ['name'],
-                                                style: GoogleFonts.nunito(
-                                                  fontSize: 25,
-                                                  fontWeight:
-                                                  FontWeight.w700,
-                                                )),
-                                            Text(
-                                                snapshot.data?.docs[index]
-                                                ['date'],
-                                                style: GoogleFonts.nunito(
-                                                  fontSize: 17,
-                                                  fontWeight:
-                                                  FontWeight.w600,
-                                                )),
-                                          ],
-                                        ),
-                                      ],
-                                    ),
-                                    Text(
-                                      snapshot.data?.docs[index]['time'],
-                                      style: GoogleFonts.nunito(
-                                          fontSize: 19,
-                                          fontWeight: FontWeight.w600,
-                                          color: Colors.grey[800]),
-                                    )
-                                  ],
-                                ),
-                                Container(
-                                    width: double.infinity,
-                                    padding: const EdgeInsets.only(
-                                        left: 10, top: 15, right: 5),
-                                    child: SingleChildScrollView(
-                                      child: Column(
+                              initialScrollIndex: currentIndex,
+                              itemCount: snapshot.data!.size,
+                              itemBuilder: (context, index) {
+                                return Container(
+                                  margin: const EdgeInsets.only(
+                                      bottom: 10, right: 3, left: 3),
+                                  padding: const EdgeInsets.only(
+                                      left: 10, top: 5, right: 10, bottom: 15),
+                                  width: double.maxFinite,
+                                  decoration: BoxDecoration(
+                                      borderRadius: BorderRadius.circular(15),
+                                      border: Border.all(
+                                          color: ColorManager.primary,
+                                          width: 2)),
+                                  child: Column(
+                                    children: [
+                                      Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.spaceBetween,
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
                                         children: [
-                                          snapshot.data?.docs[index]
-                                          ['imageurl'] !=
-                                              "null"
-                                              ? Image.network(
-                                            '${snapshot.data
-                                                ?.docs[index]['imageurl']}',
-                                            width: 270,
-                                            height: 250,
-                                            fit: BoxFit.fill,
-                                          )
-                                              : Container(),
-                                          Center(
-                                            child: Text(
+                                          Row(
+                                            children: [
                                               snapshot.data?.docs[index]
-                                              ['Description'],
-                                              style:
-                                              GoogleFonts.quicksand(
-                                                fontSize: 20,
-                                                fontWeight:
-                                                FontWeight.w500,
-                                                color: Colors.grey[700],
+                                                          ['imageProfile'] !=
+                                                      'null'
+                                                  ? CircleAvatar(
+                                                      radius: 28,
+                                                      backgroundImage:
+                                                          NetworkImage(snapshot
+                                                                  .data
+                                                                  ?.docs[index]
+                                                              ['imageProfile']),
+                                                    )
+                                                  : const CircleAvatar(
+                                                      radius: 28,
+                                                      child: Icon(Icons.person),
+                                                    ),
+                                              const SizedBox(
+                                                width: 12,
                                               ),
-                                              softWrap: true,
-                                            ),
+                                              Column(
+                                                crossAxisAlignment:
+                                                    CrossAxisAlignment.start,
+                                                children: [
+                                                  Text(
+                                                      snapshot.data?.docs[index]
+                                                          ['name'],
+                                                      style: GoogleFonts.nunito(
+                                                        fontSize: 25,
+                                                        fontWeight:
+                                                            FontWeight.w700,
+                                                      )),
+                                                  Text(
+                                                      snapshot.data?.docs[index]
+                                                          ['date'],
+                                                      style: GoogleFonts.nunito(
+                                                        fontSize: 17,
+                                                        fontWeight:
+                                                            FontWeight.w600,
+                                                      )),
+                                                ],
+                                              ),
+                                            ],
                                           ),
+                                          Text(
+                                            snapshot.data?.docs[index]['time'],
+                                            style: GoogleFonts.nunito(
+                                                fontSize: 19,
+                                                fontWeight: FontWeight.w600,
+                                                color: Colors.grey[800]),
+                                          )
                                         ],
                                       ),
-                                    )),
-                                Container(
-                                  height: 55,
-                                  width: double.maxFinite,
-                                  margin: const EdgeInsets.only(top: 25),
-                                  decoration: BoxDecoration(
-                                      borderRadius:
-                                      BorderRadius.circular(15),
-                                      border: Border.all(
-                                          color: ColorManager.primary)),
-                                  child: Row(
-                                    mainAxisAlignment:
-                                    MainAxisAlignment.center,
-                                    crossAxisAlignment:
-                                    CrossAxisAlignment.center,
-                                    children: [
-                                      IconButton(
-                                          onPressed: () async {
-                                            setState(() {
-                                              isLiked = !isLiked;
-                                              currentIndex = index;
-                                            });
-                                            await addLike(
+                                      Container(
+                                          width: double.infinity,
+                                          padding: const EdgeInsets.only(
+                                              left: 10, top: 15, right: 5),
+                                          child: SingleChildScrollView(
+                                            child: Column(
+                                              children: [
                                                 snapshot.data?.docs[index]
-                                                ['docID'],
-                                                isLiked);
-                                          },
-                                          icon: snapshot.data?.docs[index]
-                                          ['likes']
-                                          ['${user!.uid}'] ??
-                                              false
-                                              ? const Icon(
-                                            Icons.favorite,
-                                            color: Colors.red,
-                                            size: 32,
-                                          )
-                                              : const Icon(
-                                            Icons
-                                                .favorite_border_outlined,
-                                            size: 32,
-                                          )),
-                                      Text(
-                                        '${snapshot.data?.docs[index]['likes']
-                                            .entries
-                                            .where((e) => e.value == true)
-                                            .toList()
-                                            .length}',
-                                        style: GoogleFonts.lato(
-                                          textStyle: const TextStyle(
-                                            fontSize: 20,
-                                            fontWeight: FontWeight.w600,
-                                            color: Colors.black54,
-                                          ),
-                                        ),
-                                      ),
-                                      const SizedBox(
-                                        width: 60,
-                                      ),
-                                      IconButton(
-                                        icon: const Icon(
-                                          Icons.comment,
-                                          size: 30,
-                                        ),
-                                        onPressed: () {
-                                          setState(() {
-                                            currentIndex = index;
-                                            comment = !comment;
-                                          });
-                                        },
-                                      ),
-                                      const SizedBox(
-                                        width: 60,
-                                      ),
-                                      IconButton(
-                                        icon: const Icon(
-                                          Icons.save_outlined,
-                                          size: 30,
-                                        ),
-                                        onPressed: () async {
-                                          print(snapshot.data?.docs[index]
-                                          ['docID']);
-                                          await savePost(snapshot.data?.docs[index]
-                                          ['docID'], user!.uid);
-                                        },
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                                comment == true && currentIndex == index
-                                    ? Container(
-                                  margin: const EdgeInsets.only(
-                                      left: 20,
-                                      top: 9,
-                                      bottom: 5,
-                                      right: 5),
-                                  padding: const EdgeInsets.only(
-                                      left: 20),
-                                  width: double.maxFinite,
-                                  height: 55,
-                                  decoration: BoxDecoration(
-                                    borderRadius:
-                                    BorderRadius.circular(12),
-                                    border: Border.all(
-                                        color:
-                                        ColorManager.primary),
-                                  ),
-                                  child: Row(
-                                    children: [
-                                      Expanded(
-                                        child: Form(
-                                          key: _formKey,
-                                          child: TextFormField(
-                                            validator: (val) {
-                                              if (val!.isEmpty) {
-                                                return "Must not Empty";
-                                              }
-                                              return null;
-                                            },
-                                            onSaved: (val) {
-                                              setState(() {
-                                                _controller = val;
-                                              });
-                                            },
-                                            showCursor: true,
-                                            autofocus: false,
-                                            decoration:
-                                            const InputDecoration(
-                                              hintText:
-                                              'Type something ...',
-                                              enabledBorder:
-                                              UnderlineInputBorder(
-                                                  borderSide:
-                                                  BorderSide(
-                                                    color: Colors.white,
-                                                    width: 0,
-                                                  )),
-                                              focusedBorder:
-                                              UnderlineInputBorder(
-                                                  borderSide:
-                                                  BorderSide(
-                                                    color: Colors.white,
-                                                    width: 0,
-                                                  )),
+                                                            ['imageurl'] !=
+                                                        "null"
+                                                    ? Image.network(
+                                                        '${snapshot.data?.docs[index]['imageurl']}',
+                                                        width: 270,
+                                                        height: 250,
+                                                        fit: BoxFit.fill,
+                                                      )
+                                                    : Container(),
+                                                Center(
+                                                  child: Text(
+                                                    snapshot.data?.docs[index]
+                                                        ['Description'],
+                                                    style:
+                                                        GoogleFonts.quicksand(
+                                                      fontSize: 20,
+                                                      fontWeight:
+                                                          FontWeight.w500,
+                                                      color: Colors.grey[700],
+                                                    ),
+                                                    softWrap: true,
+                                                  ),
+                                                ),
+                                              ],
                                             ),
-                                          ),
+                                          )),
+                                      Container(
+                                        height: 55,
+                                        width: double.maxFinite,
+                                        margin: const EdgeInsets.only(top: 25),
+                                        decoration: BoxDecoration(
+                                            borderRadius:
+                                                BorderRadius.circular(15),
+                                            border: Border.all(
+                                                color: ColorManager.primary)),
+                                        child: Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.center,
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.center,
+                                          children: [
+                                            IconButton(
+                                                onPressed: () async {
+                                                  setState(() {
+                                                    isLiked = !isLiked;
+                                                    currentIndex = index;
+                                                  });
+                                                  await addLike(
+                                                      snapshot.data?.docs[index]
+                                                          ['docID'],
+                                                      isLiked);
+                                                },
+                                                icon: snapshot.data?.docs[index]
+                                                                ['likes']
+                                                            ['${user!.uid}'] ??
+                                                        false
+                                                    ? const Icon(
+                                                        Icons.favorite,
+                                                        color: Colors.red,
+                                                        size: 32,
+                                                      )
+                                                    : const Icon(
+                                                        Icons
+                                                            .favorite_border_outlined,
+                                                        size: 32,
+                                                      )),
+                                            Text(
+                                              '${snapshot.data?.docs[index]['likes'].entries.where((e) => e.value == true).toList().length}',
+                                              style: GoogleFonts.lato(
+                                                textStyle: const TextStyle(
+                                                  fontSize: 20,
+                                                  fontWeight: FontWeight.w600,
+                                                  color: Colors.black54,
+                                                ),
+                                              ),
+                                            ),
+                                            const SizedBox(
+                                              width: 60,
+                                            ),
+                                            IconButton(
+                                              icon: const Icon(
+                                                Icons.comment,
+                                                size: 30,
+                                              ),
+                                              onPressed: () {
+                                                setState(() {
+                                                  currentIndex = index;
+                                                  comment = !comment;
+                                                });
+                                              },
+                                            ),
+                                            const SizedBox(
+                                              width: 60,
+                                            ),
+                                            IconButton(
+                                              icon: const Icon(
+                                                Icons.save_outlined,
+                                                size: 30,
+                                              ),
+                                              onPressed: () async {
+                                                await savePost(
+                                                    snapshot.data?.docs[index]
+                                                        ['docID'],
+                                                    user!.uid);
+                                              },
+                                            ),
+                                          ],
                                         ),
                                       ),
-                                      IconButton(
-                                        icon: Icon(
-                                          Icons.comment_bank,
-                                          size: 28,
-                                          color:
-                                          ColorManager.primary,
-                                        ),
-                                        onPressed: () async {
-                                          setState(() {
-                                            com = !com;
-                                            float = setupAlertDialoadContainer(
-                                                context,
-                                                FirebaseFirestore
-                                                    .instance
-                                                    .collection(
-                                                    'Post')
-                                                    .doc(
-                                                    '${snapshot.data
-                                                        ?.docs[index]['docID']}')
-                                                    .collection(
-                                                    'comments'));
-                                          });
-                                        },
-                                      ),
-                                      IconButton(
-                                        icon: const Icon(
-                                          Icons.send,
-                                          size: 28,
-                                          color: Colors.blue,
-                                        ),
-                                        onPressed: () async {
-                                          _formKey.currentState!
-                                              .save();
-                                          await addComment(
-                                              snapshot.data
-                                                  ?.docs[index]
-                                              ['docID'],
-                                              _controller!);
-                                        },
-                                      ),
+                                      comment == true && currentIndex == index
+                                          ? Container(
+                                              margin: const EdgeInsets.only(
+                                                  left: 20,
+                                                  top: 9,
+                                                  bottom: 5,
+                                                  right: 5),
+                                              padding: const EdgeInsets.only(
+                                                  left: 20),
+                                              width: double.maxFinite,
+                                              height: 55,
+                                              decoration: BoxDecoration(
+                                                borderRadius:
+                                                    BorderRadius.circular(12),
+                                                border: Border.all(
+                                                    color:
+                                                        ColorManager.primary),
+                                              ),
+                                              child: Row(
+                                                children: [
+                                                  Expanded(
+                                                    child: Form(
+                                                      key: _formKey,
+                                                      child: TextFormField(
+                                                        validator: (val) {
+                                                          if (val!.isEmpty) {
+                                                            return "Must not Empty";
+                                                          }
+                                                          return null;
+                                                        },
+                                                        onSaved: (val) {
+                                                          setState(() {
+                                                            _controller = val;
+                                                          });
+                                                        },
+                                                        showCursor: true,
+                                                        autofocus: false,
+                                                        decoration:
+                                                            const InputDecoration(
+                                                          hintText:
+                                                              'Type something ...',
+                                                          enabledBorder:
+                                                              UnderlineInputBorder(
+                                                                  borderSide:
+                                                                      BorderSide(
+                                                            color: Colors.white,
+                                                            width: 0,
+                                                          )),
+                                                          focusedBorder:
+                                                              UnderlineInputBorder(
+                                                                  borderSide:
+                                                                      BorderSide(
+                                                            color: Colors.white,
+                                                            width: 0,
+                                                          )),
+                                                        ),
+                                                      ),
+                                                    ),
+                                                  ),
+                                                  IconButton(
+                                                    icon: Icon(
+                                                      Icons.comment_bank,
+                                                      size: 28,
+                                                      color:
+                                                          ColorManager.primary,
+                                                    ),
+                                                    onPressed: () async {
+                                                      setState(() {
+                                                        com = !com;
+                                                        float = setupAlertDialoadContainer(
+                                                            context,
+                                                            FirebaseFirestore
+                                                                .instance
+                                                                .collection(
+                                                                    'Post')
+                                                                .doc(
+                                                                    '${snapshot.data?.docs[index]['docID']}')
+                                                                .collection(
+                                                                    'comments'));
+                                                      });
+                                                    },
+                                                  ),
+                                                  IconButton(
+                                                    icon: const Icon(
+                                                      Icons.send,
+                                                      size: 28,
+                                                      color: Colors.blue,
+                                                    ),
+                                                    onPressed: () async {
+                                                      _formKey.currentState!
+                                                          .save();
+                                                      await addComment(
+                                                          snapshot.data
+                                                                  ?.docs[index]
+                                                              ['docID'],
+                                                          _controller!);
+                                                    },
+                                                  ),
+                                                ],
+                                              ),
+                                            )
+                                          : Container(),
                                     ],
                                   ),
-                                )
-                                    : Container(),
-                              ],
-                            ),
-                          );
-                        },
-                      )
+                                );
+                              },
+                            )
                           : const Center(
-                          child: CircularProgressIndicator(
-                            strokeWidth: 4,
-                          )),
+                              child: CircularProgressIndicator(
+                              strokeWidth: 4,
+                            )),
                     ),
                     pst == true
                         ? Center(
-                      child: SingleChildScrollView(
-                        child: Container(
-                          width: double.infinity,
-                          decoration: BoxDecoration(
-                            color: Colors.grey.shade300,
-                            borderRadius: BorderRadius.circular(25),
-                          ),
-                          padding: const EdgeInsetsDirectional.only(
-                            start: 10,
-                            end: 10,
-                            bottom: 30,
-                            top: 8,
-                          ),
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Center(
-                                child: Row(
-                                  mainAxisAlignment:
-                                  MainAxisAlignment.center,
+                            child: SingleChildScrollView(
+                              child: Container(
+                                width: double.infinity,
+                                decoration: BoxDecoration(
+                                  color: Colors.grey.shade300,
+                                  borderRadius: BorderRadius.circular(25),
+                                ),
+                                padding: const EdgeInsetsDirectional.only(
+                                  start: 10,
+                                  end: 10,
+                                  bottom: 30,
+                                  top: 8,
+                                ),
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
-                                    Text(
-                                      'Add Posts',
-                                      style: GoogleFonts.arimo(
-                                        fontSize: 23,
-                                        fontWeight: FontWeight.bold,
-                                        color: ColorManager.primary,
+                                    Center(
+                                      child: Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.center,
+                                        children: [
+                                          Text(
+                                            'Add Posts',
+                                            style: GoogleFonts.arimo(
+                                              fontSize: 23,
+                                              fontWeight: FontWeight.bold,
+                                              color: ColorManager.primary,
+                                            ),
+                                          ),
+                                          Expanded(child: Container()),
+                                          IconButton(
+                                              onPressed: () {
+                                                setState(() {
+                                                  pst = false;
+                                                });
+                                              },
+                                              icon: const Icon(
+                                                Icons.close_rounded,
+                                                size: 35,
+                                                color: Colors.red,
+                                              ))
+                                        ],
                                       ),
                                     ),
-                                    Expanded(child: Container()),
-                                    IconButton(
-                                        onPressed: () {
+                                    const SizedBox(
+                                      height: 20,
+                                    ),
+                                    imageFile != null
+                                        ? Center(
+                                            child: Image.file(
+                                              imageFile!,
+                                              width: 270,
+                                              height: 250,
+                                              fit: BoxFit.fill,
+                                            ),
+                                          )
+                                        : Container(),
+                                    const SizedBox(
+                                      height: 20,
+                                    ),
+                                    buildTextFormField(
+                                      hint: '',
+                                      validate: () {},
+                                      controller: postController,
+                                      onSave: () => (val) {
+                                        setState(() {
+                                          postController = val;
+                                        });
+                                      },
+                                      onTab: () {},
+                                    ),
+                                    Row(
+                                      children: [
+                                        IconButton(
+                                            onPressed: () => showDialog(
+                                                context: context,
+                                                builder:
+                                                    (BuildContext context) {
+                                                  return AlertDialog(
+                                                    content:
+                                                        SingleChildScrollView(
+                                                      child: ListBody(
+                                                        children: [
+                                                          const Divider(
+                                                            height: 1,
+                                                            color: Colors.blue,
+                                                          ),
+                                                          ListTile(
+                                                            onTap: () {
+                                                              _openGallery(
+                                                                  context);
+                                                            },
+                                                            title: const Text(
+                                                                "Gallery"),
+                                                            leading: const Icon(
+                                                              Icons.camera,
+                                                              color:
+                                                                  Colors.blue,
+                                                            ),
+                                                          ),
+                                                          const Divider(
+                                                            height: 1,
+                                                            color: Colors.blue,
+                                                          ),
+                                                        ],
+                                                      ),
+                                                    ),
+                                                  );
+                                                }),
+                                            icon: const Icon(
+                                              Icons.image_outlined,
+                                              color: Colors.green,
+                                              size: 30,
+                                            )),
+                                        IconButton(
+                                            onPressed: () => showDialog(
+                                                context: context,
+                                                builder:
+                                                    (BuildContext context) {
+                                                  return AlertDialog(
+                                                    content:
+                                                        SingleChildScrollView(
+                                                      child: ListBody(
+                                                        children: [
+                                                          const Divider(
+                                                            height: 1,
+                                                            color: Colors.blue,
+                                                          ),
+                                                          ListTile(
+                                                            onTap: () {
+                                                              _openCamera(
+                                                                  context);
+                                                            },
+                                                            title: const Text(
+                                                                "Camera"),
+                                                            leading: const Icon(
+                                                              Icons.camera,
+                                                              color:
+                                                                  Colors.blue,
+                                                            ),
+                                                          ),
+                                                          const Divider(
+                                                            height: 1,
+                                                            color: Colors.blue,
+                                                          ),
+                                                        ],
+                                                      ),
+                                                    ),
+                                                  );
+                                                }),
+                                            icon: const Icon(
+                                              Icons.camera_alt_rounded,
+                                              color: Colors.green,
+                                              size: 30,
+                                            )),
+                                      ],
+                                    ),
+                                    const SizedBox(
+                                      height: 20,
+                                    ),
+                                    Align(
+                                      alignment: Alignment.bottomRight,
+                                      child: MyButton(
+                                        color1: Colors.white,
+                                        title: 'Post',
+                                        onTap: () async {
                                           setState(() {
                                             pst = false;
                                           });
+                                          await addData();
+                                          showSimpleNotification(
+                                            const Text(
+                                                "Post Added Sucessfully"),
+                                            leading: const Icon(Icons.done),
+                                          );
                                         },
-                                        icon: const Icon(
-                                          Icons.close_rounded,
-                                          size: 35,
-                                          color: Colors.red,
-                                        ))
+                                        color: ColorManager.primary,
+                                      ),
+                                    )
                                   ],
                                 ),
                               ),
-                              const SizedBox(
-                                height: 20,
-                              ),
-                              imageFile != null
-                                  ? Center(
-                                child: Image.file(
-                                  imageFile!,
-                                  width: 270,
-                                  height: 250,
-                                  fit: BoxFit.fill,
-                                ),
-                              )
-                                  : Container(),
-                              const SizedBox(
-                                height: 20,
-                              ),
-                              buildTextFormField(
-                                hint: '',
-                                validate: () {},
-                                controller: postController,
-                                onSave: () =>
-                                    (val) {
-                                  setState(() {
-                                    postController = val;
-                                  });
-                                },
-                                onTab: () {},
-                              ),
-                              Row(
-                                children: [
-                                  IconButton(
-                                      onPressed: () =>
-                                          showDialog(
-                                              context: context,
-                                              builder:
-                                                  (BuildContext context) {
-                                                return AlertDialog(
-                                                  content:
-                                                  SingleChildScrollView(
-                                                    child: ListBody(
-                                                      children: [
-                                                        const Divider(
-                                                          height: 1,
-                                                          color: Colors.blue,
-                                                        ),
-                                                        ListTile(
-                                                          onTap: () {
-                                                            _openGallery(
-                                                                context);
-                                                          },
-                                                          title: const Text(
-                                                              "Gallery"),
-                                                          leading: const Icon(
-                                                            Icons.camera,
-                                                            color:
-                                                            Colors.blue,
-                                                          ),
-                                                        ),
-                                                        const Divider(
-                                                          height: 1,
-                                                          color: Colors.blue,
-                                                        ),
-                                                      ],
-                                                    ),
-                                                  ),
-                                                );
-                                              }),
-                                      icon: const Icon(
-                                        Icons.image_outlined,
-                                        color: Colors.green,
-                                        size: 30,
-                                      )),
-                                  IconButton(
-                                      onPressed: () =>
-                                          showDialog(
-                                              context: context,
-                                              builder:
-                                                  (BuildContext context) {
-                                                return AlertDialog(
-                                                  content:
-                                                  SingleChildScrollView(
-                                                    child: ListBody(
-                                                      children: [
-                                                        const Divider(
-                                                          height: 1,
-                                                          color: Colors.blue,
-                                                        ),
-                                                        ListTile(
-                                                          onTap: () {
-                                                            _openCamera(
-                                                                context);
-                                                          },
-                                                          title: const Text(
-                                                              "Camera"),
-                                                          leading: const Icon(
-                                                            Icons.camera,
-                                                            color:
-                                                            Colors.blue,
-                                                          ),
-                                                        ),
-                                                        const Divider(
-                                                          height: 1,
-                                                          color: Colors.blue,
-                                                        ),
-                                                      ],
-                                                    ),
-                                                  ),
-                                                );
-                                              }),
-                                      icon: const Icon(
-                                        Icons.camera_alt_rounded,
-                                        color: Colors.green,
-                                        size: 30,
-                                      )),
-                                ],
-                              ),
-                              const SizedBox(
-                                height: 20,
-                              ),
-                              Align(
-                                alignment: Alignment.bottomRight,
-                                child: MyButton(
-                                  color1: Colors.white,
-                                  title: 'Post',
-                                  onTap: () async {
-                                    setState(() {
-                                      pst = false;
-                                    });
-                                    await addData();
-                                    showSimpleNotification(
-                                      const Text(
-                                          "Post Added Sucessfully"),
-                                      leading: const Icon(Icons.done),
-                                    );
-                                  },
-                                  color: ColorManager.primary,
-                                ),
-                              )
-                            ],
-                          ),
-                        ),
-                      ),
-                    )
+                            ),
+                          )
                         : Container(),
                     com ? float : Container(),
                   ],
@@ -629,8 +620,8 @@ class _GetPostState extends State<GetPost> {
           if (snapshot.connectionState == ConnectionState.waiting) {
             return const Center(
                 child: CircularProgressIndicator(
-                  strokeWidth: 4,
-                ));
+              strokeWidth: 4,
+            ));
           }
           if (snapshot.hasData) {
             return Center(
@@ -644,8 +635,7 @@ class _GetPostState extends State<GetPost> {
                           borderRadius: BorderRadius.circular(10),
                           border: Border.all(color: Colors.black, width: 1.3)),
                       child: ListView.separated(
-                        separatorBuilder: (context, i) =>
-                        const Divider(
+                        separatorBuilder: (context, i) => const Divider(
                           color: Colors.white,
                           thickness: 1.2,
                           indent: 18,
@@ -690,8 +680,7 @@ class _GetPostState extends State<GetPost> {
                                   ),
                                 ),
                                 Text(
-                                  '${snapshot.data
-                                      ?.docs[index]['description']}',
+                                  '${snapshot.data?.docs[index]['description']}',
                                   style: GoogleFonts.artifika(
                                     fontSize: 20,
                                     color: Colors.black87,
@@ -703,10 +692,7 @@ class _GetPostState extends State<GetPost> {
                         },
                       )),
                   Positioned(
-                    left: MediaQuery
-                        .of(context)
-                        .size
-                        .width / 10,
+                    left: MediaQuery.of(context).size.width / 10,
                     bottom: 0,
                     child: ElevatedButton(
                         onPressed: () {
@@ -716,16 +702,13 @@ class _GetPostState extends State<GetPost> {
                         },
                         style: ButtonStyle(
                           backgroundColor:
-                          MaterialStateProperty.all(Colors.transparent),
+                              MaterialStateProperty.all(Colors.transparent),
                           textStyle: MaterialStateProperty.all(
                               GoogleFonts.acme(fontSize: 22)),
                           padding: MaterialStateProperty.all(
                               EdgeInsets.symmetric(
                                   horizontal:
-                                  MediaQuery
-                                      .of(context)
-                                      .size
-                                      .width / 3)),
+                                      MediaQuery.of(context).size.width / 3)),
                           shape: MaterialStateProperty.all(
                             RoundedRectangleBorder(
                                 borderRadius: BorderRadius.circular(50),
@@ -748,69 +731,18 @@ class _GetPostState extends State<GetPost> {
               width: 200,
               height: 200,
             );
-            // return Center(
-            //   child: Stack(
-            //     children: [
-            //       Container(
-            //         height: 150,
-            //         margin: const EdgeInsets.only(left: 10, right: 10),
-            //         padding: const EdgeInsets.only(top: 10, bottom: 10),
-            //         decoration: BoxDecoration(
-            //             color: Colors.grey.shade500,
-            //             borderRadius: BorderRadius.circular(10),
-            //             border: Border.all(color: Colors.black, width: 1.3)),
-            //         child: const Center(
-            //           child: Text('No Comments !'),
-            //         ),
-            //       ),
-            //       Positioned(
-            //         left: MediaQuery.of(context).size.width / 10,
-            //         bottom: 0,
-            //         child: ElevatedButton(
-            //             onPressed: () {
-            //               setState(() {
-            //                 com = false;
-            //               });
-            //             },
-            //             style: ButtonStyle(
-            //               backgroundColor:
-            //                   MaterialStateProperty.all(Colors.transparent),
-            //               textStyle: MaterialStateProperty.all(
-            //                   GoogleFonts.acme(fontSize: 22)),
-            //               padding: MaterialStateProperty.all(
-            //                   EdgeInsets.symmetric(
-            //                       horizontal:
-            //                           MediaQuery.of(context).size.width / 3)),
-            //               shape: MaterialStateProperty.all(
-            //                 RoundedRectangleBorder(
-            //                     borderRadius: BorderRadius.circular(50),
-            //                     side: const BorderSide(
-            //                         color: Colors.white, width: 1.5)),
-            //               ),
-            //               elevation: MaterialStateProperty.all(3),
-            //             ),
-            //             child: Text(
-            //               'Cancel',
-            //               style: GoogleFonts.archivo(),
-            //             )),
-            //       )
-            //     ],
-            //   ),
-            // );
           }
         });
   }
 
-  savePost(String id,String? userID) async {
+  savePost(String id, String? userID) async {
     CollectionReference addUser =
-    FirebaseFirestore.instance.collection('users');
+        FirebaseFirestore.instance.collection('users');
     addUser.doc('${userID}').set({
       "Posts": FieldValue.arrayUnion([
-        {
-          "id":id,
-        },
+        id
       ])
-    },SetOptions(merge: true));
+    }, SetOptions(merge: true));
   }
 
   addImage() async {
@@ -836,10 +768,7 @@ class _GetPostState extends State<GetPost> {
   }
 
   addData() async {
-    String docId = FirebaseFirestore.instance
-        .collection('Post')
-        .doc()
-        .id;
+    String docId = FirebaseFirestore.instance.collection('Post').doc().id;
     addPost = FirebaseFirestore.instance.collection('Post').doc('$docId');
     var currentUser = FirebaseAuth.instance.currentUser?.uid;
 
