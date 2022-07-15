@@ -50,7 +50,6 @@ class BlocPage extends Cubit<BlocState> {
 
   void getUserData() {
     emit(LoadingGetDataStateHome());
-
     FirebaseFirestore.instance.collection('users').doc().get().then((value) {
       print(value.data());
       model = UserCreateModel.fromJson(value.data()!);
