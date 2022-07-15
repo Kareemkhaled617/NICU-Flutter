@@ -19,26 +19,26 @@ class UserCreateModel {
       this.cover});
 
   UserCreateModel.fromJson(Map<String, dynamic> json) {
-    email = json['email'];
-    name = json['name'];
+    email = json['Email'];
+    name = json['Username'];
     phone = json['phone'];
-    uId = json['uId'];
+    uId = json['ID'];
     isEmailVerified = json['isEmailVerified'];
-    image = json['image'];
+    image = json['Image'];
     cover = json['cover'];
     bio = json['bio'];
   }
 
   Map<String, dynamic> toMap() {
     return {
-      'name': name,
-      'email': email,
+      'Username': name,
+      'Email': email,
       'phone': phone,
       'isEmailVerified': isEmailVerified,
-      'image': image,
+      'Image': image,
       'cover': cover,
       'bio': bio,
-      'uId': uId,
+      'ID': uId,
     };
   }
 }

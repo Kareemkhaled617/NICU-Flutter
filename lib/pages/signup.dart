@@ -243,7 +243,7 @@ class _Sign_UpState extends State<Sign_Up> {
                             if (_user?.id!= null) {
                               Navigator.of(context).pushReplacement(
                                   MaterialPageRoute(
-                                      builder: (context) => const HomePage()));
+                                      builder: (context) =>  HomePage()));
                             }
                             print('done');
                           },

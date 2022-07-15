@@ -208,7 +208,7 @@ class _LoginPageState extends State<LoginPage> {
                              var log= await signInWithGoogle();
                               if (log?.uid != null) {
                                 Navigator.of(context).pushReplacement(
-                                    MaterialPageRoute(builder: (context) => const HomePage()));
+                                    MaterialPageRoute(builder: (context) =>  HomePage()));
                               }
                             },
                             child: const CircleAvatar(
@@ -332,7 +332,7 @@ class _LoginPageState extends State<LoginPage> {
       var user = await login();
       if (user != null) {
         Navigator.of(context).pushReplacement(
-            MaterialPageRoute(builder: (context) => const HomePage()));
+            MaterialPageRoute(builder: (context) =>  HomePage()));
       }
     }else{
       print('error');

@@ -1,66 +1,101 @@
 import 'dart:async';
 import 'dart:io';
 
-
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
-import 'package:firebase_storage/firebase_storage.dart'as firebase_storage;
+import 'package:firebase_storage/firebase_storage.dart' as firebase_storage;
 
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:image_picker/image_picker.dart';
 
 
-
+import '../../map_new/map.dart';
 import '../../model/model_create.dart';
 import '../../model/modelchats.dart';
+import '../../pages/chats_screens.dart';
+import '../../pages/get_post.dart';
 import '../../pages/notification.dart';
 import '../../pages/profile.dart';
 import '../bloc_state/bloc_state.dart';
-
+import '../endpoint.dart';
 
 class BlocPage extends Cubit<BlocState> {
   BlocPage() : super(InitializeBlocState());
 
   static BlocPage get(context) => BlocProvider.of(context);
+
   UserCreateModel? model;
-  Completer<GoogleMapController> controlMap = Completer();
-  CameraPosition positionOld =
-  const CameraPosition(target: LatLng(30.671025, 30.948486), zoom: 14.756);
-  Marker mMarker = const Marker(
-      markerId: MarkerId('positionOld'),
-      icon: BitmapDescriptor.defaultMarker,
-      infoWindow: InfoWindow(title: 'Google plex'),
-      position: LatLng(30.671025, 30.948486));
 
-  CameraPosition kLake = const CameraPosition(
-    target: LatLng(30.680569, 30.940295),
-    zoom: 19.546,
-    tilt: 59.440717697143555,
-    bearing: 192.8334901395799,
-  );
-  Marker lLake = Marker(
-      markerId: const MarkerId('kLake'),
-      icon: BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueBlue),
-      infoWindow: const InfoWindow(title: 'home'),
-      position: const LatLng(30.680569, 30.940295));
+  int currentIndex = 0;
 
-  Future<void> goToPlace(Map<String, dynamic> place) async {
-    final double lat = place['geometry']['location']['lat'];
-    final double lag = place['geometry']['location']['lag'];
-    final GoogleMapController control = await controlMap.future;
-    control.animateCamera(CameraUpdate.newCameraPosition(
-        CameraPosition(target: LatLng(lat, lag), zoom: 12)));
-    emit(GoToPlaceEmit());
+
+   List<Widget> screens = [
+    const GetPost(),
+    const Notification_Page(),
+    const MapFileRun(),
+    ChatsScreen(),
+    const Profile()
+  ];
+
+  List<String> titles = [
+    'News Feed',
+    'Chats',
+    'Post',
+    'Users',
+    'Settings',
+  ];
+
+  void getUserData() {
+    emit(LoadingGetDataStateHome());
+
+    FirebaseFirestore.instance.collection('users').doc().get().then((value) {
+      print(value.data());
+      model = UserCreateModel.fromJson(value.data()!);
+      emit(SuccessGetDataStateHome());
+    }).catchError((error) {
+      print(error.toString());
+      emit(ErrorGetDataStateHome(error.toString()));
+    });
   }
 
-  Future<void> newPosition() async {
-    final GoogleMapController control = await controlMap.future;
-    control.animateCamera(CameraUpdate.newCameraPosition(kLake));
-    emit(ChangeMapLocation());
-  }
+  // Completer<GoogleMapController> controlMap = Completer();
+  // CameraPosition positionOld =
+  //     const CameraPosition(target: LatLng(30.671025, 30.948486), zoom: 14.756);
+  // Marker mMarker = const Marker(
+  //     markerId: MarkerId('positionOld'),
+  //     icon: BitmapDescriptor.defaultMarker,
+  //     infoWindow: InfoWindow(title: 'Google plex'),
+  //     position: LatLng(30.671025, 30.948486));
+  //
+  // CameraPosition kLake = const CameraPosition(
+  //   target: LatLng(30.680569, 30.940295),
+  //   zoom: 19.546,
+  //   tilt: 59.440717697143555,
+  //   bearing: 192.8334901395799,
+  // );
+  // Marker lLake = Marker(
+  //     markerId: const MarkerId('kLake'),
+  //     icon: BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueBlue),
+  //     infoWindow: const InfoWindow(title: 'home'),
+  //     position: const LatLng(30.680569, 30.940295));
+  //
+  // Future<void> goToPlace(Map<String, dynamic> place) async {
+  //   final double lat = place['geometry']['location']['lat'];
+  //   final double lag = place['geometry']['location']['lag'];
+  //   final GoogleMapController control = await controlMap.future;
+  //   control.animateCamera(CameraUpdate.newCameraPosition(
+  //       CameraPosition(target: LatLng(lat, lag), zoom: 12)));
+  //   emit(GoToPlaceEmit());
+  // }
+  //
+  // Future<void> newPosition() async {
+  //   final GoogleMapController control = await controlMap.future;
+  //   control.animateCamera(CameraUpdate.newCameraPosition(kLake));
+  //   emit(ChangeMapLocation());
+  // }
 
   void sendMessage({
     required String receiverId,
@@ -105,6 +140,16 @@ class BlocPage extends Cubit<BlocState> {
     });
   }
 
+  void changeCurrentScreen(int index) {
+    if (index == 1) getAllUsers();
+
+    if (index == 2) {
+      emit(AddPostScreenSuccess());
+    } else {
+      currentIndex = index;
+      emit(ChangeCurrentScreen());
+    }
+  }
 
   List<UserCreateModel> allUsers = [];
 
@@ -114,7 +159,7 @@ class BlocPage extends Cubit<BlocState> {
       FirebaseFirestore.instance.collection('users').get().then((value) {
         emit(SuccessGetAllUsersStateHome());
         value.docs.forEach((element) {
-          if (element.data()['uId'] != model!.uId) {
+          if (element.data()['ID'] != model!.uId) {
             allUsers.add(UserCreateModel.fromJson(element.data()));
           }
         });
@@ -122,9 +167,15 @@ class BlocPage extends Cubit<BlocState> {
         emit(ErrorGetAllUsersStateHome(error.toString()));
       });
     }
+    print(allUsers);
+    print('done');
   }
 
-
+  // void getData() {
+  //   FirebaseFirestore.instance.collection('users').get().then((value) {
+  //     allUsers.add(value.data());
+  //   });
+  // }
 
   void removeImageSender() {
     imageSend = null;
@@ -170,7 +221,6 @@ class BlocPage extends Cubit<BlocState> {
     });
   }
 
-
   // void getUserData() {
   //   emit(LoadingGetDataStateHome());
   //
@@ -183,7 +233,6 @@ class BlocPage extends Cubit<BlocState> {
   //     emit(ErrorGetDataStateHome(error.toString()));
   //   });
   // }
-
 
   List<ChatDetailsModel> messages = [];
 
@@ -206,7 +255,6 @@ class BlocPage extends Cubit<BlocState> {
       emit(SuccessGetAllChatsDetailsStateHome());
     });
   }
-
 
   File? imageSend;
 
@@ -232,7 +280,10 @@ class BlocPage extends Cubit<BlocState> {
   }) {
     firebase_storage.FirebaseStorage.instance
         .ref('messages')
-        .child('messages/${Uri.file(imageSend!.path).pathSegments.last}')
+        .child('messages/${Uri
+        .file(imageSend!.path)
+        .pathSegments
+        .last}')
         .putFile(imageSend!)
         .then((value) {
       value.ref.getDownloadURL().then((value) {
@@ -256,18 +307,15 @@ class BlocPage extends Cubit<BlocState> {
     'item5',
   ];
 
-  int currentIndex = 0;
 
-  List<Widget> screens = [
-    Notification_Page(),
-    Container(),
-    Profile()
-  ];
+
+  // List<Widget> screens = [Notification_Page(), Container(), Profile()];
 
   void changeScreen(index) {
     currentIndex = index;
     emit(ChangeScreenBottomNavBar());
   }
+
   int val = 1;
 
   increaseVal() {
@@ -284,12 +332,4 @@ class BlocPage extends Cubit<BlocState> {
     dropDownValue = newValue!;
     emit(BlocStateHappened());
   }
-
-
 }
-
-
-
-
-
-
