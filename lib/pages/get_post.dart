@@ -1,7 +1,9 @@
+import 'dart:convert';
 import 'dart:io';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -11,6 +13,7 @@ import 'package:overlay_support/overlay_support.dart';
 import 'package:path/path.dart';
 import 'package:project/resources/color_manger.dart';
 import 'package:scrollable_positioned_list/scrollable_positioned_list.dart';
+import 'package:http/http.dart' as http;
 
 import '../widgets/button.dart';
 
@@ -43,10 +46,12 @@ class _GetPostState extends State<GetPost> {
 
   var data = FirebaseFirestore.instance.collection('Post');
   User? user = FirebaseAuth.instance.currentUser;
+  String? mtoken;
 
   @override
   void initState() {
     getData();
+    getToken();
     super.initState();
   }
 
@@ -363,6 +368,8 @@ class _GetPostState extends State<GetPost> {
                                                                   ?.docs[index]
                                                               ['docID'],
                                                           _controller!);
+                                                      sendPushMessage(snapshot.data?.docs[index]['token'], 'ADD COMMENT', name!);
+                                                      
                                                     },
                                                   ),
                                                 ],
@@ -608,6 +615,16 @@ class _GetPostState extends State<GetPost> {
       // ),
     );
   }
+  void getToken() async {
+    await FirebaseMessaging.instance.getToken().then(
+            (token) {
+          setState(() {
+            mtoken = token;
+          });
+
+        }
+    );
+  }
 
   Widget setupAlertDialoadContainer(context, CollectionReference ss) {
     return StreamBuilder<QuerySnapshot>(
@@ -786,7 +803,8 @@ class _GetPostState extends State<GetPost> {
         'time': DateFormat('hh:mm a').format(DateTime.now()).toString(),
         'date': DateFormat('yyyy-MM-dd').format(DateTime.now()).toString(),
         'docID': docId,
-        'likes': {}
+        'likes': {},
+        'token':mtoken
       });
     } else {
       addPost?.set({
@@ -798,7 +816,8 @@ class _GetPostState extends State<GetPost> {
         'time': DateFormat('hh:mm a').format(DateTime.now()).toString(),
         'date': DateFormat('yyyy-MM-dd').format(DateTime.now()).toString(),
         'docID': docId,
-        'likes': {}
+        'likes': {},
+        'token':mtoken
       });
     }
   }
@@ -898,6 +917,35 @@ class _GetPostState extends State<GetPost> {
     }
 
     Navigator.pop(context);
+  }
+
+  void sendPushMessage(String token, String body, String title) async {
+    try {
+      await http.post(
+        Uri.parse('https://fcm.googleapis.com/fcm/send'),
+        headers: <String, String>{
+          'Content-Type': 'application/json',
+          'Authorization': 'key=AAAAgvTvjzk:APA91bEctS4RBLqubZcmV4PaU5REuzTUcvB_9Y750brGTQHkpAypR7kRE_uInZE92SwzjQoDzbv8vlFjL1MLACgLDb0VlFmyKrU6kc85FVSfr1bVOc0aImnVUlJVDgfj3wf_xj3OrLGC',
+        },
+        body: jsonEncode(
+          <String, dynamic>{
+            'notification': <String, dynamic>{
+              'body': body,
+              'title': title
+            },
+            'priority': 'high',
+            'data': <String, dynamic>{
+              'click_action': 'FLUTTER_NOTIFICATION_CLICK',
+              'id': '1',
+              'status': 'done'
+            },
+            "to": token,
+          },
+        ),
+      );
+    } catch (e) {
+      print("error push notification");
+    }
   }
 
   addLike(String id, bool val) async {
