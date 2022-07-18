@@ -58,3 +58,5 @@ class ErrorGetImageSendDetailsStateHome extends BlocState {
 
 
 class ChangeCurrentScreen extends BlocState {}
+class GetUserField extends BlocState {}
+class GetUserToken extends BlocState {}

@@ -2,12 +2,15 @@ import 'dart:async';
 import 'dart:io';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
+import 'package:firebase_storage/firebase_storage.dart';
+import 'package:firebase_storage/firebase_storage.dart' as firebase_storage;
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:firebase_storage/firebase_storage.dart' as firebase_storage;
-
 import 'package:image_picker/image_picker.dart';
-
+import 'package:intl/intl.dart';
+import 'package:path/path.dart';
 
 import '../../map_new/map.dart';
 import '../../model/model_create.dart';
@@ -17,19 +20,25 @@ import '../../pages/get_post.dart';
 import '../../pages/notification.dart';
 import '../../pages/profile.dart';
 import '../bloc_state/bloc_state.dart';
-import '../endpoint.dart';
 
 class BlocPage extends Cubit<BlocState> {
   BlocPage() : super(InitializeBlocState());
 
   static BlocPage get(context) => BlocProvider.of(context);
-
+  User? user = FirebaseAuth.instance.currentUser;
   UserCreateModel? model;
 
   int currentIndex = 0;
+  String? mtoken;
+  String? name;
+  String? imageProfile;
 
+  TextEditingController postController = TextEditingController();
+  File? imageFile;
+  var imageUrl;
+  DocumentReference? addPost;
 
-   List<Widget> screens = [
+  List<Widget> screens = [
     const GetPost(),
     const Notification_Page(),
     const MapFileRun(),
@@ -55,6 +64,96 @@ class BlocPage extends Cubit<BlocState> {
       print(error.toString());
       emit(ErrorGetDataStateHome(error.toString()));
     });
+  }
+
+  void getToken() async {
+    await FirebaseMessaging.instance.getToken().then((token) {
+      mtoken = token;
+      emit(GetUserToken());
+    });
+    emit(GetUserToken());
+  }
+
+  getData() async {
+    await FirebaseFirestore.instance
+        .collection('users')
+        .doc('${user?.uid}')
+        .get()
+        .then((value) {
+      name = value['Username'];
+      imageProfile = value['Image'];
+      emit(GetUserField());
+    });
+    emit(GetUserField());
+  }
+
+  addData() async {
+    String docId = FirebaseFirestore.instance.collection('Post').doc().id;
+    addPost = FirebaseFirestore.instance.collection('Post').doc(docId);
+    var currentUser = FirebaseAuth.instance.currentUser?.uid;
+
+    if (imageFile != null) {
+      var imageName = basename(imageFile!.path);
+      var ref = FirebaseStorage.instance.ref('images/$imageName');
+      await ref.putFile(imageFile!);
+      imageUrl = await ref.getDownloadURL();
+      addPost?.set({
+        'name': name,
+        'Description': postController.text,
+        'imageurl': imageUrl,
+        'imageProfile': imageProfile,
+        'user': currentUser,
+        'time': DateFormat('hh:mm a').format(DateTime.now()).toString(),
+        'date': DateFormat('yyyy-MM-dd').format(DateTime.now()).toString(),
+        'docID': docId,
+        'likes': {},
+        'token': mtoken
+      });
+    } else {
+      addPost?.set({
+        'name': name,
+        'Description': postController.text,
+        'imageurl': 'null',
+        'imageProfile': imageProfile,
+        'user': currentUser,
+        'time': DateFormat('hh:mm a').format(DateTime.now()).toString(),
+        'date': DateFormat('yyyy-MM-dd').format(DateTime.now()).toString(),
+        'docID': docId,
+        'likes': {},
+        'token': mtoken
+      });
+    }
+  }
+
+  void openCamera(BuildContext context) async {
+    final pickedFile = await ImagePicker().pickImage(
+      source: ImageSource.camera,
+    );
+    if (pickedFile != null) {
+      final imageTemp = File(pickedFile.path);
+
+        imageFile = imageTemp;
+
+    } else {
+      print('Chose image');
+    }
+
+    Navigator.pop(context);
+  }
+
+  void openGallery(BuildContext context) async {
+    final pickedFile = await ImagePicker().pickImage(
+      source: ImageSource.gallery,
+    );
+    if (pickedFile != null) {
+      final imageTemp = File(pickedFile.path);
+
+        imageFile = imageTemp;
+    } else {
+      print('Chose image');
+    }
+
+    Navigator.pop(context);
   }
 
   // Completer<GoogleMapController> controlMap = Completer();
@@ -276,10 +375,7 @@ class BlocPage extends Cubit<BlocState> {
   }) {
     firebase_storage.FirebaseStorage.instance
         .ref('messages')
-        .child('messages/${Uri
-        .file(imageSend!.path)
-        .pathSegments
-        .last}')
+        .child('messages/${Uri.file(imageSend!.path).pathSegments.last}')
         .putFile(imageSend!)
         .then((value) {
       value.ref.getDownloadURL().then((value) {
@@ -302,8 +398,6 @@ class BlocPage extends Cubit<BlocState> {
     'item4',
     'item5',
   ];
-
-
 
   // List<Widget> screens = [Notification_Page(), Container(), Profile()];
 
