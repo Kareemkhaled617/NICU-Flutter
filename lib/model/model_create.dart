@@ -1,28 +1,28 @@
 class UserCreateModel {
-  String? name;
-  String? email;
+  String? Email;
+  String? Username;
   String? phone;
-  String? uId;
+  String? ID;
   bool? isEmailVerified;
   String? image;
   String? cover;
   String? bio;
 
   UserCreateModel(
-      {this.email,
-      this.name,
-      this.phone,
-      this.uId,
-      this.isEmailVerified,
-      this.image,
-      this.bio,
-      this.cover});
+      {this.Email,
+        this.Username,
+        this.phone,
+        this.ID,
+        this.isEmailVerified,
+        this.image,
+        this.bio,
+        this.cover});
 
   UserCreateModel.fromJson(Map<String, dynamic> json) {
-    email = json['Email'];
-    name = json['Username'];
+    Email = json['Email'];
+    Username = json['Username'];
     phone = json['phone'];
-    uId = json['ID'];
+    ID = json['ID'];
     isEmailVerified = json['isEmailVerified'];
     image = json['Image'];
     cover = json['cover'];
@@ -31,14 +31,14 @@ class UserCreateModel {
 
   Map<String, dynamic> toMap() {
     return {
-      'Username': name,
-      'Email': email,
+      'Username': Username,
+      'Email': Email,
       'phone': phone,
       'isEmailVerified': isEmailVerified,
       'Image': image,
       'cover': cover,
       'bio': bio,
-      'ID': uId,
+      'ID': ID,
     };
   }
 }

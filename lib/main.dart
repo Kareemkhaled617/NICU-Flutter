@@ -33,14 +33,14 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MultiBlocProvider(
       providers: [
-        BlocProvider(create: (context) => BlocPage()..getUserData()),
+        BlocProvider(create: (context) => BlocPage()..getUserData()..getAllUsers()..getMyCurrentLocation()),
       ],
       child: OverlaySupport(
         child: MaterialApp(
           debugShowCheckedModeBanner: false,
           title: 'Flutter Demo',
           theme: ThemeData(),
-          home: isLogin == false ? const first_screen() :  HomePage(),
+          home: isLogin == false ? const first_screen() :  const HomePage(),
           //  home: Sign_Up(),
         ),
       ),

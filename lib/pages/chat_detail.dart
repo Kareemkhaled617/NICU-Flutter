@@ -1,17 +1,17 @@
-
 import 'package:conditional_builder_null_safety/conditional_builder_null_safety.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../bloc/bloc_state/bloc_state.dart';
 import '../bloc/blocc/bloc.dart';
+
+
+
 import '../model/model_create.dart';
 import '../model/modelchats.dart';
 import '../widgets/icons_broken.dart';
 
-
 class ChatsDetails extends StatelessWidget {
-
   UserCreateModel? userCreateModel;
   ChatsDetails({this.userCreateModel});
   var textControl = TextEditingController();
@@ -19,8 +19,7 @@ class ChatsDetails extends StatelessWidget {
   Widget build(BuildContext context) {
     return Builder(
       builder: (context) {
-        BlocPage.get(context)
-            .getMessages(receiveID: userCreateModel!.uId);
+        BlocPage.get(context).getMessages(receiveID: userCreateModel!.ID);
         return BlocConsumer<BlocPage, BlocState>(
           listener: (context, state) {},
           builder: (context, state) {
@@ -31,13 +30,14 @@ class ChatsDetails extends StatelessWidget {
                   children: [
                     CircleAvatar(
                       radius: 23.0,
-                      backgroundImage: NetworkImage('${userCreateModel?.image}'),
+                      backgroundImage:
+                          NetworkImage('${userCreateModel!.image}'),
                     ),
                     const SizedBox(
                       width: 10.0,
                     ),
                     Text(
-                      '${userCreateModel?.name}',
+                      '${userCreateModel!.Username}',
                       style: const TextStyle(
                         color: Colors.black,
                       ),
@@ -56,23 +56,23 @@ class ChatsDetails extends StatelessWidget {
                             physics: const BouncingScrollPhysics(),
                             itemBuilder: (context, index) {
                               var message =
-                              BlocPage.get(context).messages[index];
-                              if (BlocPage.get(context).model!.uId ==
+                                  BlocPage.get(context).messages[index];
+                              if (BlocPage.get(context).model!.ID ==
                                   message.sendId) {
                                 return sendMine(message, context);
                               } else {
                                 return sendToHim(message, context);
                               }
                             },
-                            separatorBuilder: (context, index) => const SizedBox(
+                            separatorBuilder: (context, index) =>
+                                const SizedBox(
                                   height: 6,
                                 ),
-                            itemCount:
-                            BlocPage.get(context).messages.length),
+                            itemCount: BlocPage.get(context).messages.length),
                       ),
                       if (BlocPage.get(context).imageSend != null &&
-                          userCreateModel?.uId ==
-                              BlocPage.get(context).model!.uId)
+                          userCreateModel!.ID ==
+                              BlocPage.get(context).model!.ID)
                         Column(
                           children: [
                             const SizedBox(
@@ -114,8 +114,7 @@ class ChatsDetails extends StatelessWidget {
                               backgroundColor: Colors.white,
                               child: IconButton(
                                   onPressed: () {
-                                    BlocPage.get(context)
-                                        .removeImageSender();
+                                    BlocPage.get(context).removeImageSender();
                                   },
                                   icon: const Icon(
                                     IconBroken.Delete,
@@ -136,8 +135,8 @@ class ChatsDetails extends StatelessWidget {
                               child: Container(
                                 decoration: BoxDecoration(
                                   borderRadius: BorderRadius.circular(20),
-                                  border: Border.all(
-                                      color: Colors.grey, width: 1),
+                                  border:
+                                      Border.all(color: Colors.grey, width: 1),
                                 ),
                                 clipBehavior: Clip.antiAliasWithSaveLayer,
                                 child: Padding(
@@ -146,6 +145,12 @@ class ChatsDetails extends StatelessWidget {
                                   child: TextFormField(
                                     style: const TextStyle(color: Colors.black),
                                     controller: textControl,
+                                    onChanged: (value) {
+                                      if (state
+                                          is SuccessSendAllChatsDetailsStateHome) {
+                                        textControl.text = '';
+                                      }
+                                    },
                                     decoration: const InputDecoration(
                                       border: InputBorder.none,
                                       hintText: 'type your message here.....',
@@ -186,20 +191,18 @@ class ChatsDetails extends StatelessWidget {
                               radius: 27,
                               child: TextButton(
                                 onPressed: () {
-                                  if (BlocPage.get(context).imageSend ==
-                                      null) {
-                                    BlocPage.get(context)
-                                        .sendChatDetails(
-                                            text: textControl.text,
-                                            dateTime: DateTime.now().toString(),
-                                            receiveID: userCreateModel!.uId, image: '');
+                                  if (BlocPage.get(context).imageSend == null) {
+                                    BlocPage.get(context).sendChatDetails(
+                                        text: textControl.text,
+                                        dateTime: DateTime.now().toString(),
+                                        receiveID: userCreateModel!.ID,
+                                        image: '');
                                     print('send Without image');
                                   } else {
-                                    BlocPage.get(context)
-                                        .uploadingImageSend(
-                                            text: textControl.text,
-                                            dateTime: DateTime.now().toString(),
-                                            receiveID: userCreateModel!.uId);
+                                    BlocPage.get(context).uploadingImageSend(
+                                        text: textControl.text,
+                                        dateTime: DateTime.now().toString(),
+                                        receiveID: userCreateModel!.ID);
                                     print('send with image');
                                   }
                                 },
@@ -238,9 +241,10 @@ class ChatsDetails extends StatelessWidget {
                     topEnd: Radius.circular(15),
                     topStart: Radius.circular(15),
                   )),
-              padding: const EdgeInsets.symmetric(horizontal: 10.0, vertical: 10.0),
+              padding:
+                  const EdgeInsets.symmetric(horizontal: 10.0, vertical: 10.0),
               child: Text(
-                'model.text',
+                '${model!.text}',
               ),
             ),
           ),
@@ -281,28 +285,29 @@ class ChatsDetails extends StatelessWidget {
                     topEnd: Radius.circular(15),
                     topStart: Radius.circular(15),
                   )),
-              padding: const EdgeInsets.symmetric(horizontal: 10.0, vertical: 10.0),
+              padding:
+                  const EdgeInsets.symmetric(horizontal: 10.0, vertical: 10.0),
               child: Text(
-               ' model?.text',
+                '${model!.text}',
               ),
             ),
           ),
-          if (model?.image != '')
+          if (model!.image != '')
             const SizedBox(
               height: 6,
             ),
-          if (model?.image != '')
+          if (model!.image != '')
             Container(
               height: 150,
               width: 170,
               decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(8.0),
                   image: DecorationImage(
-                    image: NetworkImage('${model?.image}'),
+                    image: NetworkImage('${model!.image}'),
                     fit: BoxFit.cover,
                   )),
             ),
-          if (model?.image != '')
+          if (model!.image != '')
             const SizedBox(
               height: 6,
             ),

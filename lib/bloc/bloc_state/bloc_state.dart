@@ -47,6 +47,8 @@ class ErrorGetAllUsersStateHome extends BlocState {
 }
 
 class SuccessGetAllChatsDetailsStateHome extends BlocState {}
+class GoToMyCurrentPosition extends BlocState {}
+class GetMyCurrentLocation extends BlocState {}
 
 class ChooseCoverPickerScreenSuccess extends BlocState {}
 
@@ -58,5 +60,8 @@ class ErrorGetImageSendDetailsStateHome extends BlocState {
 
 
 class ChangeCurrentScreen extends BlocState {}
+class ChangeInfo extends BlocState {}
 class GetUserField extends BlocState {}
 class GetUserToken extends BlocState {}
+class Camera extends BlocState {}
+class Gallery extends BlocState {}
