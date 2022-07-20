@@ -2,7 +2,9 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:get/get.dart';
 import 'package:overlay_support/overlay_support.dart';
+import 'package:project/locale/locale.dart';
 import 'package:project/pages/fristpage.dart';
 import 'package:project/pages/homepage.dart';
 import 'package:project/pages/profile.dart';
@@ -36,9 +38,11 @@ class MyApp extends StatelessWidget {
         BlocProvider(create: (context) => BlocPage()..getUserData()..getAllUsers()..getMyCurrentLocation()),
       ],
       child: OverlaySupport(
-        child: MaterialApp(
+        child: GetMaterialApp(
           debugShowCheckedModeBanner: false,
           title: 'Flutter Demo',
+          locale: Get.deviceLocale,
+          translations: mylocale(),
           theme: ThemeData(),
           home: isLogin == false ? const first_screen() :  const HomePage(),
           //  home: Sign_Up(),

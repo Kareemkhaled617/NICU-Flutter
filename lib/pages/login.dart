@@ -1,6 +1,7 @@
 import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:project/pages/homepage.dart';
@@ -30,11 +31,12 @@ class _LoginPageState extends State<LoginPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.white,
       body: Container(
         width: double.infinity,
-        decoration: const BoxDecoration(
+        decoration:  BoxDecoration(
           image: DecorationImage(
-            image: AssetImage('assets/images/pg1.png'),
+            image:Get.isDarkMode?const AssetImage('assets/images/pg1.png'):AssetImage("assets/images/dark.jpg"),
             fit: BoxFit.cover,
           ),
         ),
@@ -47,11 +49,12 @@ class _LoginPageState extends State<LoginPage> {
                 child: Column(
                   children: [
                     const Image(image: AssetImage('assets/images/frist.png')),
-                    const Text('WE HOPE TO BE HEALTHY',
+                     Text("WE HOPE TO BE HEALTHY".tr,
                         style: TextStyle(
                             fontSize: 22.0,
                             fontWeight: FontWeight.w900,
-                            color: Colors.white)),
+                            color: Colors.white)
+                    ),
                     const SizedBox(
                       height: 30.0,
                     ),
@@ -73,15 +76,15 @@ class _LoginPageState extends State<LoginPage> {
                           _authData['email'] = val!;
 
                         },
-                        hint: 'Enter Email',
-                        label: 'Username',
+                        hint: 'Enter Email'.tr,
+                        label: 'Username'.tr,
                         pIcon: Icon(
                           Icons.person,
-                          color: ColorManager.primary,
+                          color: Get.isDarkMode?ColorManager.primary: ColorManager.darkPrimary,
                         ),
                         sIcon: Icon(
                           Icons.verified_user_outlined,
-                          color: ColorManager.primary,
+                          color: Get.isDarkMode?ColorManager.primary: ColorManager.darkPrimary,
                         ),
                         onTab: () {}),
                     const SizedBox(
@@ -101,15 +104,15 @@ class _LoginPageState extends State<LoginPage> {
                             _passwordController = val;
                           });
                         },
-                        hint: 'Password',
-                        label: 'Password',
+                        hint: 'Password'.tr,
+                        label: 'Password'.tr,
                         pIcon: Icon(
                           Icons.lock_outline,
-                          color: ColorManager.primary,
+                          color: Get.isDarkMode?ColorManager.primary: ColorManager.darkPrimary,
                         ),
                         sIcon: Icon(
                           Icons.remove_red_eye_rounded,
-                          color: ColorManager.primary,
+                          color: Get.isDarkMode?ColorManager.primary: ColorManager.darkPrimary,
                         ),
                         onTab: () {
                           setState(() {
@@ -121,10 +124,10 @@ class _LoginPageState extends State<LoginPage> {
                       height: 30.0,
                     ),
                     MyButton(
-                      title: 'Login',
+                      title: 'Login'.tr,
                       onTap: _submit,
                       color: Colors.white,
-                      color1: ColorManager.primary,
+                      color1: Get.isDarkMode?ColorManager.primary: ColorManager.darkPrimary,
                     ),
                     const SizedBox(
                       height: 20.0,
@@ -155,11 +158,11 @@ class _LoginPageState extends State<LoginPage> {
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         Text(
-                          'Create a new account?',
+                          'Create a new account?'.tr,
                           style: GoogleFonts.arimo(
                             fontSize: 17,
                             fontWeight: FontWeight.w600,
-                            color: ColorManager.darkGrey,
+                            color: Get.isDarkMode?ColorManager.darkGrey:ColorManager.white,
                           ),
                         ),
                         TextButton(
@@ -168,7 +171,7 @@ class _LoginPageState extends State<LoginPage> {
                                   builder: (context) => Sign_Up()));
                             },
                             child: Text(
-                              'Register Now',
+                              'Register Now'.tr,
                               style: GoogleFonts.abel(
                                 fontSize: 19,
                                 fontWeight: FontWeight.w800,

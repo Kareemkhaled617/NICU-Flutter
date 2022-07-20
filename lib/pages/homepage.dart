@@ -1,4 +1,3 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:diamond_bottom_bar/diamond_bottom_bar.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
@@ -28,62 +27,60 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-   late final FirebaseMessaging _fbm;
-   String? mtoken = " ";
-   String? user=FirebaseAuth.instance.currentUser?.uid;
+  // late final FirebaseMessaging _fbm;
+    // int _notificationCount=0;
+  // late NotificationModel _notificationModel;
 
-   late NotificationModel _notificationModel;
-   @override
-   void initState() {
-     super.initState();
-     requestPermission();
-     getToken();
-     notificationConfigure();
-
-     FirebaseMessaging.instance.subscribeToTopic("Posts");
-   }
-
-  void notificationConfigure() async {
-    _fbm = FirebaseMessaging.instance;
-    NotificationSettings _setting = await _fbm.requestPermission(
-      alert: true,
-      sound: true,
-      badge: true,
-      provisional: false,
-    );
-    if (_setting.authorizationStatus == AuthorizationStatus.authorized) {
-      print('authorizationStatus is Done');
-
-      FirebaseMessaging.onMessage.listen((message) {
-        NotificationModel notificationModel = NotificationModel(
-          title: message.notification!.title,
-          body: message.notification!.body,
-          dateTitle: message.data['title'],
-          dateBody: message.data['body'],
-        );
-        setState(() {
-          _notificationModel = notificationModel;
-        });
-        showSimpleNotification(
-          Text(_notificationModel.title!),
-          subtitle: Text(_notificationModel.body!),
-        );
-      });
-    }else{
-       print('Deny');
-    }
-  }
+  // void notificationConfigure() async {
+  //   _fbm = FirebaseMessaging.instance;
+  //   NotificationSettings _setting = await _fbm.requestPermission(
+  //     alert: true,
+  //     sound: true,
+  //     badge: true,
+  //     provisional: false,
+  //   );
+  //   if (_setting.authorizationStatus == AuthorizationStatus.authorized) {
+  //     print('authorizationStatus is Done');
+  //
+  //     FirebaseMessaging.onMessage.listen((message) {
+  //       NotificationModel notificationModel = NotificationModel(
+  //         title: message.notification!.title,
+  //         body: message.notification!.body,
+  //         dateTilte: message.data['title'],
+  //         dateBody: message.data['body'],
+  //       );
+  //       setState(() {
+  //         // _notificationCount++;
+  //         _notificationModel = notificationModel;
+  //       });
+  //       showSimpleNotification(
+  //         Text(_notificationModel.title!),
+  //         subtitle: Text(_notificationModel.body!),
+  //       );
+  //     });
+  //   }else{
+  //      print('Deniy');
+  //   }
+  // }
 
   int currentIndex = 0;
   final List _title = ['Posts', 'Notification', 'Location', 'Chat', 'Profile'];
   final List _pages = [
     const GetPost(),
     const Notification_Page(),
-    const MapFileRun(),
+    MapFileRun(),
      ChatsScreen(),
     const Profile()
   ];
 
+@override
+  void initState() {
+
+  // notificationConfigure();
+  // _notificationCount=0;
+  //   _fbm.getToken().then((value) => print(value));
+    super.initState();
+  }
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -194,53 +191,6 @@ class _HomePageState extends State<HomePage> {
       ),
     );
   }
-   void getToken() async {
-     await FirebaseMessaging.instance.getToken().then(
-             (token) {
-           setState(() {
-             mtoken = token;
-           });
-
-           saveToken(token!);
-         }
-     );
-   }
-   void saveToken(String token) async {
-     await FirebaseFirestore.instance.collection("UserTokens").doc(user).set({
-       'token' : token,
-     });
-   }
-
-   void requestPermission() async {
-     FirebaseMessaging messaging = FirebaseMessaging.instance;
-
-     NotificationSettings settings = await messaging.requestPermission(
-       alert: true,
-       announcement: false,
-       badge: true,
-       carPlay: false,
-       criticalAlert: false,
-       provisional: false,
-       sound: true,
-     );
-
-     if (settings.authorizationStatus == AuthorizationStatus.authorized) {
-       print('User granted permission');
-     } else if (settings.authorizationStatus == AuthorizationStatus.provisional) {
-       print('User granted provisional permission');
-     } else {
-       print('User declined or has not accepted permission');
-     }
-   }
-}
-
-class NotificationModel {
- String? title;
-String?  body;
- String? dateTitle;
- String? dateBody;
-
- NotificationModel({this.title, this.body, this.dateTitle, this.dateBody});
 }
 
 
