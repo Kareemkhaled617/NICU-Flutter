@@ -7,7 +7,6 @@ import 'package:overlay_support/overlay_support.dart';
 import 'package:project/locale/locale.dart';
 import 'package:project/pages/fristpage.dart';
 import 'package:project/pages/homepage.dart';
-import 'package:project/pages/profile.dart';
 
 import 'bloc/blocc/bloc.dart';
 

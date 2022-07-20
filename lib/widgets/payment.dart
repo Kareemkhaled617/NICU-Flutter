@@ -3,7 +3,8 @@ import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:flutterwave/flutterwave.dart';
-import 'package:flutterwave/models/responses/charge_response.dart';class Payment extends StatefulWidget {
+import 'package:flutterwave/models/responses/charge_response.dart';
+class Payment extends StatefulWidget {
   const Payment({Key? key}) : super(key: key);
 
   @override
@@ -11,8 +12,8 @@ import 'package:flutterwave/models/responses/charge_response.dart';class Payment
 }
 
 class _PaymentState extends State<Payment> {
-  TextEditingController _email = TextEditingController();
-  TextEditingController _amount = TextEditingController();
+  final TextEditingController _email = TextEditingController();
+  final TextEditingController _amount = TextEditingController();
 
   String? _ref;
 

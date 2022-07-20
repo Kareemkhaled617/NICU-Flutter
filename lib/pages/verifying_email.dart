@@ -114,7 +114,7 @@ class _Verifying_EmailState extends State<Verifying_Email> {
     await user?.reload();
     if (user!.emailVerified) {
       Navigator.of(context).pushReplacement(
-          MaterialPageRoute(builder: (context) =>  HomePage()));
+          MaterialPageRoute(builder: (context) =>  const HomePage()));
     }
 
   }

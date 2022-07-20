@@ -36,7 +36,7 @@ class _LoginPageState extends State<LoginPage> {
         width: double.infinity,
         decoration:  BoxDecoration(
           image: DecorationImage(
-            image:Get.isDarkMode?const AssetImage('assets/images/pg1.png'):AssetImage("assets/images/dark.jpg"),
+            image:Get.isDarkMode?const AssetImage("assets/images/dark.jpg"):const AssetImage('assets/images/pg1.png'),
             fit: BoxFit.cover,
           ),
         ),

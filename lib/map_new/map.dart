@@ -1,11 +1,17 @@
+
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:project/bloc/blocc/bloc.dart';
 
 import '../bloc/bloc_state/bloc_state.dart';
+import '../pages/details.dart';
 
 class MapFileRun extends StatelessWidget {
-  const MapFileRun({Key? key}) : super(key: key);
+   MapFileRun({Key? key}) : super(key: key);
+
+
 
   @override
   Widget build(BuildContext context) {
@@ -17,7 +23,7 @@ class MapFileRun extends StatelessWidget {
           body: Stack(
             children: [
               BlocPage.position != null
-                  ? cubit.buildMap()
+                  ? cubit.buildMap(context)
                   : const Center(
                       child: CircularProgressIndicator(
                         color: Colors.blue,
@@ -35,5 +41,7 @@ class MapFileRun extends StatelessWidget {
         );
       },
     );
+
+
   }
 }

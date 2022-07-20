@@ -15,6 +15,7 @@ import 'package:project/resources/color_manger.dart';
 
 import '../map_new/map.dart';
 import '../widgets/custom_list_tile.dart';
+import '../widgets/payment.dart';
 import 'chat.dart';
 import 'chats_screens.dart';
 import 'get_post.dart';
@@ -178,7 +179,7 @@ class _HomePageState extends State<HomePage> {
             }),
             CustomListTile(Icons.payment_rounded, 'Payment', () {
               Navigator.of(context).push(
-                  MaterialPageRoute(builder: (context) => const MainScreen()));
+                  MaterialPageRoute(builder: (context) => const Payment()));
             }),
             CustomListTile(Icons.lock, 'Log out', () async {
               await FirebaseAuth.instance.signOut();
