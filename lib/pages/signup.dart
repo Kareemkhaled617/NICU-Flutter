@@ -392,7 +392,7 @@ class _Sign_UpState extends State<Sign_Up> {
       'Email': _emailController,
       'Username': _nameController,
       'Phone': _phoneController,
-      'ID': user?.uid,
+      'uid': user?.uid,
       'Image': 'null'
     });
   }
