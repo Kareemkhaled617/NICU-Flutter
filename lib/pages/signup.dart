@@ -405,6 +405,7 @@ class _Sign_UpState extends State<Sign_Up> {
       'Username': displayName,
       'Phone': 'null',
       'ID': id,
+      "uid":userID,
       'Image': photoUrl
     });
   }

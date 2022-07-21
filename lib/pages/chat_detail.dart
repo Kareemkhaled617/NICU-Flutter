@@ -4,17 +4,17 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../bloc/bloc_state/bloc_state.dart';
 import '../bloc/blocc/bloc.dart';
-
-
-
 import '../model/model_create.dart';
 import '../model/modelchats.dart';
 import '../widgets/icons_broken.dart';
 
 class ChatsDetails extends StatelessWidget {
   UserCreateModel? userCreateModel;
+
   ChatsDetails({this.userCreateModel});
+
   var textControl = TextEditingController();
+
   @override
   Widget build(BuildContext context) {
     return Builder(
@@ -28,11 +28,16 @@ class ChatsDetails extends StatelessWidget {
                 titleSpacing: 0.0,
                 title: Row(
                   children: [
-                    CircleAvatar(
-                      radius: 23.0,
-                      backgroundImage:
-                          NetworkImage('${userCreateModel!.image}'),
-                    ),
+                    userCreateModel!.image != 'null'
+                        ? CircleAvatar(
+                            radius: 23.0,
+                            backgroundImage:
+                                NetworkImage('${userCreateModel!.image}'),
+                          )
+                        : const CircleAvatar(
+                            radius: 37.0,
+                            child: Icon(Icons.person),
+                          ),
                     const SizedBox(
                       width: 10.0,
                     ),
@@ -272,6 +277,7 @@ class ChatsDetails extends StatelessWidget {
           )
         ],
       );
+
   Widget sendMine(ChatDetailsModel? model, context) => Column(
         crossAxisAlignment: CrossAxisAlignment.end,
         children: [

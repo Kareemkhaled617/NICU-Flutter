@@ -1,2 +1,6 @@
-String ID = 'ZC754R8mPkbwPumW6K3wrpgCZOn1';
+import 'package:firebase_auth/firebase_auth.dart';
+
+String user = FirebaseAuth.instance.currentUser!.uid;
+
+String ID = user;
 //

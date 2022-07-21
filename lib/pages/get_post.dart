@@ -476,12 +476,10 @@ class _GetPostState extends State<GetPost> {
                                       buildTextFormField(
                                         hint: '',
                                         validate: () {},
-                                        controller: BlocPage.get(context)
-                                            .postController,
+                                        controller: postController,
                                         onSave: () => (val) {
                                           setState(() {
-                                            BlocPage.get(context)
-                                                .postController = val;
+                                                postController = val;
                                           });
                                         },
                                         onTab: () {},
@@ -593,8 +591,8 @@ class _GetPostState extends State<GetPost> {
                                             setState(() {
                                               pst = false;
                                             });
-                                            // await addData();
-                                            BlocPage.get(context).addData();
+                                             await addData();
+                                            // BlocPage.get(context).addData();
                                             showSimpleNotification(
                                               const Text(
                                                   "Post Added Successfully"),
