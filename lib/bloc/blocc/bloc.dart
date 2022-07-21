@@ -87,10 +87,18 @@ class BlocPage extends Cubit<BlocState>  {
   void getToken() async {
     await FirebaseMessaging.instance.getToken().then((token) {
       mtoken = token;
+      // saveToken(token!);
       emit(GetUserToken());
     });
     emit(GetUserToken());
   }
+
+  // void saveToken(String token) async {
+  //   await FirebaseFirestore.instance.collection("UserTokens").doc(user).set({
+  //     'token' : token,
+  //   });
+  // }
+
 
   getData() async {
     await FirebaseFirestore.instance

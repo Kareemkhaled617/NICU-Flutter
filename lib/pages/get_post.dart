@@ -392,7 +392,7 @@ class _GetPostState extends State<GetPost> {
                                                         sendPushMessage(
                                                             snapshot.data?.docs[
                                                                 index]['token'],
-                                                            'ADD COMMENT',
+                                                            'ADD NEW COMMENT ON YOUR POST',
                                                             name!);
                                                       },
                                                     ),
