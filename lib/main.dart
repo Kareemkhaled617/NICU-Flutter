@@ -1,6 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/scheduler.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get/get.dart';
 import 'package:overlay_support/overlay_support.dart';
@@ -12,10 +13,11 @@ import 'bloc/blocc/bloc.dart';
 
 
 bool? isLogin;
-
+bool the = false;
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
+  the =SchedulerBinding.instance.window.platformBrightness == Brightness.dark;
   var user = FirebaseAuth.instance.currentUser;
   if (user == null) {
     isLogin = false;

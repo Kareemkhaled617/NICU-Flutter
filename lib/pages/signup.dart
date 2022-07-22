@@ -2,6 +2,8 @@ import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:get/get_core/src/get_main.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:project/pages/homepage.dart';
@@ -9,6 +11,7 @@ import 'package:project/pages/login.dart';
 import 'package:project/pages/verifying_email.dart';
 import 'package:project/widgets/button.dart';
 
+import '../main.dart';
 import '../resources/color_manger.dart';
 
 class Sign_Up extends StatefulWidget {
@@ -35,9 +38,9 @@ class _Sign_UpState extends State<Sign_Up> {
     return Scaffold(
       body: Container(
         width: double.infinity,
-        decoration: const BoxDecoration(
+        decoration:  BoxDecoration(
           image: DecorationImage(
-            image: AssetImage('assets/images/pg1.png'),
+            image:the?const AssetImage("assets/images/dark.jpg"):const AssetImage('assets/images/pg1.png'),
             fit: BoxFit.cover,
           ),
         ),
@@ -50,7 +53,7 @@ class _Sign_UpState extends State<Sign_Up> {
                 child: Column(
                   children: [
                     const Image(image: AssetImage('assets/images/frist.png')),
-                    const Text('WE HOPE TO BE HEALTHY',
+                     Text('WE HOPE TO BE HEALTHY'.tr,
                         style: TextStyle(
                             fontSize: 22.0,
                             fontWeight: FontWeight.w900,
@@ -72,15 +75,15 @@ class _Sign_UpState extends State<Sign_Up> {
                               }
                               return null;
                             },
-                        hint: 'Name',
-                        label: 'Name',
+                        hint: 'Name'.tr,
+                        label: 'Name'.tr,
                         pIcon: Icon(
                           Icons.person,
-                          color: ColorManager.primary,
+                          color: the?ColorManager.darkPrimary: ColorManager.primary,
                         ),
                         sIcon: Icon(
                           Icons.verified,
-                          color: ColorManager.primary,
+                          color: the?ColorManager.darkPrimary: ColorManager.primary,
                         ),
                         vall: false),
                     const SizedBox(
@@ -98,15 +101,15 @@ class _Sign_UpState extends State<Sign_Up> {
                               }
                               return null;
                             },
-                        hint: 'Phone',
-                        label: 'Phone',
+                        hint: 'Phone'.tr,
+                        label: 'Phone'.tr,
                         pIcon: Icon(
                           Icons.phone_android_rounded,
-                          color: ColorManager.primary,
+                          color: the?ColorManager.darkPrimary: ColorManager.primary,
                         ),
                         sIcon: Icon(
                           Icons.verified,
-                          color: ColorManager.primary,
+                          color: the?ColorManager.darkPrimary: ColorManager.primary,
                         ),
                         vall: false),
                     const SizedBox(
@@ -126,15 +129,15 @@ class _Sign_UpState extends State<Sign_Up> {
                               }
                               return null;
                             },
-                        hint: 'Email',
-                        label: 'Email',
+                        hint: 'Enter Email'.tr,
+                        label: 'Enter Email'.tr,
                         pIcon: Icon(
                           Icons.email_outlined,
-                          color: ColorManager.primary,
+                          color: the?ColorManager.darkPrimary: ColorManager.primary,
                         ),
                         sIcon: Icon(
                           Icons.verified,
-                          color: ColorManager.primary,
+                          color: the?ColorManager.darkPrimary: ColorManager.primary,
                         ),
                         vall: false),
                     const SizedBox(
@@ -144,7 +147,7 @@ class _Sign_UpState extends State<Sign_Up> {
                         type: TextInputType.visiblePassword,
                         validate: () => (val) {
                               if (val!.isEmpty || val.length <= 8) {
-                                return "Password is too short!";
+                                return "Password is too short!".tr;
                               }
                               return null;
                             },
@@ -154,15 +157,15 @@ class _Sign_UpState extends State<Sign_Up> {
                               });
                               print(_passwordController);
                             },
-                        hint: 'Password',
-                        label: 'Password',
+                        hint: 'Password'.tr,
+                        label: 'Password'.tr,
                         pIcon: Icon(
                           Icons.lock_outline,
-                          color: ColorManager.primary,
+                          color: the?ColorManager.darkPrimary: ColorManager.primary,
                         ),
                         sIcon: Icon(
                           Icons.remove_red_eye,
-                          color: ColorManager.primary,
+                          color: the?ColorManager.darkPrimary: ColorManager.primary,
                         ),
                         vall: true),
                     const SizedBox(
@@ -172,21 +175,22 @@ class _Sign_UpState extends State<Sign_Up> {
                       height: 20.0,
                     ),
                     MyButton(
-                        title: 'Sign Up',
+                        title: 'Sign Up'.tr,
                         color: Colors.white,
                         onTap: () async {
                           _submit();
                         },
-                        color1: ColorManager.primary),
+                      color1: the?ColorManager.darkPrimary: ColorManager.primary,
+                    ),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         Text(
-                          'You Have An Account',
+                          'You Have An Account'.tr,
                           style: GoogleFonts.arimo(
                             fontSize: 17,
                             fontWeight: FontWeight.w600,
-                            color: ColorManager.darkGrey,
+                            color:the? ColorManager.white: ColorManager.darkGrey,
                           ),
                         ),
                         TextButton(
@@ -195,7 +199,7 @@ class _Sign_UpState extends State<Sign_Up> {
                                   builder: (context) => const LoginPage()));
                             },
                             child: Text(
-                              'Login Now',
+                              'Login Now'.tr,
                               style: GoogleFonts.abel(
                                 fontSize: 19,
                                 fontWeight: FontWeight.w800,
@@ -245,7 +249,7 @@ class _Sign_UpState extends State<Sign_Up> {
                                   MaterialPageRoute(
                                       builder: (context) =>  HomePage()));
                             }
-                            print('done');
+                            print('done'.tr);
                           },
                           child: const CircleAvatar(
                             backgroundColor: Colors.white,
@@ -339,7 +343,7 @@ class _Sign_UpState extends State<Sign_Up> {
                 email: _emailController, password: _passwordController);
         return userCredential;
       } else {
-        print('isEmpty');
+        print('isEmpty'.tr);
       }
     } on FirebaseAuthException catch (e) {
       if (e.code == 'weak-password') {
@@ -347,8 +351,8 @@ class _Sign_UpState extends State<Sign_Up> {
           context: context,
           dialogType: DialogType.INFO,
           animType: AnimType.BOTTOMSLIDE,
-          title: 'Attend  !',
-          desc: 'The password is weak',
+          title: 'Attend  !'.tr,
+          desc: 'The password is weak'.tr,
           btnCancelOnPress: () {},
           btnOkOnPress: () {},
         ).show();
@@ -357,8 +361,8 @@ class _Sign_UpState extends State<Sign_Up> {
           context: context,
           dialogType: DialogType.INFO,
           animType: AnimType.BOTTOMSLIDE,
-          title: 'Attend  !',
-          desc: 'This Account is Already Exist',
+          title: 'Attend  !'.tr,
+          desc: 'This Account is Already Exist'.tr,
           btnOkOnPress: () {},
         ).show();
       }
@@ -382,7 +386,7 @@ class _Sign_UpState extends State<Sign_Up> {
       }
       return;
     } else {
-      print('Not Valid');
+      print('Not Valid'.tr);
     }
   }
 

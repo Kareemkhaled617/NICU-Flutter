@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:google_sign_in/google_sign_in.dart';
+import 'package:project/main.dart';
 import 'package:project/pages/homepage.dart';
 import 'package:project/pages/signup.dart';
 import 'package:project/resources/color_manger.dart';
@@ -36,7 +37,7 @@ class _LoginPageState extends State<LoginPage> {
         width: double.infinity,
         decoration:  BoxDecoration(
           image: DecorationImage(
-            image:Get.isDarkMode?const AssetImage("assets/images/dark.jpg"):const AssetImage('assets/images/pg1.png'),
+            image:the?const AssetImage("assets/images/dark.jpg"):const AssetImage('assets/images/pg1.png'),
             fit: BoxFit.cover,
           ),
         ),
@@ -80,11 +81,11 @@ class _LoginPageState extends State<LoginPage> {
                         label: 'Username'.tr,
                         pIcon: Icon(
                           Icons.person,
-                          color: Get.isDarkMode?ColorManager.primary: ColorManager.darkPrimary,
+                          color: the?ColorManager.darkPrimary: ColorManager.primary,
                         ),
                         sIcon: Icon(
                           Icons.verified_user_outlined,
-                          color: Get.isDarkMode?ColorManager.primary: ColorManager.darkPrimary,
+                          color: the?ColorManager.darkPrimary: ColorManager.primary,
                         ),
                         onTab: () {}),
                     const SizedBox(
@@ -94,7 +95,7 @@ class _LoginPageState extends State<LoginPage> {
                       vall: pass,
                      validate: ()=>(val) {
                        if (val!.isEmpty || val.length <= 5) {
-                         return "Password is too short!";
+                         return "Password is too short!".tr;
                        }
                        return null;
                      },
@@ -108,11 +109,11 @@ class _LoginPageState extends State<LoginPage> {
                         label: 'Password'.tr,
                         pIcon: Icon(
                           Icons.lock_outline,
-                          color: Get.isDarkMode?ColorManager.primary: ColorManager.darkPrimary,
+                          color: the?ColorManager.darkPrimary: ColorManager.primary,
                         ),
                         sIcon: Icon(
                           Icons.remove_red_eye_rounded,
-                          color: Get.isDarkMode?ColorManager.primary: ColorManager.darkPrimary,
+                          color: the?ColorManager.darkPrimary: ColorManager.primary,
                         ),
                         onTab: () {
                           setState(() {
@@ -127,23 +128,23 @@ class _LoginPageState extends State<LoginPage> {
                       title: 'Login'.tr,
                       onTap: _submit,
                       color: Colors.white,
-                      color1: Get.isDarkMode?ColorManager.primary: ColorManager.darkPrimary,
+                      color1: the?ColorManager.darkPrimary: ColorManager.primary,
                     ),
                     const SizedBox(
                       height: 20.0,
                     ),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.center,
-                      children: const [
-                        Expanded(
+                      children:  [
+                        const Expanded(
                           child: Divider(
                             thickness: 1.5,
                             endIndent: 5,
                             color: Colors.grey,
                           ),
                         ),
-                        Text('OR',style: TextStyle(fontSize: 15,fontWeight:FontWeight.w700),),
-                        Expanded(
+                        Text('OR'.tr,style: TextStyle(fontSize: 15,fontWeight:FontWeight.w700),),
+                        const Expanded(
                           child: Divider(
                             thickness: 1.5,
                             indent: 5,
@@ -162,7 +163,7 @@ class _LoginPageState extends State<LoginPage> {
                           style: GoogleFonts.arimo(
                             fontSize: 17,
                             fontWeight: FontWeight.w600,
-                            color: Get.isDarkMode?ColorManager.darkGrey:ColorManager.white,
+                            color: the?ColorManager.white:ColorManager.darkGrey,
                           ),
                         ),
                         TextButton(
@@ -242,7 +243,7 @@ class _LoginPageState extends State<LoginPage> {
             email: _emailController, password: _passwordController);
         return userCredential;
       } else {
-        print('isEmpty');
+        print('isEmpty'.tr);
       }
     } on FirebaseAuthException catch (e) {
       if (e.code == 'user-not-found') {
@@ -250,8 +251,8 @@ class _LoginPageState extends State<LoginPage> {
           context: context,
           dialogType: DialogType.INFO,
           animType: AnimType.BOTTOMSLIDE,
-          title: 'Attend  !',
-          desc: 'This Account IsNot Exist',
+          title: 'Attend  !'.tr,
+          desc: 'This Account IsNot Exist'.tr,
           btnCancelOnPress: () {},
           btnOkOnPress: () {},
         ).show();
@@ -260,8 +261,8 @@ class _LoginPageState extends State<LoginPage> {
           context: context,
           dialogType: DialogType.INFO,
           animType: AnimType.BOTTOMSLIDE,
-          title: 'Attend  !',
-          desc: 'The password is Wrong',
+          title: 'Attend  !'.tr,
+          desc: 'The password is Wrong'.tr,
           btnOkOnPress: () {},
         ).show();
       }

@@ -1,9 +1,11 @@
 
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:project/pages/signup.dart';
 import 'package:project/widgets/button.dart';
 
+import '../main.dart';
 import '../resources/color_manger.dart';
 import 'login.dart';
 
@@ -21,12 +23,12 @@ class first_screen extends StatelessWidget {
               width: double.infinity,
               height: 420,
               decoration: BoxDecoration(
-                image: const DecorationImage(
+                image:  DecorationImage(
                     image: AssetImage(
                       'assets/images/frist.png',
                     ),
                     fit: BoxFit.fitWidth),
-                color: ColorManager.primary,
+                color: the?ColorManager.darkPrimary: ColorManager.primary,
                 borderRadius: const BorderRadius.only(
                   bottomRight: Radius.circular(100),
                 ),
@@ -41,12 +43,13 @@ class first_screen extends StatelessWidget {
               elevation: 10,
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(15),
-                side: BorderSide(color: ColorManager.primary, width: 3),
+                side: BorderSide( color: the?ColorManager.darkPrimary: ColorManager.primary,
+                    width: 3),
               ),
               child: Padding(
                 padding: const EdgeInsets.all(20.0),
                 child: Text(
-                  'WE HOPE TO BE HEALTHY',
+                  'WE HOPE TO BE HEALTHY'.tr,
                   style: GoogleFonts.permanentMarker(
                       fontSize: 20, color: Colors.black),
                 ),
@@ -60,25 +63,26 @@ class first_screen extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 MyButton(
-                  title: 'Login',
+                  title: 'Login'.tr,
                   onTap: () {
                     Navigator.of(context).push(MaterialPageRoute(
                         builder: (context) => const LoginPage()));
                   },
-                  color: ColorManager.primary,
+                  color: the?ColorManager.darkPrimary: ColorManager.primary,
                   color1: Colors.white,
                 ),
                 const SizedBox(
                   width: 20,
                 ),
                 MyButton(
-                    title: 'Sign Up',
+                    title: 'Sign Up'.tr,
                     onTap: () {
                       Navigator.of(context).push(MaterialPageRoute(
                           builder: (context) => Sign_Up()));
                     },
                     color: Colors.white,
-                color1:ColorManager.primary,)
+                  color1: the?ColorManager.darkPrimary: ColorManager.primary,
+                )
               ],
             ),
 
