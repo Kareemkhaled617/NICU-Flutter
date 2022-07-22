@@ -3,16 +3,21 @@
 import 'package:geolocator/geolocator.dart';
 
 class LocationHelper {
-  static Future<Position> getCurrentLocation() async {
+  static Future<Position?> getCurrentLocation() async {
     bool isServiceEnabled = await Geolocator.isLocationServiceEnabled();
-    //for make if service enable or not
+    print(isServiceEnabled);
+
     if (!isServiceEnabled) {
       await Geolocator.requestPermission();
       //for get permission from user to get current location
+    } else if (isServiceEnabled) {
+      return await Geolocator.getCurrentPosition(
+        desiredAccuracy: LocationAccuracy.high,
+
+      );
     }
-    return await Geolocator.getCurrentPosition(
-      desiredAccuracy: LocationAccuracy.high,
-      //this for send current location to app
-    );
+
+
   }
 }
+

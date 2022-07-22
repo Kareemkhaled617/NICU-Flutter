@@ -10,11 +10,9 @@ import 'chat_detail.dart';
 class ChatsScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return
-        // BlocProvider(
-        // create: (context)=>BlocPage(),
-        // child:
-        BlocConsumer<BlocPage, BlocState>(
+    return BlocProvider(
+        create: (context)=>BlocPage()..getUserData()..getAllUsers(),
+        child:BlocConsumer<BlocPage, BlocState>(
       listener: (context, state) {},
       builder: (BuildContext context, state) {
         return ConditionalBuilder(
@@ -37,7 +35,7 @@ class ChatsScreen extends StatelessWidget {
               const Center(child: CircularProgressIndicator()),
         );
       },
-    );
+    ));
   }
 }
 
@@ -54,14 +52,15 @@ Widget buildItemChats(context, UserCreateModel model) => InkWell(
         padding: const EdgeInsets.all(20.0),
         child: Row(
           children: [
-            model.image != 'null'? CircleAvatar(
-              radius: 37.0,
-              backgroundImage: NetworkImage('${model.image}'),
-            ):
-            const CircleAvatar(
-              radius: 37.0,
-              child:Icon(Icons.person),
-            ),
+            model.image != 'null'
+                ? CircleAvatar(
+                    radius: 37.0,
+                    backgroundImage: NetworkImage('${model.image}'),
+                  )
+                : const CircleAvatar(
+                    radius: 37.0,
+                    child: Icon(Icons.person),
+                  ),
             const SizedBox(
               width: 10.0,
             ),

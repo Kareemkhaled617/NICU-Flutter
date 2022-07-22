@@ -5,6 +5,8 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
 import 'package:project/resources/color_manger.dart';
 
+import 'chat_detail.dart';
+
 class Profile extends StatefulWidget {
   const Profile({Key? key}) : super(key: key);
 
@@ -184,7 +186,9 @@ class _ProfileState extends State<Profile> {
                         width: 100,
                       ),
                       MaterialButton(
-                        onPressed: () {},
+                        onPressed: () {
+                          Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (context)=>ChatsDetails()));
+                        },
                         child: const Text(
                           'MESSAGE',
                           style: TextStyle(

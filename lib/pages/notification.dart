@@ -3,6 +3,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
+import '../size_config.dart';
 import '../widgets/dismissible.dart';
 
 class Notification_Page extends StatefulWidget {
@@ -17,6 +18,7 @@ class _NotificationState extends State<Notification_Page> {
   String? imageProfole;
   String name = '';
   List noti = [];
+  bool edit = false;
 
   getNotification() async {
     CollectionReference pp = FirebaseFirestore.instance
@@ -30,11 +32,13 @@ class _NotificationState extends State<Notification_Page> {
         }));
   }
 
-  deleteNotification()async{
-     FirebaseFirestore.instance
+  deleteNotification(String id) async {
+    FirebaseFirestore.instance
         .collection('users')
         .doc(user)
-        .collection('notification');
+        .collection('notification')
+        .doc(id)
+        .delete();
   }
 
   getData() async {
@@ -59,11 +63,13 @@ class _NotificationState extends State<Notification_Page> {
 
   @override
   Widget build(BuildContext context) {
-    return ListView.builder(
-      itemCount: noti.length,
-      itemBuilder: (context, index) => noti.isNotEmpty
-          ? DismissibleWidget(
-              onDismissed: (f) {},
+    return  ListView.builder(
+        itemCount: noti.length,
+        itemBuilder: (context, index) => noti.isNotEmpty
+            ? DismissibleWidget(
+              onDismissed: (DismissDirection direction) {
+                deleteNotification(noti[index]['id']);
+              },
               item: noti,
               child: Container(
                 width: double.infinity,
@@ -93,7 +99,8 @@ class _NotificationState extends State<Notification_Page> {
                         child: Column(
                           children: [
                             Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              mainAxisAlignment:
+                                  MainAxisAlignment.spaceBetween,
                               children: [
                                 Text(noti[index]['title'],
                                     style: GoogleFonts.nunito(
@@ -103,7 +110,11 @@ class _NotificationState extends State<Notification_Page> {
                                     )),
                                 IconButton(
                                   icon: const Icon(Icons.more_vert),
-                                  onPressed: () {},
+                                  onPressed: () {
+                                    setState(() {
+                                      edit = !edit;
+                                    });
+                                  },
                                 ),
                               ],
                             ),
@@ -147,10 +158,34 @@ class _NotificationState extends State<Notification_Page> {
                 ),
               ),
             )
-          : const Center(
-              child: CircularProgressIndicator(
-              strokeWidth: 4,
-            )),
+            : const Center(
+                child: CircularProgressIndicator(
+                strokeWidth: 4,
+              )),
+      );
+  }
+
+  _buildBottomSheet(
+      {String? label, Function()? onTap, Color? clr, bool isClose = false}) {
+    return GestureDetector(
+      onTap: onTap,
+      child: Container(
+        margin: const EdgeInsets.symmetric(vertical: 4),
+        height: 65,
+        width: SizeConfig.screenWidth * 0.9,
+        decoration: BoxDecoration(
+          border: Border.all(
+            width: 2,
+          ),
+          borderRadius: BorderRadius.circular(20),
+          color: isClose ? Colors.transparent : clr,
+        ),
+        child: Center(
+          child: Text(
+            label!,
+          ),
+        ),
+      ),
     );
   }
 }

@@ -2,17 +2,12 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:project/bloc/blocc/bloc.dart';
 
 import '../bloc/bloc_state/bloc_state.dart';
-import '../pages/details.dart';
 
 class MapFileRun extends StatelessWidget {
    MapFileRun({Key? key}) : super(key: key);
-
-
-
   @override
   Widget build(BuildContext context) {
     return BlocConsumer<BlocPage, BlocState>(
@@ -25,10 +20,10 @@ class MapFileRun extends StatelessWidget {
               BlocPage.position != null
                   ? cubit.buildMap(context)
                   : const Center(
-                      child: CircularProgressIndicator(
-                        color: Colors.blue,
-                      ),
-                    )
+                child: CircularProgressIndicator(
+                  color: Colors.blue,
+                ),
+              )
             ],
           ),
           floatingActionButton: FloatingActionButton(
@@ -41,6 +36,7 @@ class MapFileRun extends StatelessWidget {
         );
       },
     );
+
 
 
   }

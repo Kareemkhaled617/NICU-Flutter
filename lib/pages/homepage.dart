@@ -78,10 +78,12 @@ class _HomePageState extends State<HomePage> {
   }
 
   addNotification({String? title,String? body})async{
+    String docId = FirebaseFirestore.instance.collection('Post').doc(user).collection('notification').doc().id;
     DocumentReference  addNotification =FirebaseFirestore.instance.collection('users').doc(user);
-    addNotification.collection('notification').add({
+    addNotification.collection('notification').doc(docId).set({
       'title':title,
       'body':body,
+      'id':docId,
       'time': DateFormat('hh:mm a').format(DateTime.now()).toString(),
       'date': DateFormat('yyyy-MM-dd').format(DateTime.now()).toString(),
     });
