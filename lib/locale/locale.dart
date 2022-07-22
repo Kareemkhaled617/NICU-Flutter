@@ -5,7 +5,7 @@ class mylocale extends Translations{
   // TODO: implement keys
   Map<String, Map<String, String>> get keys =>{
     "ar":{"WE HOPE TO BE HEALTHY":"نأمل أن نكون بصحة جيدة",
-    "Enter Email":"ادخل الاسم",
+    "Enter Email":"ادخل البنشريد الاكتروني",
     "Username":"اسم المستخدم",
     "Password":"كلمه المرور",
     "Login":"تسجيل الدخول",
@@ -23,7 +23,19 @@ class mylocale extends Translations{
     "Login Now":"تسجيل الدخول الآن",
     "done":"تم",
     "isEmpty":"فارغ",
-    "Not Valid":"غير صالح"},
+    "Not Valid":"غير صالح",
+    "Setting":"الاعدادات",
+    "Log out":"تسجيل الخروج",
+    "Account":"الحساب",
+    "Help and Support":"مساعدة و دعم",
+    "Privacy & Setting":"الخصوصية والإعداد",
+    "About Us":"معلومات عنا",
+      "Check Your Email":"تحقق من بريدك الالكتروني",
+      "Saved":"حفظ",
+      "Something went wrong":"هناك خطأ ما",
+      "likes":"الاعجابات","Post":"المنشورات",
+      "comments":"التعليقات"
+    },
 
 
     "en":{"WE HOPE TO BE HEALTHY":"WE HOPE TO BE HEALTHY",
@@ -45,7 +57,19 @@ class mylocale extends Translations{
       "Login Now":"Login Now",
       "done":"done",
       "isEmpty":"isEmpty",
-      "Not Valid":"Not Valid"
+      "Not Valid":"Not Valid",
+      "Setting":"Setting",
+      "Log out":"Log out",
+      "Account":"Account",
+      "Help and Support":"Help and Support",
+      "Privacy & Setting":"Privacy & Setting",
+      "About Us":"About Us",
+      "Check Your Email":"Check Your Email",
+      "Saved":"Saved",
+      "Something went wrong":"Something went wrong",
+      "likes":"likes",
+      "Post":"Post",
+      "comments":"comments"
     }
   };
 

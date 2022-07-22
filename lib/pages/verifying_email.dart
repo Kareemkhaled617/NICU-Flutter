@@ -3,10 +3,12 @@ import 'dart:async';
 import 'package:external_app_launcher/external_app_launcher.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:project/resources/color_manger.dart';
 import 'package:url_launcher/url_launcher.dart';
 
+import '../main.dart';
 import 'fristpage.dart';
 import 'homepage.dart';
 
@@ -43,9 +45,9 @@ class _Verifying_EmailState extends State<Verifying_Email> {
     return Scaffold(
       body: Container(
         width: double.infinity,
-        decoration: const BoxDecoration(
+        decoration:  BoxDecoration(
           image: DecorationImage(
-            image: AssetImage('assets/images/pg1.png'),
+            image:the?const AssetImage("assets/images/dark.jpg"):const AssetImage('assets/images/pg1.png'),
             fit: BoxFit.cover,
           ),
         ),
@@ -96,9 +98,9 @@ class _Verifying_EmailState extends State<Verifying_Email> {
                   elevation: MaterialStateProperty.all(3),
                 ),
                 child: Text(
-                  'Check Your Email',
+                  'Check Your Email'.tr,
                   style: GoogleFonts.archivo(
-                      color: ColorManager.primary,
+                      color: the?ColorManager.darkPrimary: ColorManager.primary,
                       fontSize: 22,
                       fontWeight: FontWeight.w900
                   ),

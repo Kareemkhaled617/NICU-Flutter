@@ -4,6 +4,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
 import 'package:path/path.dart';
@@ -63,7 +64,7 @@ class _SavePostState extends State<SavePost> {
   void initState() {
     getData();
     getPost();
-    print('done');
+    print('done'.tr);
     super.initState();
   }
 
@@ -74,7 +75,7 @@ class _SavePostState extends State<SavePost> {
         backgroundColor: ColorManager.primary,
         centerTitle: true,
         title: Text(
-          'Saved',
+          'Saved'.tr,
           style: GoogleFonts.roboto(
             fontSize: 28,
             fontWeight: FontWeight.w700,
@@ -114,7 +115,7 @@ class _SavePostState extends State<SavePost> {
               .snapshots(),
           builder: (context, snapshot) {
             if (snapshot.hasError) {
-              return const Center(child: Text('Something went wrong'));
+              return  Center(child: Text('Something went wrong'.tr));
             }
 
             if (snapshot.connectionState == ConnectionState.waiting) {
@@ -688,7 +689,7 @@ class _SavePostState extends State<SavePost> {
       });
     } else {
       addPost?.set({
-        'name': name,
+        'Name'.tr: name,
         'Description': postController.text,
         'imageurl': 'null',
         'imageProfile': imageProfole,
@@ -705,14 +706,14 @@ class _SavePostState extends State<SavePost> {
     var currentUser = FirebaseAuth.instance.currentUser?.uid;
 
     await FirebaseFirestore.instance
-        .collection('Post')
+        .collection('Post'.tr)
         .doc('$id')
         .get()
         .then((value) {
-      addPost = FirebaseFirestore.instance.collection('Post').doc('$id');
-      addPost!.collection('comments').add(
+      addPost = FirebaseFirestore.instance.collection('Post'.tr).doc('$id');
+      addPost!.collection('comments'.tr).add(
         {
-          'name': name,
+          'Name'.tr: name,
           'ID': currentUser,
           'description': _controller,
           'time': DateFormat('hh:mm a').format(DateTime.now()).toString(),
@@ -771,14 +772,14 @@ class _SavePostState extends State<SavePost> {
     var currentUser = FirebaseAuth.instance.currentUser?.uid;
 
     await FirebaseFirestore.instance
-        .collection('Post')
+        .collection('Post'.tr)
         .doc('$id')
         .get()
         .then((value) {
-      addPost = FirebaseFirestore.instance.collection('Post').doc('$id');
+      addPost = FirebaseFirestore.instance.collection('Post'.tr).doc('$id');
       addPost!.set(
         {
-          'likes': {'$currentUser': val}
+          'likes'.tr: {'$currentUser': val}
         },
         SetOptions(merge: true),
       );

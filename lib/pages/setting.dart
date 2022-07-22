@@ -1,5 +1,8 @@
 
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:project/main.dart';
+import 'package:project/resources/color_manger.dart';
 
 class SettingPage extends StatefulWidget {
   const SettingPage({Key? key}) : super(key: key);
@@ -20,20 +23,20 @@ class _SettingPage extends State<SettingPage> {
     Icons.contact_support_rounded,
   ];
   final List _nameS = [
-    "Account",
-    "Help and Support",
-    "Privacy & Setting ",
-    "About Us"
+    "Account".tr,
+    "Help and Support".tr,
+    "Privacy & Setting".tr,
+    "About Us".tr
   ];
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor:pinkclr ,
+        backgroundColor:the?ColorManager.black:pinkclr ,
         elevation: 0,
         centerTitle: true,
-        title: const Text(
-          "Setting",
+        title:  Text(
+          "Setting".tr,
           style: TextStyle(fontSize: 22),
         ),
         leading: IconButton(
@@ -79,7 +82,7 @@ class _SettingPage extends State<SettingPage> {
                         child: Row(
                           // crossAxisAlignment: CrossAxisAlignment.center,
                           children: [
-                            Icon(_icon[index], size: 35,color: pinkclr,),
+                            Icon(_icon[index], size: 35,color: the?ColorManager.darkGrey:pinkclr,),
                             Padding(
                               padding: const EdgeInsets.only(left: 30),
                               child: Text(
@@ -108,7 +111,7 @@ class _SettingPage extends State<SettingPage> {
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.end,
                   children: [
-                    Text("Log out",style: TextStyle(fontSize: 30),),
+                    Text("Log out".tr,style: TextStyle(fontSize: 30),),
                     SizedBox(
                       width: 20,
                     ),
@@ -130,7 +133,7 @@ class CurvedPainter extends CustomPainter {
   @override
   void paint(Canvas canvas, Size size) {
     var paint = Paint()
-      ..color = _SettingPage.pinkclr
+      ..color = the? ColorManager.black:_SettingPage.pinkclr
       ..strokeWidth = 15;
 
     var path = Path();
