@@ -31,9 +31,27 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
+
+  String name='';
+  String? image;
   late final FirebaseMessaging _fbm;
    late NotificationModel _notificationModel;
  String user = FirebaseAuth.instance.currentUser!.uid;
+
+
+
+  getData() async {
+    await FirebaseFirestore.instance
+        .collection('users')
+        .doc(user)
+        .get()
+        .then((value) {
+      setState(() {
+        name = value['Username'];
+        image = value['Image'];
+      });
+    });
+  }
 
   void notificationConfigure() async {
     _fbm = FirebaseMessaging.instance;
@@ -101,10 +119,8 @@ class _HomePageState extends State<HomePage> {
 
 @override
   void initState() {
-
+  getData();
   notificationConfigure();
-  // _notificationCount=0;
-  //   _fbm.getToken().then((value) => print(value));
     super.initState();
   }
   @override
@@ -113,19 +129,6 @@ class _HomePageState extends State<HomePage> {
       appBar: AppBar(
         backgroundColor: ColorManager.primary,
         centerTitle: true,
-        actions: [
-          Padding(
-            padding: const EdgeInsets.only(right: 8),
-            child: GestureDetector(
-              onTap: () {},
-              child: const CircleAvatar(
-                radius: 23,
-                backgroundImage: NetworkImage(
-                    'https://images.unsplash.com/photo-1633332755192-727a05c4013d?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8MXx8dXNlcnxlbnwwfHwwfHw%3D&auto=format&fit=crop&w=500&q=60'),
-              ),
-            ),
-          )
-        ],
         title: Text(
           _title[currentIndex]!,
           style: GoogleFonts.roboto(
@@ -166,6 +169,11 @@ class _HomePageState extends State<HomePage> {
               ),
               child: Row(
                 children: [
+                  image != null?
+                      CircleAvatar(
+                        backgroundImage:NetworkImage(image!),
+                      radius: 35,
+                      ):
                   Container(
                     width: 50,
                     height: 50,
@@ -183,8 +191,8 @@ class _HomePageState extends State<HomePage> {
                   const SizedBox(
                     width: 16,
                   ),
-                  const Text(
-                    'Profile',
+                   Text(
+                    name,
                     style: TextStyle(
                       fontSize: 24,
                     ),

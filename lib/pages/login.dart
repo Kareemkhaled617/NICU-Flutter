@@ -50,7 +50,7 @@ class _LoginPageState extends State<LoginPage> {
                   children: [
                     const Image(image: AssetImage('assets/images/frist.png')),
                      Text("WE HOPE TO BE HEALTHY".tr,
-                        style: TextStyle(
+                        style: const TextStyle(
                             fontSize: 22.0,
                             fontWeight: FontWeight.w900,
                             color: Colors.white)

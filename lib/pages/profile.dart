@@ -163,6 +163,7 @@ class _ProfileState extends State<Profile> {
                 Padding(
                   padding: const EdgeInsets.all(10),
                   child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       Padding(
                         padding: const EdgeInsets.only(left: 50),
