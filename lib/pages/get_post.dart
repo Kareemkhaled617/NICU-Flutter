@@ -460,10 +460,10 @@ class _GetPostState extends State<GetPost> {
                                       const SizedBox(
                                         height: 20,
                                       ),
-                                      BlocPage.get(context).imageSend != null
+                                      imageFile != null
                                           ? Center(
                                               child: Image.file(
-                                                BlocPage.get(context).imageSend!,
+                                                imageFile!,
                                                 width: 270,
                                                 height: 250,
                                                 fit: BoxFit.fill,

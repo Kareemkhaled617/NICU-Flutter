@@ -1,6 +1,7 @@
 import 'dart:math';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
@@ -22,7 +23,31 @@ class _applyState extends State<apply> {
   final TextEditingController? _birthday = TextEditingController();
   String? weight;
   int _value = 1;
+  String? name;
+  String? email;
+  String? image;
+  String user = FirebaseAuth.instance.currentUser!.uid;
 
+
+  getData() async {
+    await FirebaseFirestore.instance
+        .collection('users')
+        .doc(user)
+        .get()
+        .then((value) {
+      setState(() {
+        name = value['Username'];
+        image = value['Image'];
+        email = value['Email'];
+      });
+    });
+  }
+
+  @override
+  void initState() {
+    getData();
+    super.initState();
+  }
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -306,7 +331,9 @@ class _applyState extends State<apply> {
      "Weight":weight,
      "Birthday":_birthday!.text,
      "Gender":_value==1?"Male":"Female",
-
+     'Email':email,
+     'name':name,
+     'image':image
    });
    print('Added');
  }

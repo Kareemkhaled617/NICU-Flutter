@@ -5,6 +5,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get/get.dart';
 import 'package:overlay_support/overlay_support.dart';
 import 'package:project/locale/locale.dart';
+import 'package:project/pages/apply.dart';
 import 'package:project/pages/fristpage.dart';
 import 'package:project/pages/homepage.dart';
 
@@ -42,9 +43,9 @@ class MyApp extends StatelessWidget {
           title: 'Flutter Demo',
           locale: Get.deviceLocale,
           translations: mylocale(),
-          theme: ThemeData(),
-          home: isLogin == false ? const first_screen() :  const HomePage(),
-          //  home: Sign_Up(),
+          themeMode: ThemeMode.system,
+           home: isLogin == false ? const first_screen() :  const HomePage(),
+          //   home: apply(),
         ),
       ),
     );

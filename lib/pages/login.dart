@@ -1,6 +1,7 @@
 import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/scheduler.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:google_sign_in/google_sign_in.dart';
@@ -17,26 +18,37 @@ class LoginPage extends StatefulWidget {
 }
 
 class _LoginPageState extends State<LoginPage> {
-
   final FirebaseAuth _auth = FirebaseAuth.instance;
   final GoogleSignIn _googleSignIn = GoogleSignIn();
   final GlobalKey<FormState> _formKey = GlobalKey();
-  bool pass=true;
+  bool pass = true;
   late String _emailController;
- late  String _passwordController;
+  late String _passwordController;
   final Map<String, String> _authData = {
     'email': '',
     'password': '',
   };
+  bool? the=false;
+
+  @override
+  void initState() {
+     the =
+        SchedulerBinding.instance.window.platformBrightness == Brightness.dark;
+    print(the);
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.white,
       body: Container(
         width: double.infinity,
-        decoration:  BoxDecoration(
+        decoration: BoxDecoration(
           image: DecorationImage(
-            image:Get.isDarkMode?const AssetImage("assets/images/dark.jpg"):const AssetImage('assets/images/pg1.png'),
+            image: the!
+                ? const AssetImage("assets/images/dark.jpg")
+                : const AssetImage('assets/images/pg1.png'),
             fit: BoxFit.cover,
           ),
         ),
@@ -49,12 +61,11 @@ class _LoginPageState extends State<LoginPage> {
                 child: Column(
                   children: [
                     const Image(image: AssetImage('assets/images/frist.png')),
-                     Text("WE HOPE TO BE HEALTHY".tr,
-                        style: TextStyle(
+                    Text("WE HOPE TO BE HEALTHY".tr,
+                        style: const TextStyle(
                             fontSize: 22.0,
                             fontWeight: FontWeight.w900,
-                            color: Colors.white)
-                    ),
+                            color: Colors.white)),
                     const SizedBox(
                       height: 30.0,
                     ),
@@ -62,63 +73,69 @@ class _LoginPageState extends State<LoginPage> {
                       height: 30.0,
                     ),
                     buildTextFormField(
-                      vall: false,
-                        validate:()=> (val) {
-                          if (val!.isEmpty || !val.contains('@')) {
-                            return "Invalid email!";
-                          }
-                          return null;
-                        },
-                        onSave: ()=>(val) {
-                          setState(() {
-                            _emailController = val;
-                          });
-                          _authData['email'] = val!;
-
-                        },
+                        vall: false,
+                        validate: () => (val) {
+                              if (val!.isEmpty || !val.contains('@')) {
+                                return "Invalid email!";
+                              }
+                              return null;
+                            },
+                        onSave: () => (val) {
+                              setState(() {
+                                _emailController = val;
+                              });
+                              _authData['email'] = val!;
+                            },
                         hint: 'Enter Email'.tr,
                         label: 'Username'.tr,
                         pIcon: Icon(
                           Icons.person,
-                          color: Get.isDarkMode?ColorManager.primary: ColorManager.darkPrimary,
+                          color: Get.isDarkMode
+                              ? ColorManager.primary
+                              : ColorManager.darkPrimary,
                         ),
                         sIcon: Icon(
                           Icons.verified_user_outlined,
-                          color: Get.isDarkMode?ColorManager.primary: ColorManager.darkPrimary,
+                          color: Get.isDarkMode
+                              ? ColorManager.primary
+                              : ColorManager.darkPrimary,
                         ),
                         onTab: () {}),
                     const SizedBox(
                       height: 30.0,
                     ),
                     buildTextFormField(
-                      vall: pass,
-                     validate: ()=>(val) {
-                       if (val!.isEmpty || val.length <= 5) {
-                         return "Password is too short!";
-                       }
-                       return null;
-                     },
-                        onSave: ()=>(val) {
-                          _authData['password'] = val!;
-                          setState(() {
-                            _passwordController = val;
-                          });
-                        },
+                        vall: pass,
+                        validate: () => (val) {
+                              if (val!.isEmpty || val.length <= 5) {
+                                return "Password is too short!";
+                              }
+                              return null;
+                            },
+                        onSave: () => (val) {
+                              _authData['password'] = val!;
+                              setState(() {
+                                _passwordController = val;
+                              });
+                            },
                         hint: 'Password'.tr,
                         label: 'Password'.tr,
                         pIcon: Icon(
                           Icons.lock_outline,
-                          color: Get.isDarkMode?ColorManager.primary: ColorManager.darkPrimary,
+                          color: Get.isDarkMode
+                              ? ColorManager.primary
+                              : ColorManager.darkPrimary,
                         ),
                         sIcon: Icon(
                           Icons.remove_red_eye_rounded,
-                          color: Get.isDarkMode?ColorManager.primary: ColorManager.darkPrimary,
+                          color: Get.isDarkMode
+                              ? ColorManager.primary
+                              : ColorManager.darkPrimary,
                         ),
                         onTab: () {
                           setState(() {
-                            pass=!pass;
+                            pass = !pass;
                           });
-
                         }),
                     const SizedBox(
                       height: 30.0,
@@ -127,7 +144,9 @@ class _LoginPageState extends State<LoginPage> {
                       title: 'Login'.tr,
                       onTap: _submit,
                       color: Colors.white,
-                      color1: Get.isDarkMode?ColorManager.primary: ColorManager.darkPrimary,
+                      color1: Get.isDarkMode
+                          ? ColorManager.primary
+                          : ColorManager.darkPrimary,
                     ),
                     const SizedBox(
                       height: 20.0,
@@ -142,7 +161,11 @@ class _LoginPageState extends State<LoginPage> {
                             color: Colors.grey,
                           ),
                         ),
-                        Text('OR',style: TextStyle(fontSize: 15,fontWeight:FontWeight.w700),),
+                        Text(
+                          'OR',
+                          style: TextStyle(
+                              fontSize: 15, fontWeight: FontWeight.w700),
+                        ),
                         Expanded(
                           child: Divider(
                             thickness: 1.5,
@@ -150,7 +173,8 @@ class _LoginPageState extends State<LoginPage> {
                             color: Colors.grey,
                           ),
                         ),
-                      ],),
+                      ],
+                    ),
                     const SizedBox(
                       height: 10.0,
                     ),
@@ -162,7 +186,9 @@ class _LoginPageState extends State<LoginPage> {
                           style: GoogleFonts.arimo(
                             fontSize: 17,
                             fontWeight: FontWeight.w600,
-                            color: Get.isDarkMode?ColorManager.darkGrey:ColorManager.white,
+                            color: Get.isDarkMode
+                                ? ColorManager.darkGrey
+                                : ColorManager.white,
                           ),
                         ),
                         TextButton(
@@ -183,47 +209,46 @@ class _LoginPageState extends State<LoginPage> {
                       height: 10.0,
                     ),
                     Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          GestureDetector(
-                            onTap: () {},
-                            child: const CircleAvatar(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        GestureDetector(
+                          onTap: () {},
+                          child: const CircleAvatar(
+                            backgroundColor: Colors.white,
+                            radius: 28,
+                            backgroundImage:
+                                AssetImage('assets/images/facebook.png'),
+                          ),
+                        ),
+                        GestureDetector(
+                          onTap: () {},
+                          child: const Padding(
+                            padding: EdgeInsets.symmetric(horizontal: 30),
+                            child: CircleAvatar(
                               backgroundColor: Colors.white,
                               radius: 28,
                               backgroundImage:
-                                  AssetImage('assets/images/facebook.png'),
+                                  AssetImage('assets/images/twitter.png'),
                             ),
                           ),
-                          GestureDetector(
-                            onTap: () {},
-                            child: const Padding(
-                              padding: EdgeInsets.symmetric(horizontal: 30),
-                              child: CircleAvatar(
-                                backgroundColor: Colors.white,
-                                radius: 28,
-                                backgroundImage:
-                                    AssetImage('assets/images/twitter.png'),
-                              ),
-                            ),
+                        ),
+                        GestureDetector(
+                          onTap: () async {
+                            var log = await signInWithGoogle();
+                            if (log?.uid != null) {
+                              Navigator.of(context).pushReplacement(
+                                  MaterialPageRoute(
+                                      builder: (context) => HomePage()));
+                            }
+                          },
+                          child: const CircleAvatar(
+                            backgroundColor: Colors.white,
+                            radius: 28,
+                            backgroundImage: AssetImage('assets/images/g+.png'),
                           ),
-                          GestureDetector(
-                            onTap: () async{
-                             var log= await signInWithGoogle();
-                              if (log?.uid != null) {
-                                Navigator.of(context).pushReplacement(
-                                    MaterialPageRoute(builder: (context) =>  HomePage()));
-                              }
-                            },
-                            child: const CircleAvatar(
-                              backgroundColor: Colors.white,
-                              radius: 28,
-                              backgroundImage: AssetImage('assets/images/g+.png'),
-                            ),
-                          ),
-                        ],
-                      ),
-
-
+                        ),
+                      ],
+                    ),
                   ],
                 ),
               ),
@@ -239,7 +264,7 @@ class _LoginPageState extends State<LoginPage> {
       if (_emailController.isNotEmpty && _passwordController.isNotEmpty) {
         UserCredential userCredential = await FirebaseAuth.instance
             .signInWithEmailAndPassword(
-            email: _emailController, password: _passwordController);
+                email: _emailController, password: _passwordController);
         return userCredential;
       } else {
         print('isEmpty');
@@ -273,25 +298,25 @@ class _LoginPageState extends State<LoginPage> {
   Future<User?> signInWithGoogle() async {
     GoogleSignInAccount? googleSignInAccount = await _googleSignIn.signIn();
     GoogleSignInAuthentication googleSignInAuthentication =
-    await googleSignInAccount!.authentication;
+        await googleSignInAccount!.authentication;
     OAuthCredential authCredential = GoogleAuthProvider.credential(
         idToken: googleSignInAuthentication.idToken,
         accessToken: googleSignInAuthentication.accessToken);
-    UserCredential authResult = await _auth.signInWithCredential(authCredential);
+    UserCredential authResult =
+        await _auth.signInWithCredential(authCredential);
     return _auth.currentUser;
   }
 
-
-  TextFormField buildTextFormField(
-      {required String hint,
-      required String label,
-      required Widget pIcon,
-      required Widget sIcon,
-      required Function() onTab,
-        required Function() validate,
-        required Function() onSave,
-        required bool vall,
-      }) {
+  TextFormField buildTextFormField({
+    required String hint,
+    required String label,
+    required Widget pIcon,
+    required Widget sIcon,
+    required Function() onTab,
+    required Function() validate,
+    required Function() onSave,
+    required bool vall,
+  }) {
     return TextFormField(
       validator: validate(),
       onSaved: onSave(),
@@ -329,19 +354,18 @@ class _LoginPageState extends State<LoginPage> {
     );
   }
 
-  void _submit()async {
-    if (_formKey.currentState!.validate() ) {
+  void _submit() async {
+    if (_formKey.currentState!.validate()) {
       _formKey.currentState!.save();
       var user = await login();
       if (user != null) {
         Navigator.of(context).pushReplacement(
-            MaterialPageRoute(builder: (context) =>  HomePage()));
+            MaterialPageRoute(builder: (context) => HomePage()));
       }
-    }else{
+    } else {
       print('error');
       print('Not Valid');
     }
-
 
     // Sign user up
   }
