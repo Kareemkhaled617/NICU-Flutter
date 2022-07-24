@@ -37,7 +37,7 @@ class _SettingPage extends State<SettingPage> {
         centerTitle: true,
         title:  Text(
           "Setting".tr,
-          style: TextStyle(fontSize: 22),
+          style: const TextStyle(fontSize: 22),
         ),
         leading: IconButton(
           onPressed: () {
@@ -57,16 +57,14 @@ class _SettingPage extends State<SettingPage> {
           children: [
             RotatedBox(
             quarterTurns: 2,
-            child: Container(
-              child: CustomPaint(
-                size: Size(double.infinity, 400),
-                painter: CurvedPainter(),
-              ),
+            child: CustomPaint(
+              size: const Size(double.infinity, 400),
+              painter: CurvedPainter(),
             ),
           ),
 
             Container(
-              margin: EdgeInsets.only(top: 150),
+              margin: const EdgeInsets.only(top: 150),
               child: ListView.separated(
                 itemCount: _nameS.length,
                 itemBuilder: (context, index) {
@@ -87,7 +85,7 @@ class _SettingPage extends State<SettingPage> {
                               padding: const EdgeInsets.only(left: 30),
                               child: Text(
                                 _nameS[index],
-                                style: TextStyle(fontSize: 25),
+                                style: const TextStyle(fontSize: 25),
                               ),
                             )
                           ],
@@ -97,7 +95,7 @@ class _SettingPage extends State<SettingPage> {
                   );
                 },
                 separatorBuilder: (BuildContext context, int index) {
-                  return SizedBox(
+                  return const SizedBox(
                     height: 10,
                   );
                 },
@@ -111,14 +109,14 @@ class _SettingPage extends State<SettingPage> {
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.end,
                   children: [
-                    Text("Log out".tr,style: TextStyle(fontSize: 30),),
-                    SizedBox(
+                    Text("Log out".tr,style: const TextStyle(fontSize: 30),),
+                    const SizedBox(
                       width: 20,
                     ),
                     CircleAvatar(
                       radius: 30,
                       backgroundColor: bluishClr,
-                        child: IconButton(onPressed: (){}, icon: Icon(Icons.logout)))
+                        child: IconButton(onPressed: (){}, icon: const Icon(Icons.logout)))
                   ],
                 ),
               ),

@@ -6,7 +6,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get/get.dart';
 import 'package:overlay_support/overlay_support.dart';
 import 'package:project/locale/locale.dart';
-import 'package:project/pages/apply.dart';
 import 'package:project/pages/fristpage.dart';
 import 'package:project/pages/homepage.dart';
 
@@ -42,12 +41,11 @@ class MyApp extends StatelessWidget {
       child: OverlaySupport(
         child: GetMaterialApp(
           debugShowCheckedModeBanner: false,
-          title: 'Flutter Demo',
           locale: Get.deviceLocale,
           translations: mylocale(),
           themeMode: ThemeMode.system,
-           home: isLogin == false ? const first_screen() :  const HomePage(),
-          //   home: apply(),
+            home: isLogin == false ? const first_screen() :  const HomePage(),
+          //home: HospitalDetails(),
         ),
       ),
     );

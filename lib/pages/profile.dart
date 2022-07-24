@@ -1,11 +1,13 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
+import 'package:project/pages/setting.dart';
 import 'package:project/resources/color_manger.dart';
 
-import 'chat_detail.dart';
+import 'chats_screens.dart';
 
 class Profile extends StatefulWidget {
   const Profile({Key? key}) : super(key: key);
@@ -109,7 +111,9 @@ class _ProfileState extends State<Profile> {
                         radius: 28,
                         backgroundColor: Colors.grey.withOpacity(0.5),
                         child: IconButton(
-                            onPressed: () {},
+                            onPressed: () {
+                              Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (context)=>const SettingPage()));
+                            },
                             icon: Icon(
                               Icons.settings,
                               size: 35,
@@ -140,7 +144,7 @@ class _ProfileState extends State<Profile> {
                       width: 9,
                     ),
                     Text(
-                      'Egypt, Menofia ',
+                      'Egypt, Menofia '.tr,
                       style: GoogleFonts.lato(
                           textStyle: TextStyle(
                               fontSize: 21,
@@ -171,8 +175,8 @@ class _ProfileState extends State<Profile> {
                           onPressed: () async {
                             await getPosts();
                           },
-                          child: const Text(
-                            'FOLLOW',
+                          child:  Text(
+                            'FOLLOW'.tr,
                           ),
                           color: Colors.white,
                           shape: RoundedRectangleBorder(
@@ -188,11 +192,11 @@ class _ProfileState extends State<Profile> {
                       ),
                       MaterialButton(
                         onPressed: () {
-                          Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (context)=>ChatsDetails()));
+                          Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (context)=>const ChatsScreen()));
                         },
-                        child: const Text(
-                          'MESSAGE',
-                          style: TextStyle(
+                        child:  Text(
+                          'MESSAGE'.tr,
+                          style: const TextStyle(
                             color: Colors.white,
                           ),
                         ),
@@ -220,7 +224,7 @@ class _ProfileState extends State<Profile> {
                     itemCount: _post.length,
                     itemBuilder: (context, index) {
                       return AnimatedContainer(
-                        duration: Duration(seconds: 5),
+                        duration: const Duration(seconds: 5),
                         margin: const EdgeInsets.only(
                             bottom: 10, right: 3, left: 3),
                         padding: const EdgeInsets.only(
@@ -369,7 +373,7 @@ class _ProfileState extends State<Profile> {
                             ),
                             comment == true && currentIndex == index
                                 ? AnimatedContainer(
-                              duration: Duration(seconds: 3),
+                              duration: const Duration(seconds: 3),
                                     margin: const EdgeInsets.only(
                                         left: 20, top: 9, bottom: 5, right: 5),
                                     padding: const EdgeInsets.only(left: 20),
@@ -388,7 +392,7 @@ class _ProfileState extends State<Profile> {
                                             child: TextFormField(
                                               validator: (val) {
                                                 if (val!.isEmpty) {
-                                                  return "Must not Empty";
+                                                  return "Must not Empty".tr;
                                                 }
                                                 return null;
                                               },
@@ -399,16 +403,16 @@ class _ProfileState extends State<Profile> {
                                               },
                                               showCursor: true,
                                               autofocus: false,
-                                              decoration: const InputDecoration(
-                                                hintText: 'Type something ...',
+                                              decoration:  InputDecoration(
+                                                hintText: 'Type something...'.tr,
                                                 enabledBorder:
-                                                    UnderlineInputBorder(
+                                                    const UnderlineInputBorder(
                                                         borderSide: BorderSide(
                                                   color: Colors.white,
                                                   width: 0,
                                                 )),
                                                 focusedBorder:
-                                                    UnderlineInputBorder(
+                                                    const UnderlineInputBorder(
                                                         borderSide: BorderSide(
                                                   color: Colors.white,
                                                   width: 0,
@@ -468,30 +472,15 @@ class _ProfileState extends State<Profile> {
     );
   }
 
-  // Future<void> getData() async {
-  //   final _fireStore = FirebaseFirestore.instance;
-  //   QuerySnapshot querySnapshot = await _fireStore.collection('Post').get();
-  //
-  //   // Get data from docs and convert map to List
-  //   // final allData = querySnapshot.docs.map((doc) => doc.data()).toList();
-  //   //for a specific field
-  //   final allData = querySnapshot.docs.map((doc) => doc.get('user')).toList();
-  //   allData.forEach((element['user'] == '${user}') {
-  //     _post.add(element);
-  //   });
-  //   print(_post);
-  //   // print(allData);
-  // }
-
   addComment(String id, String comment) async {
     var currentUser = FirebaseAuth.instance.currentUser?.uid;
 
     await FirebaseFirestore.instance
         .collection('Post')
-        .doc('$id')
+        .doc(id)
         .get()
         .then((value) {
-      addPost = FirebaseFirestore.instance.collection('Post').doc('$id');
+      addPost = FirebaseFirestore.instance.collection('Post').doc(id);
       addPost!.collection('comments').add(
         {
           'name': name,
@@ -509,10 +498,10 @@ class _ProfileState extends State<Profile> {
 
     await FirebaseFirestore.instance
         .collection('Post')
-        .doc('$id')
+        .doc(id)
         .get()
         .then((value) {
-      addPost = FirebaseFirestore.instance.collection('Post').doc('$id');
+      addPost = FirebaseFirestore.instance.collection('Post').doc(id);
       addPost!.set(
         {
           'likes': {'$currentUser': val}
@@ -552,16 +541,6 @@ class _ProfileState extends State<Profile> {
           fontSize: 20,
           color: Colors.grey[700],
         ),
-        // border: OutlineInputBorder(
-        //     borderRadius: BorderRadius.circular(25),
-        //     borderSide: const BorderSide(color: Colors.black, width: 1.2)),
-        // enabledBorder: OutlineInputBorder(
-        //     borderRadius: BorderRadius.circular(25),
-        //     borderSide: const BorderSide(color: Colors.black, width: 1.2)),
-        // focusedBorder: OutlineInputBorder(
-        //   borderRadius: BorderRadius.circular(25),
-        //   borderSide: const BorderSide(color: Colors.black, width: 1.2),
-        // ),
       ),
     );
   }
@@ -571,7 +550,7 @@ class _ProfileState extends State<Profile> {
         stream: ss.snapshots(),
         builder: (context, snapshot) {
           if (snapshot.hasError) {
-            return const Center(child: Text('Something went wrong'));
+            return  Center(child: Text('Something went wrong'.tr));
           }
 
           if (snapshot.connectionState == ConnectionState.waiting) {
@@ -621,11 +600,13 @@ class _ProfileState extends State<Profile> {
                                 ),
                               ],
                             ),
-                            leading: const CircleAvatar(
+                            leading: imageProfole !=null? CircleAvatar(
                               radius: 23,
-                              backgroundImage: NetworkImage(
-                                  'https://images.unsplash.com/photo-1656524489358-21713cae15f5?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxlZGl0b3JpYWwtZmVlZHw0fHx8ZW58MHx8fHw%3D&auto=format&fit=crop&w=500&q=60'),
-                            ),
+                              backgroundImage: NetworkImage(imageProfole!),
+                            ):
+                            const CircleAvatar(
+                              radius: 35,
+                              child: Icon(Icons.person),),
                             subtitle: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
@@ -643,6 +624,7 @@ class _ProfileState extends State<Profile> {
                                     color: Colors.black87,
                                   ),
                                 ),
+                                const SizedBox(height: 20,),
                               ],
                             ),
                           );
@@ -675,7 +657,7 @@ class _ProfileState extends State<Profile> {
                           elevation: MaterialStateProperty.all(3),
                         ),
                         child: Text(
-                          'Cancel',
+                          'Cancel'.tr,
                           style: GoogleFonts.archivo(),
                         )),
                   )
@@ -688,55 +670,6 @@ class _ProfileState extends State<Profile> {
               width: 200,
               height: 200,
             );
-            // return Center(
-            //   child: Stack(
-            //     children: [
-            //       Container(
-            //         height: 150,
-            //         margin: const EdgeInsets.only(left: 10, right: 10),
-            //         padding: const EdgeInsets.only(top: 10, bottom: 10),
-            //         decoration: BoxDecoration(
-            //             color: Colors.grey.shade500,
-            //             borderRadius: BorderRadius.circular(10),
-            //             border: Border.all(color: Colors.black, width: 1.3)),
-            //         child: const Center(
-            //           child: Text('No Comments !'),
-            //         ),
-            //       ),
-            //       Positioned(
-            //         left: MediaQuery.of(context).size.width / 10,
-            //         bottom: 0,
-            //         child: ElevatedButton(
-            //             onPressed: () {
-            //               setState(() {
-            //                 com = false;
-            //               });
-            //             },
-            //             style: ButtonStyle(
-            //               backgroundColor:
-            //                   MaterialStateProperty.all(Colors.transparent),
-            //               textStyle: MaterialStateProperty.all(
-            //                   GoogleFonts.acme(fontSize: 22)),
-            //               padding: MaterialStateProperty.all(
-            //                   EdgeInsets.symmetric(
-            //                       horizontal:
-            //                           MediaQuery.of(context).size.width / 3)),
-            //               shape: MaterialStateProperty.all(
-            //                 RoundedRectangleBorder(
-            //                     borderRadius: BorderRadius.circular(50),
-            //                     side: const BorderSide(
-            //                         color: Colors.white, width: 1.5)),
-            //               ),
-            //               elevation: MaterialStateProperty.all(3),
-            //             ),
-            //             child: Text(
-            //               'Cancel',
-            //               style: GoogleFonts.archivo(),
-            //             )),
-            //       )
-            //     ],
-            //   ),
-            // );
           }
         });
   }

@@ -77,10 +77,10 @@ class _NotificationState extends State<Notification_Page> {
                 child: Row(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    imageProfole != 'null'
+                    noti[index]['image'] != null
                         ? CircleAvatar(
                             radius: 28,
-                            backgroundImage: NetworkImage(imageProfole!),
+                            backgroundImage: NetworkImage(noti[index]['image']),
                           )
                         : const CircleAvatar(
                             radius: 28,

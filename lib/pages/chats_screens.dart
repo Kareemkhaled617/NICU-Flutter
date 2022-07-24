@@ -8,6 +8,8 @@ import '../model/model_create.dart';
 import 'chat_detail.dart';
 
 class ChatsScreen extends StatelessWidget {
+  const ChatsScreen({Key? key}) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
     return BlocProvider(

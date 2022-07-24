@@ -1,6 +1,7 @@
 import 'package:conditional_builder_null_safety/conditional_builder_null_safety.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:get/get.dart';
 
 import '../bloc/bloc_state/bloc_state.dart';
 import '../bloc/blocc/bloc.dart';
@@ -11,7 +12,7 @@ import '../widgets/icons_broken.dart';
 class ChatsDetails extends StatelessWidget {
   UserCreateModel? userCreateModel;
 
-  ChatsDetails({this.userCreateModel});
+  ChatsDetails({Key? key, this.userCreateModel}) : super(key: key);
 
   var textControl = TextEditingController();
 
@@ -156,9 +157,9 @@ class ChatsDetails extends StatelessWidget {
                                         textControl.text = '';
                                       }
                                     },
-                                    decoration: const InputDecoration(
+                                    decoration:  InputDecoration(
                                       border: InputBorder.none,
-                                      hintText: 'type your message here.....',
+                                      hintText: 'type your message here.....'.tr,
                                     ),
                                   ),
                                 ),
@@ -175,7 +176,6 @@ class ChatsDetails extends StatelessWidget {
                               child: TextButton(
                                 onPressed: () {
                                   BlocPage.get(context).getImageSend();
-                                  print('send');
                                 },
                                 child: const Icon(
                                   IconBroken.Image,
@@ -202,13 +202,11 @@ class ChatsDetails extends StatelessWidget {
                                         dateTime: DateTime.now().toString(),
                                         receiveID: userCreateModel!.ID,
                                         image: '');
-                                    print('send Without image');
                                   } else {
                                     BlocPage.get(context).uploadingImageSend(
                                         text: textControl.text,
                                         dateTime: DateTime.now().toString(),
                                         receiveID: userCreateModel!.ID);
-                                    print('send with image');
                                   }
                                 },
                                 child: const Icon(
@@ -249,7 +247,7 @@ class ChatsDetails extends StatelessWidget {
               padding:
                   const EdgeInsets.symmetric(horizontal: 10.0, vertical: 10.0),
               child: Text(
-                '${model!.text}',
+                '${model.text}',
               ),
             ),
           ),
@@ -298,22 +296,22 @@ class ChatsDetails extends StatelessWidget {
               ),
             ),
           ),
-          if (model!.image != '')
+          if (model.image != '')
             const SizedBox(
               height: 6,
             ),
-          if (model!.image != '')
+          if (model.image != '')
             Container(
               height: 150,
               width: 170,
               decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(8.0),
                   image: DecorationImage(
-                    image: NetworkImage('${model!.image}'),
+                    image: NetworkImage('${model.image}'),
                     fit: BoxFit.cover,
                   )),
             ),
-          if (model!.image != '')
+          if (model.image != '')
             const SizedBox(
               height: 6,
             ),

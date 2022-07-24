@@ -3,11 +3,11 @@ import 'package:diamond_bottom_bar/diamond_bottom_bar.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:intl/intl.dart';
 import 'package:overlay_support/overlay_support.dart';
-import 'package:project/model/notification_model.dart';
 import 'package:project/pages/login.dart';
 import 'package:project/pages/notification.dart';
 import 'package:project/pages/profile.dart';
@@ -18,10 +18,10 @@ import 'package:project/resources/color_manger.dart';
 import '../map_new/map.dart';
 import '../model/notifications_model.dart';
 import '../widgets/custom_list_tile.dart';
-import '../widgets/payment.dart';
-import 'chat.dart';
+import 'add_post.dart';
 import 'chats_screens.dart';
 import 'get_post.dart';
+import 'payment.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({Key? key}) : super(key: key);
@@ -31,14 +31,11 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-
-  String name='';
+  String name = '';
   String? image;
   late final FirebaseMessaging _fbm;
-   late NotificationModel _notificationModel;
- String user = FirebaseAuth.instance.currentUser!.uid;
-
-
+  late NotificationModel _notificationModel;
+  String user = FirebaseAuth.instance.currentUser!.uid;
 
   getData() async {
     await FirebaseFirestore.instance
@@ -62,10 +59,12 @@ class _HomePageState extends State<HomePage> {
       provisional: false,
     );
     if (_setting.authorizationStatus == AuthorizationStatus.authorized) {
-      print('authorizationStatus is Done');
-
       FirebaseMessaging.onMessage.listen((message) {
-        addNotification(title:message.notification!.title,body: message.notification!.body);
+        addNotification(
+          title: message.notification!.title,
+          body: message.notification!.body,
+          image: image
+        );
         NotificationModel notificationModel = NotificationModel(
           title: message.notification!.title,
           body: message.notification!.body,
@@ -76,53 +75,64 @@ class _HomePageState extends State<HomePage> {
           _notificationModel = notificationModel;
         });
         showSimpleNotification(
-          Text(_notificationModel.title!,style: GoogleFonts.b612(
-            fontSize: 20,
-            color: Colors.white,
-            fontWeight: FontWeight.w600
-          ),),
+          Text(
+            _notificationModel.title!,
+            style: GoogleFonts.b612(
+                fontSize: 20, color: Colors.white, fontWeight: FontWeight.w600),
+          ),
           subtitle: Text(_notificationModel.body!),
-          leading: const Icon(Icons.notifications_active,size: 30,),
+          leading: const Icon(
+            Icons.notifications_active,
+            size: 30,
+          ),
           background: ColorManager.primary,
         );
-      }
-
-      );
-
-
-    }else{
-       print('Deny');
+      });
     }
   }
 
-  addNotification({String? title,String? body})async{
-    String docId = FirebaseFirestore.instance.collection('Post').doc(user).collection('notification').doc().id;
-    DocumentReference  addNotification =FirebaseFirestore.instance.collection('users').doc(user);
+  addNotification({String? title, String? body,String? image}) async {
+    String docId = FirebaseFirestore.instance
+        .collection('Post')
+        .doc(user)
+        .collection('notification')
+        .doc()
+        .id;
+    DocumentReference addNotification =
+        FirebaseFirestore.instance.collection('users').doc(user);
     addNotification.collection('notification').doc(docId).set({
-      'title':title,
-      'body':body,
-      'id':docId,
+      'title': title,
+      'body': body,
+      'id': docId,
       'time': DateFormat('hh:mm a').format(DateTime.now()).toString(),
       'date': DateFormat('yyyy-MM-dd').format(DateTime.now()).toString(),
+      'image':image
     });
   }
 
   int currentIndex = 0;
-  final List _title = ['Posts', 'Notification', 'Location', 'Chat', 'Profile'];
+  final List _title = [
+    'Posts'.tr,
+    'Notifications'.tr,
+    'location'.tr,
+    'Chat'.tr,
+    'Profile'.tr
+  ];
   final List _pages = [
     const GetPost(),
     const Notification_Page(),
     MapFileRun(),
-     ChatsScreen(),
+    const ChatsScreen(),
     const Profile()
   ];
 
-@override
+  @override
   void initState() {
-  getData();
-  notificationConfigure();
+    getData();
+    notificationConfigure();
     super.initState();
   }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -137,6 +147,31 @@ class _HomePageState extends State<HomePage> {
             color: ColorManager.white,
           ),
         ),
+        actions: [
+          currentIndex == 0
+              ? ElevatedButton.icon(
+                  onPressed: () async {
+                    Navigator.of(context).push(
+                        MaterialPageRoute(builder: (context) => PostScreen()));
+                  },
+                  icon: const Icon(Icons.post_add_outlined),
+                  label: Text(
+                    'post'.tr,
+                    style: const TextStyle(
+                        fontSize: 19, fontWeight: FontWeight.w700),
+                  ),
+                  style: ButtonStyle(
+                    backgroundColor:
+                        MaterialStateProperty.all(Colors.transparent),
+                    elevation: MaterialStateProperty.all(10),
+                    shape: MaterialStateProperty.all(RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(10),
+                      side: const BorderSide(width: 2, color: Colors.teal),
+                    )),
+                  ),
+                )
+              : Container(),
+        ],
       ),
       body: _pages[currentIndex],
       bottomNavigationBar: DiamondBottomNavigation(
@@ -169,52 +204,59 @@ class _HomePageState extends State<HomePage> {
               ),
               child: Row(
                 children: [
-                  image != null?
-                      CircleAvatar(
-                        backgroundImage:NetworkImage(image!),
-                      radius: 35,
-                      ):
-                  Container(
-                    width: 50,
-                    height: 50,
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(32),
-                      color: Colors.white,
-                    ),
-                    child: IconButton(
-                      icon: const Icon(
-                        Icons.person,
-                      ),
-                      onPressed: () {},
-                    ),
-                  ),
+                  image != null
+                      ? CircleAvatar(
+                          backgroundImage: NetworkImage(image!),
+                          radius: 35,
+                        )
+                      : Container(
+                          width: 50,
+                          height: 50,
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(32),
+                            color: Colors.white,
+                          ),
+                          child: IconButton(
+                            icon: const Icon(
+                              Icons.person,
+                            ),
+                            onPressed: () {},
+                          ),
+                        ),
                   const SizedBox(
                     width: 16,
                   ),
-                   Text(
+                  Text(
                     name,
-                    style: TextStyle(
+                    style: const TextStyle(
                       fontSize: 24,
                     ),
                   ),
                 ],
               ),
             ),
-            CustomListTile(Icons.person, 'Profile', () {}),
-            CustomListTile(Icons.notifications, 'Notifications', () {}),
-            CustomListTile(Icons.bookmark, 'Saved', () {
-
-              Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (context)=>const SavePost()));
+            CustomListTile(Icons.person, 'Profile'.tr, () {
+              setState(() {
+                currentIndex = 4;
+              });
             }),
-            CustomListTile(Icons.settings, 'Settings', () {
+            CustomListTile(Icons.notifications, 'Notifications'.tr, () {
+              Navigator.of(context).pushReplacement(MaterialPageRoute(
+                  builder: (context) => const Notification_Page()));
+            }),
+            CustomListTile(Icons.bookmark, 'Saved'.tr, () {
+              Navigator.of(context).pushReplacement(
+                  MaterialPageRoute(builder: (context) => const SavePost()));
+            }),
+            CustomListTile(Icons.settings, 'Setting'.tr, () {
               Navigator.of(context).push(
                   MaterialPageRoute(builder: (context) => const SettingPage()));
             }),
-            CustomListTile(Icons.payment_rounded, 'Payment', () {
+            CustomListTile(Icons.payment_rounded, 'Payment'.tr, () {
               Navigator.of(context).push(
                   MaterialPageRoute(builder: (context) => const Payment()));
             }),
-            CustomListTile(Icons.lock, 'Log out', () async {
+            CustomListTile(Icons.lock, 'Log out'.tr, () async {
               await FirebaseAuth.instance.signOut();
               await GoogleSignIn().signOut();
               Navigator.of(context).pushReplacement(
@@ -225,9 +267,4 @@ class _HomePageState extends State<HomePage> {
       ),
     );
   }
-
 }
-
-
-
-

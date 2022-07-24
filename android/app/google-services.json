@@ -1,33 +1,33 @@
 {
   "project_info": {
-    "project_number": "562455088953",
-    "project_id": "project-e8203",
-    "storage_bucket": "project-e8203.appspot.com"
+    "project_number": "164392202363",
+    "project_id": "nicu-aaa44",
+    "storage_bucket": "nicu-aaa44.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:562455088953:android:293351c6815b4da151a2e8",
+        "mobilesdk_app_id": "1:164392202363:android:de1a181ee8a6bfcac3f2de",
         "android_client_info": {
           "package_name": "com.example.project"
         }
       },
       "oauth_client": [
         {
-          "client_id": "562455088953-srbsa9ut7u1nvtd7ehqr3rjuahdb4l11.apps.googleusercontent.com",
+          "client_id": "164392202363-tet8s412nn77m80ar0nu1k47pphbbt8f.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyDpxsOAg9BV_661TFnAfy7nlXb4IkzTCnA"
+          "current_key": "AIzaSyCxxz9drRqgJ0UkjI1sF6p26GdW0HGYyhk"
         }
       ],
       "services": {
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "562455088953-srbsa9ut7u1nvtd7ehqr3rjuahdb4l11.apps.googleusercontent.com",
+              "client_id": "164392202363-tet8s412nn77m80ar0nu1k47pphbbt8f.apps.googleusercontent.com",
               "client_type": 3
             }
           ]

@@ -3,14 +3,18 @@ import 'dart:math';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
+import 'package:project/pages/payment.dart';
 import 'package:project/widgets/button.dart';
 
 import '../resources/color_manger.dart';
+import 'hospital_details.dart';
 
 class apply extends StatefulWidget {
-  const apply({Key? key}) : super(key: key);
+  apply({Key? key, required this.id}) : super(key: key);
+  String id;
 
   @override
   State<apply> createState() => _applyState();
@@ -27,7 +31,6 @@ class _applyState extends State<apply> {
   String? email;
   String? image;
   String user = FirebaseAuth.instance.currentUser!.uid;
-
 
   getData() async {
     await FirebaseFirestore.instance
@@ -48,9 +51,14 @@ class _applyState extends State<apply> {
     getData();
     super.initState();
   }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        backgroundColor:ColorManager.primary,
+        elevation: 0,
+      ),
       body: Container(
         width: double.infinity,
         decoration: const BoxDecoration(
@@ -94,8 +102,8 @@ class _applyState extends State<apply> {
                       ),
                     ),
                     // const Image(image: AssetImage('assets/images/frist.png')),
-                    const Text('Welcome..',
-                        style: TextStyle(
+                     Text('Welcome..'.tr,
+                        style: const TextStyle(
                             fontSize: 22.0,
                             fontWeight: FontWeight.w900,
                             color: Colors.white)),
@@ -103,10 +111,10 @@ class _applyState extends State<apply> {
                       height: 15.0,
                     ),
                     buildTextFormField(
-                        hint: 'Name',
+                        hint: 'Name'.tr,
                         validate: () => (val) {
                               if (val!.isEmpty) {
-                                return "ChildrenName is empty";
+                                return "ChildrenName is empty".tr;
                               }
                               return null;
                             },
@@ -116,17 +124,17 @@ class _applyState extends State<apply> {
                               });
                             },
                         onTap: () {},
-                        label: 'Children Name',
-                        sIcon: Icon(Icons.done)),
+                        label: 'Children Name'.tr,
+                        sIcon: const Icon(Icons.done)),
                     const SizedBox(
                       height: 20.0,
                     ),
                     buildTextFormField(
-                        hint: 'Weight',
+                        hint: 'Weight'.tr,
                         type: TextInputType.number,
                         validate: () => (val) {
                               if (val!.isEmpty) {
-                                return "Weight is Empty ";
+                                return "Weight is Empty ".tr;
                               }
                               return null;
                             },
@@ -136,7 +144,7 @@ class _applyState extends State<apply> {
                               });
                             },
                         onTap: () => () {},
-                        label: 'Weight',
+                        label: 'Weight'.tr,
                         sIcon: const Icon(Icons.done)),
                     const SizedBox(
                       height: 20.0,
@@ -153,7 +161,7 @@ class _applyState extends State<apply> {
                               color: Colors.black,
                             ),
                             decoration: InputDecoration(
-                              labelText: "Select Date",
+                              labelText: "Select Date".tr,
                               labelStyle: GoogleFonts.arimo(
                                 fontSize: 20,
                                 color: Colors.grey[700],
@@ -210,7 +218,7 @@ class _applyState extends State<apply> {
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         Radio(
-                            activeColor:ColorManager.primary,
+                            activeColor: ColorManager.primary,
                             value: 1,
                             groupValue: _value,
                             onChanged: (value) {
@@ -219,7 +227,7 @@ class _applyState extends State<apply> {
                               });
                             }),
                         Text(
-                          "Male",
+                          "Male".tr,
                           style: GoogleFonts.arimo(
                             fontSize: 23,
                             fontWeight: FontWeight.bold,
@@ -231,7 +239,7 @@ class _applyState extends State<apply> {
                         ),
                         Radio(
                             value: 2,
-                            activeColor:ColorManager.primary,
+                            activeColor: ColorManager.primary,
                             groupValue: _value,
                             onChanged: (value) {
                               setState(() {
@@ -239,7 +247,7 @@ class _applyState extends State<apply> {
                               });
                             }),
                         Text(
-                          "Female",
+                          "Female".tr,
                           style: GoogleFonts.arimo(
                             fontSize: 23,
                             fontWeight: FontWeight.bold,
@@ -252,10 +260,11 @@ class _applyState extends State<apply> {
                       height: 20.0,
                     ),
                     MyButton(
-                        title: 'Apply',
+                        title: 'Apply'.tr,
                         color: Colors.white,
                         onTap: () {
                           _submit();
+
                         },
                         color1: ColorManager.primary),
                   ],
@@ -270,10 +279,9 @@ class _applyState extends State<apply> {
 
   TextFormField buildTextFormField({
     required String hint,
-
     required String label,
     required Widget sIcon,
-  TextInputType? type,
+    TextInputType? type,
     required Function() validate,
     required Function() onSave,
     required Function() onTap,
@@ -319,22 +327,21 @@ class _applyState extends State<apply> {
     if (_formKey.currentState!.validate()) {
       _formKey.currentState!.save();
       addData();
+      Navigator.of(context).push(MaterialPageRoute(builder: (context)=>const HospitalDetails()));
     } else {
-      print('Not Valid');
     }
   }
 
- addData()async{
-   request = FirebaseFirestore.instance.collection('Request');
-   request?.add({
-     "Name":childrenName,
-     "Weight":weight,
-     "Birthday":_birthday!.text,
-     "Gender":_value==1?"Male":"Female",
-     'Email':email,
-     'name':name,
-     'image':image
-   });
-   print('Added');
- }
+  addData() async {
+    request = FirebaseFirestore.instance.collection('hospital').doc('20').collection('Request');
+    request?.add({
+      "Name": childrenName,
+      "Weight": weight,
+      "Birthday": _birthday!.text,
+      "Gender": _value == 1 ? "Male" : "Female",
+      'Email': email,
+      'name': name,
+      'image': image
+    });
+  }
 }

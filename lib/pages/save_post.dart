@@ -56,7 +56,6 @@ class _SavePostState extends State<SavePost> {
       });
       getPost1();
     });
-    print(postId);
     // print(sPost);
   }
 
@@ -64,7 +63,6 @@ class _SavePostState extends State<SavePost> {
   void initState() {
     getData();
     getPost();
-    print('done'.tr);
     super.initState();
   }
 
@@ -689,7 +687,7 @@ class _SavePostState extends State<SavePost> {
       });
     } else {
       addPost?.set({
-        'Name'.tr: name,
+        'name': name,
         'Description': postController.text,
         'imageurl': 'null',
         'imageProfile': imageProfole,
@@ -706,14 +704,14 @@ class _SavePostState extends State<SavePost> {
     var currentUser = FirebaseAuth.instance.currentUser?.uid;
 
     await FirebaseFirestore.instance
-        .collection('Post'.tr)
+        .collection('Post')
         .doc('$id')
         .get()
         .then((value) {
-      addPost = FirebaseFirestore.instance.collection('Post'.tr).doc('$id');
-      addPost!.collection('comments'.tr).add(
+      addPost = FirebaseFirestore.instance.collection('Post').doc('$id');
+      addPost!.collection('comments').add(
         {
-          'Name'.tr: name,
+          'name': name,
           'ID': currentUser,
           'description': _controller,
           'time': DateFormat('hh:mm a').format(DateTime.now()).toString(),
@@ -772,14 +770,14 @@ class _SavePostState extends State<SavePost> {
     var currentUser = FirebaseAuth.instance.currentUser?.uid;
 
     await FirebaseFirestore.instance
-        .collection('Post'.tr)
+        .collection('Post')
         .doc('$id')
         .get()
         .then((value) {
-      addPost = FirebaseFirestore.instance.collection('Post'.tr).doc('$id');
+      addPost = FirebaseFirestore.instance.collection('Post').doc('$id');
       addPost!.set(
         {
-          'likes'.tr: {'$currentUser': val}
+          'likes': {'$currentUser': val}
         },
         SetOptions(merge: true),
       );

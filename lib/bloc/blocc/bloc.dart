@@ -21,6 +21,7 @@ import '../../model/modelchats.dart';
 import '../../pages/chats_screens.dart';
 import '../../pages/details.dart';
 import '../../pages/get_post.dart';
+import '../../pages/hospital_details.dart';
 import '../../pages/notification.dart';
 import '../../pages/profile.dart';
 import '../bloc_state/bloc_state.dart';
@@ -184,41 +185,7 @@ class BlocPage extends Cubit<BlocState>  {
     Navigator.pop(context);
   }
 
-  // Completer<GoogleMapController> controlMap = Completer();
-  // CameraPosition positionOld =
-  //     const CameraPosition(target: LatLng(30.671025, 30.948486), zoom: 14.756);
-  // Marker mMarker = const Marker(
-  //     markerId: MarkerId('positionOld'),
-  //     icon: BitmapDescriptor.defaultMarker,
-  //     infoWindow: InfoWindow(title: 'Google plex'),
-  //     position: LatLng(30.671025, 30.948486));
-  //
-  // CameraPosition kLake = const CameraPosition(
-  //   target: LatLng(30.680569, 30.940295),
-  //   zoom: 19.546,
-  //   tilt: 59.440717697143555,
-  //   bearing: 192.8334901395799,
-  // );
-  // Marker lLake = Marker(
-  //     markerId: const MarkerId('kLake'),
-  //     icon: BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueBlue),
-  //     infoWindow: const InfoWindow(title: 'home'),
-  //     position: const LatLng(30.680569, 30.940295));
-  //
-  // Future<void> goToPlace(Map<String, dynamic> place) async {
-  //   final double lat = place['geometry']['location']['lat'];
-  //   final double lag = place['geometry']['location']['lag'];
-  //   final GoogleMapController control = await controlMap.future;
-  //   control.animateCamera(CameraUpdate.newCameraPosition(
-  //       CameraPosition(target: LatLng(lat, lag), zoom: 12)));
-  //   emit(GoToPlaceEmit());
-  // }
-  //
-  // Future<void> newPosition() async {
-  //   final GoogleMapController control = await controlMap.future;
-  //   control.animateCamera(CameraUpdate.newCameraPosition(kLake));
-  //   emit(ChangeMapLocation());
-  // }
+
 
   static Position? position;
   final Completer<GoogleMapController> _controller = Completer();
@@ -269,7 +236,7 @@ class BlocPage extends Cubit<BlocState>  {
         ),
         position: const LatLng(29.973989313786646, 31.28053687545031),
         onTap: (){
-      Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (context)=>const Details()));
+      Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (context)=>const HospitalDetails()));
     });
     Marker mMarker = Marker(
         markerId: const MarkerId('positionOld'),
@@ -610,11 +577,7 @@ class BlocPage extends Cubit<BlocState>  {
     print('done');
   }
 
-  // void getData() {
-  //   FirebaseFirestore.instance.collection('users').get().then((value) {
-  //     allUsers.add(value.data());
-  //   });
-  // }
+
 
   void removeImageSender() {
     imageSend = null;
@@ -660,18 +623,7 @@ class BlocPage extends Cubit<BlocState>  {
     });
   }
 
-  // void getUserData() {
-  //   emit(LoadingGetDataStateHome());
-  //
-  //   FirebaseFirestore.instance.collection('users').doc(uId).get().then((value) {
-  //     // print(value.data());
-  //     model = UserCreateModel.fromJson(value.data());
-  //     emit(SuccessGetDataStateHome());
-  //   }).catchError((error) {
-  //     print(error.toString());
-  //     emit(ErrorGetDataStateHome(error.toString()));
-  //   });
-  // }
+
 
   List<ChatDetailsModel> messages = [];
 

@@ -6,10 +6,8 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:project/resources/color_manger.dart';
-import 'package:url_launcher/url_launcher.dart';
 
 import '../main.dart';
-import 'fristpage.dart';
 import 'homepage.dart';
 
 class Verifying_Email extends StatefulWidget {

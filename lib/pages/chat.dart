@@ -1,5 +1,8 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:intl/intl.dart';
 import 'package:project/resources/color_manger.dart';
 
 class Chat extends StatefulWidget {
@@ -11,161 +14,181 @@ class Chat extends StatefulWidget {
 
 class _ChatState extends State<Chat> {
   bool _status = false;
+  CollectionReference? addUser;
+  User? user = FirebaseAuth.instance.currentUser;
+  TextEditingController controller=TextEditingController();
   @override
   Widget build(BuildContext context) {
-    return Column(
-      children: [
-        const SizedBox(
-          height: 16,
-        ),
-        Expanded(
-          child: SizedBox(
-            width: double.infinity,
-            child: ListView.separated(
-                physics: const BouncingScrollPhysics(),
-                itemBuilder: (context, index) {
-                  if (index % 2 == 0) return const UserItem();
-                  return const MyItem();
-                },
-                separatorBuilder: (context, index) => const SizedBox(
-                      height: 16,
-                    ),
-                itemCount: 20),
+    return Scaffold(
+      body: Column(
+        children: [
+          const SizedBox(
+            height: 16,
           ),
-        ),
-        const SizedBox(
-          height: 16,
-        ),
-        Container(
-          color:ColorManager.primary,
-          child: Padding(
-            padding: const EdgeInsets.only(top: 10,bottom: 5),
-            child: Column(
-              children: [
-                Row(
-                  children: [
-                    CircleAvatar(
-                      backgroundColor: Colors.white,
-                      child: Center(
-                        child: IconButton(
-                          icon:  Icon(
-                           _status==true? Icons.keyboard_arrow_up :Icons.keyboard_arrow_down,
-                          ),
-                          color: Colors.black,
-                          onPressed: () {
-                            setState(() {
-                              _status = !_status;
-                            });
-                          },
-                        ),
+          Expanded(
+            child: SizedBox(
+              width: double.infinity,
+              child: ListView.separated(
+                  physics: const BouncingScrollPhysics(),
+                  itemBuilder: (context, index) {
+                    if (index % 2 == 0) return const UserItem();
+                    return const MyItem();
+                  },
+                  separatorBuilder: (context, index) => const SizedBox(
+                        height: 16,
                       ),
-                    ),
-                    const SizedBox(
-                      width:20,
-                    ),
-                    Expanded(
-                      child: TextFormField(
-                        keyboardType: TextInputType.visiblePassword,
-                        decoration: InputDecoration(
-                          labelStyle: GoogleFonts.arimo(
-                            fontSize: 17,
-                            color: Colors.grey[700],
-                          ),
-                          hintText: 'Type Something',
-                          hintStyle: GoogleFonts.arimo(
-                            fontSize: 15,
-                            color: Colors.grey[700],
-                          ),
-                          border: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(25),
-                              borderSide: const BorderSide(color: Colors.black, width: 1.2)),
-                          enabledBorder: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(25),
-                              borderSide: const BorderSide(color: Colors.black, width: 1.2)),
-                          focusedBorder: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(25),
-                            borderSide: const BorderSide(color: Colors.black, width: 1.2),
-                          ),
-                          filled: true,
-                          fillColor: Colors.white,
-                        ),
-                      ),
-                    ),
-                    IconButton(
-                        icon: const Icon(
-                          Icons.send,
-                        ),
-                        onPressed: () {
-
-                        }),
-                  ],
-                ),
-               _status==true? Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Column(
-                      children: [
-                        IconButton(
-                            icon: const Icon(
-                              Icons.add_a_photo_outlined,
-                              color: Colors.black,
-                            ),
-                            onPressed: () {}),
-                        const Text('Photo'),
-                      ],
-                    ),
-                    Column(
-                      children: [
-                        IconButton(
-                            icon: const Icon(
-                              Icons.videocam,
-                              color: Colors.black,
-                            ),
-                            onPressed: () {}),
-                        const Text('Video'),
-                      ],
-                    ),
-                    Column(
-                      children: [
-                        IconButton(
-                            icon: const Icon(
-                              Icons.location_on,
-                              color: Colors.black,
-                            ),
-                            onPressed: () {}),
-                        const Text('location'),
-                      ],
-                    ),
-                    Column(
-                      children: [
-                        IconButton(
-                            icon: const Icon(
-                              Icons.keyboard_voice_sharp,
-                              color: Colors.black,
-                            ),
-                            onPressed: () {}),
-                        const Text('Voice'),
-                      ],
-                    ),
-                    Column(
-                      children: [
-                        IconButton(
-                            icon: const Icon(
-                              Icons.attach_file,
-                              color: Colors.black,
-                            ),
-                            onPressed: () {}),
-                        const Text('File'),
-                      ],
-                    ),
-                  ],
-                ) :Container(),
-              ],
+                  itemCount: 20),
             ),
           ),
-        ),
-      ],
+          const SizedBox(
+            height: 16,
+          ),
+          Container(
+            color:ColorManager.primary,
+            child: Padding(
+              padding: const EdgeInsets.only(top: 10,bottom: 5),
+              child: Column(
+                children: [
+                  Row(
+                    children: [
+                      CircleAvatar(
+                        backgroundColor: Colors.white,
+                        child: Center(
+                          child: IconButton(
+                            icon:  Icon(
+                             _status==true? Icons.keyboard_arrow_up :Icons.keyboard_arrow_down,
+                            ),
+                            color: Colors.black,
+                            onPressed: () {
+                              setState(() {
+                                _status = !_status;
+                              });
+                            },
+                          ),
+                        ),
+                      ),
+                      const SizedBox(
+                        width:20,
+                      ),
+                      Expanded(
+                        child: TextFormField(
+                          controller: controller,
+                          keyboardType: TextInputType.visiblePassword,
+                          decoration: InputDecoration(
+                            labelStyle: GoogleFonts.arimo(
+                              fontSize: 17,
+                              color: Colors.grey[700],
+                            ),
+                            hintText: 'Type Something',
+                            hintStyle: GoogleFonts.arimo(
+                              fontSize: 15,
+                              color: Colors.grey[700],
+                            ),
+                            border: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(25),
+                                borderSide: const BorderSide(color: Colors.black, width: 1.2)),
+                            enabledBorder: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(25),
+                                borderSide: const BorderSide(color: Colors.black, width: 1.2)),
+                            focusedBorder: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(25),
+                              borderSide: const BorderSide(color: Colors.black, width: 1.2),
+                            ),
+                            filled: true,
+                            fillColor: Colors.white,
+                          ),
+                        ),
+                      ),
+                      IconButton(
+                          icon: const Icon(
+                            Icons.send,
+                          ),
+                          onPressed: () {
+                            addDataEmail();
+                          }),
+                    ],
+                  ),
+                 _status==true? Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Column(
+                        children: [
+                          IconButton(
+                              icon: const Icon(
+                                Icons.add_a_photo_outlined,
+                                color: Colors.black,
+                              ),
+                              onPressed: () {}),
+                          const Text('Photo'),
+                        ],
+                      ),
+                      Column(
+                        children: [
+                          IconButton(
+                              icon: const Icon(
+                                Icons.videocam,
+                                color: Colors.black,
+                              ),
+                              onPressed: () {}),
+                          const Text('Video'),
+                        ],
+                      ),
+                      Column(
+                        children: [
+                          IconButton(
+                              icon: const Icon(
+                                Icons.location_on,
+                                color: Colors.black,
+                              ),
+                              onPressed: () {}),
+                          const Text('location'),
+                        ],
+                      ),
+                      Column(
+                        children: [
+                          IconButton(
+                              icon: const Icon(
+                                Icons.keyboard_voice_sharp,
+                                color: Colors.black,
+                              ),
+                              onPressed: () {}),
+                          const Text('Voice'),
+                        ],
+                      ),
+                      Column(
+                        children: [
+                          IconButton(
+                              icon: const Icon(
+                                Icons.attach_file,
+                                color: Colors.black,
+                              ),
+                              onPressed: () {}),
+                          const Text('File'),
+                        ],
+                      ),
+                    ],
+                  ) :Container(),
+                ],
+              ),
+            ),
+          ),
+        ],
+      ),
     );
+  }
+
+  addDataEmail() async {
+    String docId = FirebaseFirestore.instance
+        .collection('Post')
+        .doc()
+        .id;
+    addUser = FirebaseFirestore.instance.collection('hospital');
+    addUser?.doc('FgvSGwLJLdYm75aTrxjJV6mnj6B3').collection('massage').doc(docId).set({
+      'Massage':controller.text,
+      'time': DateFormat('hh:mm a').format(DateTime.now()).toString(),
+      'date': DateFormat('yyyy-MM-dd').format(DateTime.now()).toString(),
+      'id':docId
+    });
   }
 }
 
