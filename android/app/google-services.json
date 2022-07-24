@@ -1,33 +1,33 @@
 {
   "project_info": {
-    "project_number": "164392202363",
-    "project_id": "nicu-aaa44",
-    "storage_bucket": "nicu-aaa44.appspot.com"
+    "project_number": "257892270258",
+    "project_id": "nicu-a74c1",
+    "storage_bucket": "nicu-a74c1.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:164392202363:android:de1a181ee8a6bfcac3f2de",
+        "mobilesdk_app_id": "1:257892270258:android:b52f534cd384e8a464c9ab",
         "android_client_info": {
           "package_name": "com.example.project"
         }
       },
       "oauth_client": [
         {
-          "client_id": "164392202363-tet8s412nn77m80ar0nu1k47pphbbt8f.apps.googleusercontent.com",
+          "client_id": "257892270258-s5rumdf21qpa6us03ku3g78e2bb8g9rh.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyCxxz9drRqgJ0UkjI1sF6p26GdW0HGYyhk"
+          "current_key": "AIzaSyCzjGRCcWqL3kXQW2pYrFOQG-WiVuqIoOQ"
         }
       ],
       "services": {
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "164392202363-tet8s412nn77m80ar0nu1k47pphbbt8f.apps.googleusercontent.com",
+              "client_id": "257892270258-s5rumdf21qpa6us03ku3g78e2bb8g9rh.apps.googleusercontent.com",
               "client_type": 3
             }
           ]

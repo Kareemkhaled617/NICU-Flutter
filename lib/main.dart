@@ -44,7 +44,7 @@ class MyApp extends StatelessWidget {
           locale: Get.deviceLocale,
           translations: mylocale(),
           themeMode: ThemeMode.system,
-            home: isLogin == false ? const first_screen() :  const HomePage(),
+            home: isLogin == false ? const first_screen() : const HomePage(),
           //home: HospitalDetails(),
         ),
       ),
