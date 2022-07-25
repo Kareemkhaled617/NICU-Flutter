@@ -23,7 +23,7 @@ class first_screen extends StatelessWidget {
               width: double.infinity,
               height: 420,
               decoration: BoxDecoration(
-                image:  DecorationImage(
+                image:  const DecorationImage(
                     image: AssetImage(
                       'assets/images/frist.png',
                     ),

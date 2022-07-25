@@ -12,6 +12,7 @@ import 'package:intl/intl.dart';
 import 'package:scrollable_positioned_list/scrollable_positioned_list.dart';
 
 import '../bloc/blocc/bloc.dart';
+import '../main.dart';
 import '../resources/color_manger.dart';
 
 class GetPost extends StatefulWidget {
@@ -105,7 +106,7 @@ class _GetPostState extends State<GetPost> {
                                 decoration: BoxDecoration(
                                     borderRadius: BorderRadius.circular(15),
                                     border: Border.all(
-                                        color: ColorManager.primary, width: 2)),
+                                        color:the?ColorManager.darkPrimary: ColorManager.primary, width: 2)),
                                 child: Column(
                                   children: [
                                     Row(
@@ -207,7 +208,7 @@ class _GetPostState extends State<GetPost> {
                                           borderRadius:
                                               BorderRadius.circular(15),
                                           border: Border.all(
-                                              color: ColorManager.primary)),
+                                              color:the?ColorManager.darkPrimary: ColorManager.primary)),
                                       child: Row(
                                         mainAxisAlignment:
                                             MainAxisAlignment.center,
@@ -302,7 +303,7 @@ class _GetPostState extends State<GetPost> {
                                               borderRadius:
                                                   BorderRadius.circular(12),
                                               border: Border.all(
-                                                  color: ColorManager.primary),
+                                                  color: the?ColorManager.darkPrimary: ColorManager.primary),
                                             ),
                                             child: Row(
                                               children: [
@@ -351,7 +352,7 @@ class _GetPostState extends State<GetPost> {
                                                   icon: Icon(
                                                     Icons.comment_bank,
                                                     size: 28,
-                                                    color: ColorManager.primary,
+                                                    color: the?ColorManager.darkPrimary: ColorManager.primary,
                                                   ),
                                                   onPressed: () async {
                                                     setState(() {
@@ -530,7 +531,7 @@ class _GetPostState extends State<GetPost> {
                           elevation: MaterialStateProperty.all(3),
                         ),
                         child: Text(
-                          'Cancel',
+                          'Cancel'.tr,
                           style: GoogleFonts.archivo(),
                         )),
                   )

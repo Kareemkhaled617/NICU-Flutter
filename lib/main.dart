@@ -11,13 +11,13 @@ import 'package:project/pages/homepage.dart';
 
 import 'bloc/blocc/bloc.dart';
 
-
 bool? isLogin;
 bool the = false;
+
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
-  the =SchedulerBinding.instance.window.platformBrightness == Brightness.dark;
+  the = SchedulerBinding.instance.window.platformBrightness == Brightness.dark;
   var user = FirebaseAuth.instance.currentUser;
   if (user == null) {
     isLogin = false;
@@ -36,7 +36,11 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MultiBlocProvider(
       providers: [
-        BlocProvider(create: (context) => BlocPage()..getUserData()..getAllUsers()..getMyCurrentLocation()),
+        BlocProvider(
+            create: (context) => BlocPage()
+              ..getUserData()
+              ..getAllUsers()
+              ..getMyCurrentLocation()),
       ],
       child: OverlaySupport(
         child: GetMaterialApp(
@@ -44,7 +48,7 @@ class MyApp extends StatelessWidget {
           locale: Get.deviceLocale,
           translations: mylocale(),
           themeMode: ThemeMode.system,
-            home: isLogin == false ? const first_screen() : const HomePage(),
+          home: isLogin == false ? const first_screen() : const HomePage(),
           //home: HospitalDetails(),
         ),
       ),

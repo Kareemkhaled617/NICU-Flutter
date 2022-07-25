@@ -15,6 +15,7 @@ import 'package:project/pages/save_post.dart';
 import 'package:project/pages/setting.dart';
 import 'package:project/resources/color_manger.dart';
 
+import '../main.dart';
 import '../map_new/map.dart';
 import '../model/notifications_model.dart';
 import '../widgets/custom_list_tile.dart';
@@ -85,7 +86,7 @@ class _HomePageState extends State<HomePage> {
             Icons.notifications_active,
             size: 30,
           ),
-          background: ColorManager.primary,
+          background:the?ColorManager.darkPrimary: ColorManager.primary,
         );
       });
     }
@@ -137,7 +138,7 @@ class _HomePageState extends State<HomePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: ColorManager.primary,
+        backgroundColor:the?ColorManager.darkPrimary: ColorManager.primary,
         centerTitle: true,
         title: Text(
           _title[currentIndex]!,
@@ -182,7 +183,7 @@ class _HomePageState extends State<HomePage> {
         },
         selectedIndex: currentIndex,
         unselectedColor: Colors.grey.shade400,
-        selectedColor: ColorManager.primary,
+        selectedColor:the?ColorManager.darkPrimary: ColorManager.primary,
         selectedLightColor: Colors.grey,
         centerIcon: Icons.place,
         itemIcons: const [

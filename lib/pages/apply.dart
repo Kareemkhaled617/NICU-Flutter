@@ -8,6 +8,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
 import 'package:project/widgets/button.dart';
 
+import '../main.dart';
 import '../resources/color_manger.dart';
 
 class apply extends StatefulWidget {
@@ -55,14 +56,14 @@ class _applyState extends State<apply> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: ColorManager.primary,
+        backgroundColor: the?ColorManager.darkPrimary:ColorManager.primary,
         elevation: 0,
       ),
       body: Container(
         width: double.infinity,
-        decoration: const BoxDecoration(
+        decoration:  BoxDecoration(
           image: DecorationImage(
-            image: AssetImage('assets/images/pg1.png'),
+            image:the?const AssetImage("assets/images/dark.jpg"):const AssetImage('assets/images/pg1.png'),
             fit: BoxFit.cover,
           ),
         ),
@@ -83,7 +84,7 @@ class _applyState extends State<apply> {
                         ..translate(-10.0),
                       decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(20),
-                        color: ColorManager.primary,
+                        color:the?ColorManager.darkPrimary: ColorManager.primary,
                         boxShadow: const [
                           BoxShadow(
                             blurRadius: 12,
@@ -236,7 +237,7 @@ class _applyState extends State<apply> {
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         Radio(
-                            activeColor: ColorManager.primary,
+                            activeColor:the?ColorManager.darkPrimary: ColorManager.primary,
                             value: 1,
                             groupValue: _value,
                             onChanged: (value) {
@@ -257,7 +258,7 @@ class _applyState extends State<apply> {
                         ),
                         Radio(
                             value: 2,
-                            activeColor: ColorManager.primary,
+                            activeColor:the?ColorManager.darkPrimary: ColorManager.primary,
                             groupValue: _value,
                             onChanged: (value) {
                               setState(() {
@@ -283,7 +284,7 @@ class _applyState extends State<apply> {
                         onTap: () {
                           _submit();
                         },
-                        color1: ColorManager.primary),
+                        color1:the?ColorManager.darkPrimary: ColorManager.primary,),
                   ],
                 ),
               ),

@@ -1,10 +1,13 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
 import 'package:project/resources/color_manger.dart';
 import 'package:scrollable_positioned_list/scrollable_positioned_list.dart';
+
+import '../main.dart';
 
 class Chat extends StatefulWidget {
   Chat({Key? key, required this.id}) : super(key: key);
@@ -79,7 +82,7 @@ class _ChatState extends State<Chat> {
             height: 16,
           ),
           Container(
-            color: ColorManager.primary,
+            color:the?ColorManager.darkPrimary: ColorManager.primary,
             child: Padding(
               padding: const EdgeInsets.only(top: 10, bottom: 5),
               child: Column(
@@ -116,7 +119,7 @@ class _ChatState extends State<Chat> {
                               fontSize: 17,
                               color: Colors.grey[700],
                             ),
-                            hintText: 'Type Something',
+                            hintText: 'Type Something'.tr,
                             hintStyle: GoogleFonts.arimo(
                               fontSize: 15,
                               color: Colors.grey[700],
@@ -320,7 +323,7 @@ class MyItem extends StatelessWidget {
                 horizontal: 16,
               ),
               decoration: BoxDecoration(
-                  color: ColorManager.primary,
+                  color:the?ColorManager.darkPrimary: ColorManager.primary,
                   borderRadius: const BorderRadiusDirectional.only(
                     topStart: Radius.circular(8),
                     bottomStart: Radius.circular(8),
