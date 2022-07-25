@@ -4,9 +4,11 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
 import 'package:project/resources/color_manger.dart';
+import 'package:scrollable_positioned_list/scrollable_positioned_list.dart';
 
 class Chat extends StatefulWidget {
-  const Chat({Key? key}) : super(key: key);
+  Chat({Key? key, required this.id}) : super(key: key);
+  String id;
 
   @override
   State<Chat> createState() => _ChatState();
@@ -15,11 +17,31 @@ class Chat extends StatefulWidget {
 class _ChatState extends State<Chat> {
   bool _status = false;
   CollectionReference? addUser;
-  User? user = FirebaseAuth.instance.currentUser;
-  TextEditingController controller=TextEditingController();
+  String? user = FirebaseAuth.instance.currentUser?.uid;
+  TextEditingController massage = TextEditingController();
+  List req = [];
+  List req2 = [];
+
+  @override
+  void initState() {
+    // getMassage();
+     getMassage2();
+    // Timer.periodic(
+    //     const Duration(milliseconds: 300), (Timer t) => getMassage());
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        leading: IconButton(
+          icon: const Icon(Icons.arrow_back_outlined),
+          onPressed: () {
+            Navigator.of(context).pop();
+          },
+        ),
+      ),
       body: Column(
         children: [
           const SizedBox(
@@ -28,25 +50,38 @@ class _ChatState extends State<Chat> {
           Expanded(
             child: SizedBox(
               width: double.infinity,
-              child: ListView.separated(
+              child: ScrollablePositionedList.separated(
+                  initialScrollIndex: 0,
                   physics: const BouncingScrollPhysics(),
                   itemBuilder: (context, index) {
-                    if (index % 2 == 0) return const UserItem();
-                    return const MyItem();
+                    return Column(
+                      children: [
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          children: [
+                            UserItem(massage: req[index]['Massage']),
+                          ],
+                        ),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.end,
+                          children: [MyItem(massage: req2[index]['Massage'])],
+                        ),
+                      ],
+                    );
                   },
                   separatorBuilder: (context, index) => const SizedBox(
-                        height: 16,
-                      ),
-                  itemCount: 20),
+                    height: 16,
+                  ),
+                  itemCount: req.length),
             ),
           ),
           const SizedBox(
             height: 16,
           ),
           Container(
-            color:ColorManager.primary,
+            color: ColorManager.primary,
             child: Padding(
-              padding: const EdgeInsets.only(top: 10,bottom: 5),
+              padding: const EdgeInsets.only(top: 10, bottom: 5),
               child: Column(
                 children: [
                   Row(
@@ -55,8 +90,10 @@ class _ChatState extends State<Chat> {
                         backgroundColor: Colors.white,
                         child: Center(
                           child: IconButton(
-                            icon:  Icon(
-                             _status==true? Icons.keyboard_arrow_up :Icons.keyboard_arrow_down,
+                            icon: Icon(
+                              _status == true
+                                  ? Icons.keyboard_arrow_up
+                                  : Icons.keyboard_arrow_down,
                             ),
                             color: Colors.black,
                             onPressed: () {
@@ -68,11 +105,11 @@ class _ChatState extends State<Chat> {
                         ),
                       ),
                       const SizedBox(
-                        width:20,
+                        width: 20,
                       ),
                       Expanded(
                         child: TextFormField(
-                          controller: controller,
+                          controller: massage,
                           keyboardType: TextInputType.visiblePassword,
                           decoration: InputDecoration(
                             labelStyle: GoogleFonts.arimo(
@@ -86,13 +123,16 @@ class _ChatState extends State<Chat> {
                             ),
                             border: OutlineInputBorder(
                                 borderRadius: BorderRadius.circular(25),
-                                borderSide: const BorderSide(color: Colors.black, width: 1.2)),
+                                borderSide: const BorderSide(
+                                    color: Colors.black, width: 1.2)),
                             enabledBorder: OutlineInputBorder(
                                 borderRadius: BorderRadius.circular(25),
-                                borderSide: const BorderSide(color: Colors.black, width: 1.2)),
+                                borderSide: const BorderSide(
+                                    color: Colors.black, width: 1.2)),
                             focusedBorder: OutlineInputBorder(
                               borderRadius: BorderRadius.circular(25),
-                              borderSide: const BorderSide(color: Colors.black, width: 1.2),
+                              borderSide: const BorderSide(
+                                  color: Colors.black, width: 1.2),
                             ),
                             filled: true,
                             fillColor: Colors.white,
@@ -104,11 +144,12 @@ class _ChatState extends State<Chat> {
                             Icons.send,
                           ),
                           onPressed: () {
-                            addDataEmail();
+                            sendMassage();
                           }),
                     ],
                   ),
-                 _status==true? Row(
+                  _status == true
+                      ? Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       Column(
@@ -167,7 +208,8 @@ class _ChatState extends State<Chat> {
                         ],
                       ),
                     ],
-                  ) :Container(),
+                  )
+                      : Container(),
                 ],
               ),
             ),
@@ -177,28 +219,52 @@ class _ChatState extends State<Chat> {
     );
   }
 
-  addDataEmail() async {
-    String docId = FirebaseFirestore.instance
-        .collection('Post')
-        .doc()
-        .id;
+
+  sendMassage() async {
     addUser = FirebaseFirestore.instance.collection('hospital');
-    addUser?.doc('FgvSGwLJLdYm75aTrxjJV6mnj6B3').collection('massage').doc(docId).set({
-      'Massage':controller.text,
+    addUser
+        ?.doc(widget.id)
+        .collection('massage')
+        .doc(widget.id)
+        .collection('chat')
+        .add({
+      'Massage': massage.text,
       'time': DateFormat('hh:mm a').format(DateTime.now()).toString(),
       'date': DateFormat('yyyy-MM-dd').format(DateTime.now()).toString(),
-      'id':docId
+      'id':user
     });
   }
+
+  getMassage() async {
+    FirebaseFirestore.instance.collection('users').doc(user).collection(widget.id).get().then((value) {
+      setState(() {
+        req.add(value);
+      });
+    });
+  }
+
+  getMassage2() async {
+  FirebaseFirestore.instance.collection('hospital').doc(widget.id)
+      .collection('massage')
+      .doc(widget.id)
+      .collection('chat').get().then((value) {
+     setState(() {
+       req2.add(value);
+     });
+  });
+  }
+
+
 }
 
 class UserItem extends StatelessWidget {
-  const UserItem({Key? key}) : super(key: key);
+  UserItem({Key? key, required this.massage}) : super(key: key);
+  String massage;
 
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.only(left:20),
+      padding: const EdgeInsets.only(left: 20),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.start,
         children: [
@@ -216,7 +282,7 @@ class UserItem extends StatelessWidget {
                 vertical: 10,
                 horizontal: 16,
               ),
-              decoration:  BoxDecoration(
+              decoration: BoxDecoration(
                   color: Colors.grey[300],
                   borderRadius: const BorderRadiusDirectional.only(
                     bottomEnd: Radius.circular(8),
@@ -224,7 +290,7 @@ class UserItem extends StatelessWidget {
                     topEnd: Radius.circular(8),
                   )),
               child: Text(
-                'Hello Nourhan',
+                massage,
                 style: Theme.of(context).textTheme.subtitle2,
               ),
             ),
@@ -236,12 +302,13 @@ class UserItem extends StatelessWidget {
 }
 
 class MyItem extends StatelessWidget {
-  const MyItem({Key? key}) : super(key: key);
+  MyItem({Key? key, this.massage}) : super(key: key);
+  String? massage;
 
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.only(right:20),
+      padding: const EdgeInsets.only(right: 20),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.end,
         children: [
@@ -252,18 +319,18 @@ class MyItem extends StatelessWidget {
                 vertical: 10,
                 horizontal: 16,
               ),
-              decoration:  BoxDecoration(
-                  color:ColorManager.primary,
-                  borderRadius:const BorderRadiusDirectional.only(
+              decoration: BoxDecoration(
+                  color: ColorManager.primary,
+                  borderRadius: const BorderRadiusDirectional.only(
                     topStart: Radius.circular(8),
                     bottomStart: Radius.circular(8),
                     topEnd: Radius.circular(8),
                   )),
               child: Text(
-                'Hello Doctor',
+                massage!,
                 style: Theme.of(context).textTheme.subtitle2?.copyWith(
-                      color: Colors.white,
-                    ),
+                  color: Colors.white,
+                ),
               ),
             ),
           ),

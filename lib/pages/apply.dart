@@ -124,7 +124,11 @@ class _applyState extends State<apply> {
                         onTap: () {},
                         label: 'Children Name'.tr,
                         sIcon: const Icon(Icons.done)),
+                    const SizedBox(
+                      height: 20.0,
+                    ),
                     buildTextFormField(
+                      type: TextInputType.number,
                         hint: 'Phone'.tr,
                         validate: () => (val) {
                               if (val!.isEmpty) {

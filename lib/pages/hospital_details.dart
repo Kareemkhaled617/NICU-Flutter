@@ -1,22 +1,24 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
-import 'add_post.dart';
 import 'apply.dart';
 import 'chat.dart';
 
 class HospitalDetails extends StatefulWidget {
-  HospitalDetails({Key? key, required this.data,required this.id,required this.url}) : super(key: key);
+  HospitalDetails(
+      {Key? key, required this.data, required this.id, required this.url,required this.address})
+      : super(key: key);
   List data = [];
   String id;
   String url;
+  String address;
 
   @override
   _HospitalDetailsState createState() => _HospitalDetailsState();
 }
 
 class _HospitalDetailsState extends State<HospitalDetails> {
-  // final CategoriesScroller categoriesScroller =  CategoriesScroller();
   ScrollController controller = ScrollController();
   bool closeTopContainer = false;
   double topContainer = 0;
@@ -156,8 +158,7 @@ class _HospitalDetailsState extends State<HospitalDetails> {
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(15),
                   image: DecorationImage(
-                      image: AssetImage(widget.url),
-                      fit: BoxFit.cover),
+                      image: AssetImage(widget.url), fit: BoxFit.cover),
                 ),
               ),
               const SizedBox(
@@ -171,7 +172,7 @@ class _HospitalDetailsState extends State<HospitalDetails> {
                     width: size.width,
                     alignment: Alignment.topCenter,
                     height: closeTopContainer ? 0 : categoryHeight,
-                    child: CategoriesScroller(widget.id)),
+                    child: CategoriesScroller(widget.id,address: widget.address,)),
               ),
               Expanded(
                 child: ListView.builder(
@@ -204,14 +205,25 @@ class _HospitalDetailsState extends State<HospitalDetails> {
             ],
           ),
         ),
+        floatingActionButton: FloatingActionButton(
+          backgroundColor: Colors.teal,
+          child: const Icon(Icons.chat_bubble),
+          onPressed: () {
+            String? user=FirebaseAuth.instance.currentUser?.uid;
+            FirebaseFirestore.instance.collection('hospital').doc(widget.id).collection('client').doc(user).set({});
+            Navigator.of(context).push(MaterialPageRoute(builder: (context)=>Chat(id: widget.id)));
+          },
+
+        ),
       ),
     );
   }
 }
 
 class CategoriesScroller extends StatefulWidget {
-   CategoriesScroller(this.id);
+  CategoriesScroller(this.id, {Key? key,required this.address}) : super(key: key);
   String id;
+  String address ;
 
   @override
   State<CategoriesScroller> createState() => _CategoriesScrollerState();
@@ -347,29 +359,36 @@ class _CategoriesScrollerState extends State<CategoriesScroller> {
                           ),
                           ElevatedButton.icon(
                             onPressed: () async {
-                              if(star1){
-                                FirebaseFirestore.instance.collection('hospital').doc(widget.id).collection('comments').add({
-                                  'star': 1
-                                });
-                              }else if(star2){
-                                FirebaseFirestore.instance.collection('hospital').doc(widget.id).collection('comments').add({
-                                  'star': 2
-                                });
-                              }
-                              else if(star3){
-                                FirebaseFirestore.instance.collection('hospital').doc(widget.id).collection('comments').add({
-                                  'star': 3
-                                });
-                              }
-                              else if(star4){
-                                FirebaseFirestore.instance.collection('hospital').doc(widget.id).collection('comments').add({
-                                  'star': 4
-                                });
-                              }
-                              else if(star5){
-                                FirebaseFirestore.instance.collection('hospital').doc(widget.id).collection('comments').add({
-                                  'star': 5
-                                });
+                              if (star1) {
+                                FirebaseFirestore.instance
+                                    .collection('hospital')
+                                    .doc(widget.id)
+                                    .collection('comments')
+                                    .add({'star': 1});
+                              } else if (star2) {
+                                FirebaseFirestore.instance
+                                    .collection('hospital')
+                                    .doc(widget.id)
+                                    .collection('comments')
+                                    .add({'star': 2});
+                              } else if (star3) {
+                                FirebaseFirestore.instance
+                                    .collection('hospital')
+                                    .doc(widget.id)
+                                    .collection('comments')
+                                    .add({'star': 3});
+                              } else if (star4) {
+                                FirebaseFirestore.instance
+                                    .collection('hospital')
+                                    .doc(widget.id)
+                                    .collection('comments')
+                                    .add({'star': 4});
+                              } else if (star5) {
+                                FirebaseFirestore.instance
+                                    .collection('hospital')
+                                    .doc(widget.id)
+                                    .collection('comments')
+                                    .add({'star': 5});
                               }
                             },
                             icon: const Icon(Icons.post_add_outlined),
@@ -392,8 +411,6 @@ class _CategoriesScrollerState extends State<CategoriesScroller> {
                           ),
                           ElevatedButton.icon(
                             onPressed: () async {
-                              Navigator.of(context).push(MaterialPageRoute(
-                                  builder: (context) => Chat()));
                             },
                             icon: const Icon(Icons.add_comment_outlined),
                             label: const Text(
@@ -412,7 +429,7 @@ class _CategoriesScrollerState extends State<CategoriesScroller> {
                                     width: 2, color: Colors.teal),
                               )),
                             ),
-                          )
+                          ),
                         ],
                       ),
                     ],
@@ -512,10 +529,10 @@ class _CategoriesScrollerState extends State<CategoriesScroller> {
                   padding: const EdgeInsets.all(12.0),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
-                    children: const <Widget>[
+                    children:  <Widget>[
                       Text(
-                        "د. نشوة حسين العشرى - استشارى طب اطفال وحديثى الولادة والرضاعة الطبيعية",
-                        style: TextStyle(
+                       widget.address,
+                        style: const TextStyle(
                             fontSize: 18,
                             color: Colors.white,
                             fontWeight: FontWeight.bold),

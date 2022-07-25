@@ -77,12 +77,7 @@ class _NotificationState extends State<Notification_Page> {
                 child: Row(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    noti[index]['image'] != null
-                        ? CircleAvatar(
-                            radius: 28,
-                            backgroundImage: NetworkImage(noti[index]['image']),
-                          )
-                        : const CircleAvatar(
+                    const CircleAvatar(
                             radius: 28,
                             child: Icon(Icons.person),
                           ),
@@ -119,15 +114,13 @@ class _NotificationState extends State<Notification_Page> {
                               ],
                             ),
                             Expanded(
-                              child: Container(
-                                child: Text(
-                                  noti[index]['body'],
-                                  softWrap: true,
-                                  style: GoogleFonts.aBeeZee(
-                                    fontSize: 18,
-                                    fontWeight: FontWeight.w600,
-                                    color: Colors.grey[900],
-                                  ),
+                              child: Text(
+                                noti[index]['body'],
+                                softWrap: true,
+                                style: GoogleFonts.aBeeZee(
+                                  fontSize: 18,
+                                  fontWeight: FontWeight.w600,
+                                  color: Colors.grey[900],
                                 ),
                               ),
                             ),

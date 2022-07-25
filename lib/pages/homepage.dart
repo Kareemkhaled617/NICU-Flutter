@@ -241,8 +241,9 @@ class _HomePageState extends State<HomePage> {
               });
             }),
             CustomListTile(Icons.notifications, 'Notifications'.tr, () {
-              Navigator.of(context).pushReplacement(MaterialPageRoute(
-                  builder: (context) => const Notification_Page()));
+             setState(() {
+               currentIndex=1;
+             });
             }),
             CustomListTile(Icons.bookmark, 'Saved'.tr, () {
               Navigator.of(context).pushReplacement(
