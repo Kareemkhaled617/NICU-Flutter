@@ -1,47 +1,22 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 
 import 'add_post.dart';
 import 'apply.dart';
 import 'chat.dart';
 
-const Center_DATA = [
-  {
-    "name": "Nashwa Center",
-    "brand": "Protect your child with us",
-    "price": 2.99,
-    "image": "assets/images/hospital1/n1.jpg"
-  },
-  {
-    "name": "Nashwa Center",
-    "brand": "Your child is safe",
-    "price": 4.99,
-    "image": "assets/images/hospital1/n2.jpg"
-  },
-  {
-    "name": "Nashwa Center",
-    "brand": "The best baby care",
-    "price": 1.49,
-    "image": "assets/images/hospital1/n3.jpg"
-  },
-  {
-    "name": "Nashwa Center",
-    "brand": "24 hours service",
-    "price": 2.99,
-    "image": "assets/images/hospital1/n4.jpg"
-  },
-];
-
 class HospitalDetails extends StatefulWidget {
-  const HospitalDetails({Key? key}) : super(key: key);
-
-
+  HospitalDetails({Key? key, required this.data,required this.id,required this.url}) : super(key: key);
+  List data = [];
+  String id;
+  String url;
 
   @override
   _HospitalDetailsState createState() => _HospitalDetailsState();
 }
 
 class _HospitalDetailsState extends State<HospitalDetails> {
-  final CategoriesScroller categoriesScroller = const CategoriesScroller();
+  // final CategoriesScroller categoriesScroller =  CategoriesScroller();
   ScrollController controller = ScrollController();
   bool closeTopContainer = false;
   double topContainer = 0;
@@ -49,7 +24,7 @@ class _HospitalDetailsState extends State<HospitalDetails> {
   List<Widget> itemsData = [];
 
   void getPostsData() {
-    List<dynamic> responseList = Center_DATA;
+    List<dynamic> responseList = widget.data;
     List<Widget> listItems = [];
     responseList.forEach((post) {
       listItems.add(Container(
@@ -123,9 +98,14 @@ class _HospitalDetailsState extends State<HospitalDetails> {
         appBar: AppBar(
           elevation: 0,
           backgroundColor: Colors.white,
-          leading: const Icon(
-            Icons.arrow_back_outlined,
-            color: Colors.black,
+          leading: IconButton(
+            icon: const Icon(
+              Icons.arrow_back_outlined,
+              color: Colors.black87,
+            ),
+            onPressed: () {
+              Navigator.of(context).pop();
+            },
           ),
           actions: <Widget>[
             IconButton(
@@ -134,8 +114,10 @@ class _HospitalDetailsState extends State<HospitalDetails> {
             ),
             ElevatedButton.icon(
               onPressed: () async {
-                Navigator.of(context).push(
-                    MaterialPageRoute(builder: (context) =>  apply( id: '',)));
+                Navigator.of(context).push(MaterialPageRoute(
+                    builder: (context) => apply(
+                          id: widget.id,
+                        )));
               },
               icon: const Icon(Icons.post_add_outlined),
               label: const Text(
@@ -147,14 +129,10 @@ class _HospitalDetailsState extends State<HospitalDetails> {
                 elevation: MaterialStateProperty.all(10),
                 shape: MaterialStateProperty.all(RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(10),
-                  side: const BorderSide(
-                      width: 2,
-                      color: Colors.teal
-                  ),
+                  side: const BorderSide(width: 2, color: Colors.teal),
                 )),
               ),
             )
-
           ],
         ),
         body: SizedBox(
@@ -177,8 +155,8 @@ class _HospitalDetailsState extends State<HospitalDetails> {
                 height: 200,
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(15),
-                  image: const DecorationImage(
-                      image: AssetImage('assets/images/hospital1/n.jpg'),
+                  image: DecorationImage(
+                      image: AssetImage(widget.url),
                       fit: BoxFit.cover),
                 ),
               ),
@@ -193,7 +171,7 @@ class _HospitalDetailsState extends State<HospitalDetails> {
                     width: size.width,
                     alignment: Alignment.topCenter,
                     height: closeTopContainer ? 0 : categoryHeight,
-                    child: categoriesScroller),
+                    child: CategoriesScroller(widget.id)),
               ),
               Expanded(
                 child: ListView.builder(
@@ -232,7 +210,8 @@ class _HospitalDetailsState extends State<HospitalDetails> {
 }
 
 class CategoriesScroller extends StatefulWidget {
-  const CategoriesScroller();
+   CategoriesScroller(this.id);
+  String id;
 
   @override
   State<CategoriesScroller> createState() => _CategoriesScrollerState();
@@ -284,17 +263,18 @@ class _CategoriesScrollerState extends State<CategoriesScroller> {
                                       star1 = !star1;
                                     });
                                   },
-                                  icon: star1 || star2 || star3 || star4 || star5
-                                      ? const Icon(
-                                          Icons.star,
-                                          size: 27,
-                                          color: Colors.yellow,
-                                        )
-                                      : const Icon(
-                                          Icons.star_border_outlined,
-                                          size: 27,
-                                          color: Colors.yellow,
-                                        )),
+                                  icon:
+                                      star1 || star2 || star3 || star4 || star5
+                                          ? const Icon(
+                                              Icons.star,
+                                              size: 27,
+                                              color: Colors.yellow,
+                                            )
+                                          : const Icon(
+                                              Icons.star_border_outlined,
+                                              size: 27,
+                                              color: Colors.yellow,
+                                            )),
                               IconButton(
                                   onPressed: () {
                                     setState(() {
@@ -367,45 +347,69 @@ class _CategoriesScrollerState extends State<CategoriesScroller> {
                           ),
                           ElevatedButton.icon(
                             onPressed: () async {
-                              Navigator.of(context).push(
-                                  MaterialPageRoute(builder: (context) => PostScreen()));
+                              if(star1){
+                                FirebaseFirestore.instance.collection('hospital').doc(widget.id).collection('comments').add({
+                                  'star': 1
+                                });
+                              }else if(star2){
+                                FirebaseFirestore.instance.collection('hospital').doc(widget.id).collection('comments').add({
+                                  'star': 2
+                                });
+                              }
+                              else if(star3){
+                                FirebaseFirestore.instance.collection('hospital').doc(widget.id).collection('comments').add({
+                                  'star': 3
+                                });
+                              }
+                              else if(star4){
+                                FirebaseFirestore.instance.collection('hospital').doc(widget.id).collection('comments').add({
+                                  'star': 4
+                                });
+                              }
+                              else if(star5){
+                                FirebaseFirestore.instance.collection('hospital').doc(widget.id).collection('comments').add({
+                                  'star': 5
+                                });
+                              }
                             },
                             icon: const Icon(Icons.post_add_outlined),
                             label: const Text(
                               'Submit',
-                              style: TextStyle(fontSize: 19, fontWeight: FontWeight.w700),
+                              style: TextStyle(
+                                  fontSize: 19, fontWeight: FontWeight.w700),
                             ),
                             style: ButtonStyle(
-                              backgroundColor: MaterialStateProperty.all(Colors.transparent),
+                              backgroundColor:
+                                  MaterialStateProperty.all(Colors.transparent),
                               elevation: MaterialStateProperty.all(10),
-                              shape: MaterialStateProperty.all(RoundedRectangleBorder(
+                              shape: MaterialStateProperty.all(
+                                  RoundedRectangleBorder(
                                 borderRadius: BorderRadius.circular(10),
                                 side: const BorderSide(
-                                  width: 2,
-                                  color: Colors.white
-                                ),
+                                    width: 2, color: Colors.white),
                               )),
                             ),
                           ),
                           ElevatedButton.icon(
                             onPressed: () async {
-                              Navigator.of(context).push(
-                                  MaterialPageRoute(builder: (context) => Chat()));
+                              Navigator.of(context).push(MaterialPageRoute(
+                                  builder: (context) => Chat()));
                             },
                             icon: const Icon(Icons.add_comment_outlined),
                             label: const Text(
                               'Comment',
-                              style: TextStyle(fontSize: 19, fontWeight: FontWeight.w700),
+                              style: TextStyle(
+                                  fontSize: 19, fontWeight: FontWeight.w700),
                             ),
                             style: ButtonStyle(
-                              backgroundColor: MaterialStateProperty.all(Colors.transparent),
+                              backgroundColor:
+                                  MaterialStateProperty.all(Colors.transparent),
                               elevation: MaterialStateProperty.all(10),
-                              shape: MaterialStateProperty.all(RoundedRectangleBorder(
+                              shape: MaterialStateProperty.all(
+                                  RoundedRectangleBorder(
                                 borderRadius: BorderRadius.circular(10),
                                 side: const BorderSide(
-                                    width: 2,
-                                    color: Colors.teal
-                                ),
+                                    width: 2, color: Colors.teal),
                               )),
                             ),
                           )

@@ -1,6 +1,6 @@
 import 'dart:async';
 import 'dart:io';
-import 'package:path/path.dart';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
@@ -12,6 +12,7 @@ import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:intl/intl.dart';
+import 'package:path/path.dart';
 import 'package:project/model/postmodel.dart';
 
 import '../../map_new/helper_location.dart';
@@ -27,7 +28,7 @@ import '../../pages/profile.dart';
 import '../bloc_state/bloc_state.dart';
 import '../endpoint.dart';
 
-class BlocPage extends Cubit<BlocState>  {
+class BlocPage extends Cubit<BlocState> {
   BlocPage() : super(InitializeBlocState());
 
   Widget info = Container(
@@ -55,7 +56,7 @@ class BlocPage extends Cubit<BlocState>  {
     const GetPost(),
     const Notification_Page(),
     MapFileRun(),
-    ChatsScreen(),
+    const ChatsScreen(),
     const Profile()
   ];
 
@@ -99,7 +100,6 @@ class BlocPage extends Cubit<BlocState>  {
   //     'token' : token,
   //   });
   // }
-
 
   getData() async {
     await FirebaseFirestore.instance
@@ -185,8 +185,6 @@ class BlocPage extends Cubit<BlocState>  {
     Navigator.pop(context);
   }
 
-
-
   static Position? position;
   final Completer<GoogleMapController> _controller = Completer();
   static final CameraPosition _myCameraPosition = CameraPosition(
@@ -196,14 +194,11 @@ class BlocPage extends Cubit<BlocState>  {
     tilt: 0.0,
   );
 
-
   Future<void> getMyCurrentLocation() async {
     await LocationHelper.getCurrentLocation();
-    position = await Geolocator.getLastKnownPosition().whenComplete(() {
-    });
+    position = await Geolocator.getLastKnownPosition().whenComplete(() {});
     emit(GetMyCurrentLocation());
   }
-
 
   // Marker hospital28 = Marker(
   //     markerId: const MarkerId('kLake19'),
@@ -220,40 +215,132 @@ class BlocPage extends Cubit<BlocState>  {
         icon: BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueBlue),
         infoWindow: const InfoWindow(
           title:
-          'مستشفى الجمعية الشرعية للاطفال المبتسرين وحديثى الولادة(فرع حي السويس)',
+              'مستشفى الجمعية الشرعية للاطفال المبتسرين وحديثى الولادة(فرع حي السويس)',
         ),
         position: const LatLng(30.082701716307582, 31.354481933004045),
-    onTap: (){
-          Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (context)=>const Details()));
-    }
-    );
+        onTap: () {
+          Navigator.of(context).pushReplacement(
+              MaterialPageRoute(builder: (context) => const Details()));
+        });
     Marker hospital20 = Marker(
         markerId: const MarkerId('kLake12'),
         icon: BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueBlue),
         infoWindow: const InfoWindow(
           title:
-          'د. نشوة حسين العشرى - استشارى طب اطفال وحديثى الولادة والرضاعة الطبيعية',
+              'د. نشوة حسين العشرى - استشارى طب اطفال وحديثى الولادة والرضاعة الطبيعية',
         ),
         position: const LatLng(29.973989313786646, 31.28053687545031),
-        onTap: (){
-      Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (context)=>const HospitalDetails()));
-    });
+        onTap: () {
+          Navigator.of(context).push(MaterialPageRoute(
+              builder: (context) => HospitalDetails(
+                url: 'assets/images/hospital1/z.jpg',
+                id: '20',
+                    data: const [
+                      {
+                        "name": "Nashwa Center",
+                        "brand": "Protect your child with us",
+                        "price": 2.99,
+                        "image": "assets/images/hospital1/n1.jpg"
+                      },
+                      {
+                        "name": "Nashwa Center",
+                        "brand": "Your child is safe",
+                        "price": 4.99,
+                        "image": "assets/images/hospital1/n2.jpg"
+                      },
+                      {
+                        "name": "Nashwa Center",
+                        "brand": "The best baby care",
+                        "price": 1.49,
+                        "image": "assets/images/hospital1/n3.jpg"
+                      },
+                      {
+                        "name": "Nashwa Center",
+                        "brand": "24 hours service",
+                        "price": 2.99,
+                        "image": "assets/images/hospital1/n4.jpg"
+                      },
+                    ],
+                  )));
+        });
     Marker mMarker = Marker(
         markerId: const MarkerId('positionOld'),
         icon: BitmapDescriptor.defaultMarker,
         infoWindow: const InfoWindow(title: 'حضانات مستشفي تلا المركزي'),
         position: const LatLng(30.68468960025776, 30.950258077911204),
-        onTap: () {
-          // Navigator.of(context).pushReplacement(
-          //     MaterialPageRoute(builder: (context) => const Details()));
-        });
+      onTap: () {
+        Navigator.of(context).push(MaterialPageRoute(
+            builder: (context) => HospitalDetails(
+              url: 'assets/images/hospital1/m5.jpg',
+              id: '2',
+              data:  const[
+                {
+                  "name":"حضانات مستشفي تلا المركزي",
+                  "brand": "Protect your child with us",
+                  "price": 2.99,
+                  "image": "assets/images/hospital1/k1.jpg"
+                },
+                {
+                  "name":"حضانات مستشفي تلا المركزي",
+                  "brand": "Your child is safe",
+                  "price": 4.99,
+                  "image": "assets/images/hospital1/k2.jpg"
+                },
+                {
+                  "name":"حضانات مستشفي تلا المركزي",
+                  "brand": "The best baby care",
+                  "price": 1.49,
+                  "image": "assets/images/hospital1/k3.jpg"
+                },
+                {
+                  "name":"حضانات مستشفي تلا المركزي",
+                  "brand": "24 hours service",
+                  "price": 2.99,
+                  "image": "assets/images/hospital1/k4.jpg"
+                },
+              ],
+            )));
+      },);
 
     Marker lLake = Marker(
+        onTap: () {
+          Navigator.of(context).push(MaterialPageRoute(
+              builder: (context) => HospitalDetails(
+                url: 'assets/images/hospital1/z.jpg',
+                id: '1',
+                data:  const[
+                  {
+                    "name":"مستشفى الجمعية الشرعية للاطفال المبتسرين وحديثى الولادة(فرع شبين الكوم)",
+                    "brand": "Protect your child with us",
+                    "price": 2.99,
+                    "image": "assets/images/hospital1/s1.jpg"
+                  },
+                  {
+                    "name":"مستشفى الجمعية الشرعية للاطفال المبتسرين وحديثى الولادة(فرع شبين الكوم)",
+                    "brand": "Your child is safe",
+                    "price": 4.99,
+                    "image": "assets/images/hospital1/s2.jpg"
+                  },
+                  {
+                    "name":"مستشفى الجمعية الشرعية للاطفال المبتسرين وحديثى الولادة(فرع شبين الكوم)",
+                    "brand": "The best baby care",
+                    "price": 1.49,
+                    "image": "assets/images/hospital1/s3.jpg"
+                  },
+                  {
+                    "name":"مستشفى الجمعية الشرعية للاطفال المبتسرين وحديثى الولادة(فرع شبين الكوم)",
+                    "brand": "24 hours service",
+                    "price": 2.99,
+                    "image": "assets/images/hospital1/s4.jpg"
+                  },
+                ],
+              )));
+        },
         markerId: const MarkerId('kLake'),
         icon: BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueBlue),
         infoWindow: const InfoWindow(
           title:
-          'مستشفى الجمعية الشرعية للأطفال المبتسرين وحديثي الولادة(فرع شبين الكوم)',
+              'مستشفى الجمعية الشرعية للأطفال المبتسرين وحديثي الولادة(فرع شبين الكوم)',
         ),
         position: const LatLng(30.566007802710622, 31.003274406612015));
 
@@ -265,13 +352,46 @@ class BlocPage extends Cubit<BlocState>  {
         ),
         position: const LatLng(30.63556566863241, 31.090300845741908));
 
-    Marker hospital =  Marker(
-        markerId: MarkerId('positionOld1'),
+    Marker hospital = Marker(
+        onTap: () {
+          Navigator.of(context).push(MaterialPageRoute(
+              builder: (context) => HospitalDetails(
+                url: 'assets/images/hospital1/m5.jpg',
+                id: '4',
+                data: const[
+                  {
+                    "name":"مستشفى الجمعية الشرعية للاطفال المبتسرين وحديثى الولادة(فرع الباجور)",
+                    "brand": "Protect your child with us",
+                    "price": 2.99,
+                    "image": "assets/images/hospital1/m1.jpg"
+                  },
+                  {
+                    "name":"مستشفى الجمعية الشرعية للاطفال المبتسرين وحديثى الولادة(فرع الباجور)",
+                    "brand": "Your child is safe",
+                    "price": 4.99,
+                    "image": "assets/images/hospital1/m2.jpg"
+                  },
+                  {
+                    "name":"مستشفى الجمعية الشرعية للاطفال المبتسرين وحديثى الولادة(فرع الباجور)",
+                    "brand": "The best baby care",
+                    "price": 1.49,
+                    "image": "assets/images/hospital1/m3.jpg"
+                  },
+                  {
+                    "name":"مستشفى الجمعية الشرعية للاطفال المبتسرين وحديثى الولادة(فرع الباجور)",
+                    "brand": "24 hours service",
+                    "price": 2.99,
+                    "image": "assets/images/hospital1/m4.jpg"
+                  },
+                ],
+              )));
+        },
+        markerId: const MarkerId('positionOld1'),
         icon: BitmapDescriptor.defaultMarker,
-        infoWindow: InfoWindow(
+        infoWindow: const InfoWindow(
             title:
-            'مستشفى الجمعية الشرعية للاطفال المبتسرين وحديثى الولادة(فرع الباجور)'),
-        position: LatLng(30.427208867294507, 31.04418245458604));
+                'مستشفى الجمعية الشرعية للاطفال المبتسرين وحديثى الولادة(فرع الباجور)'),
+        position: const LatLng(30.427208867294507, 31.04418245458604));
 
     Marker hospitalNew = Marker(
         markerId: const MarkerId('kLake2'),
@@ -289,11 +409,11 @@ class BlocPage extends Cubit<BlocState>  {
         ),
         position: const LatLng(30.552845181564265, 31.138939791404646));
 
-    Marker hospital7 =  Marker(
+    Marker hospital7 = const Marker(
       markerId: MarkerId('positionOld2'),
       icon: BitmapDescriptor.defaultMarker,
-      infoWindow: InfoWindow(title: 'حضانات مستشفى الباجور'),
-      position: LatLng(30.432908982790973, 31.02921514468324),
+      infoWindow: const InfoWindow(title: 'حضانات مستشفى الباجور'),
+      position: const LatLng(30.432908982790973, 31.02921514468324),
     );
 
     Marker hospital8 = Marker(
@@ -312,8 +432,8 @@ class BlocPage extends Cubit<BlocState>  {
         ),
         position: const LatLng(30.47204027362369, 30.927744353136436));
 
-    Marker hospital10 =  Marker(
-        markerId: MarkerId('positionOld3'),
+    Marker hospital10 = const Marker(
+        markerId: const MarkerId('positionOld3'),
         icon: BitmapDescriptor.defaultMarker,
         infoWindow: InfoWindow(title: 'حضانات مستشفي اشمون العام'),
         position: LatLng(30.296018054178056, 30.98903153743087));
@@ -334,11 +454,44 @@ class BlocPage extends Cubit<BlocState>  {
         ),
         position: const LatLng(30.59683293125478, 30.9046417512878));
 
-    Marker hospital13 =  Marker(
-        markerId: MarkerId('positionOld4'),
+    Marker hospital13 = Marker(
+        onTap: () {
+          Navigator.of(context).push(MaterialPageRoute(
+              builder: (context) => HospitalDetails(
+                url: 'assets/images/hospital1/s.jpg',
+                id: '13',
+                data:  const[
+                  {
+                    "name":"مركز تبارك للأطفال",
+                    "brand": "Protect your child with us",
+                    "price": 2.99,
+                    "image": "assets/images/hospital1/a1.jpg"
+                  },
+                  {
+                    "name":"مركز تبارك للأطفال",
+                    "brand": "Your child is safe",
+                    "price": 4.99,
+                    "image": "assets/images/hospital1/a2.jpg"
+                  },
+                  {
+                    "name":"مركز تبارك للأطفال",
+                    "brand": "The best baby care",
+                    "price": 1.49,
+                    "image": "assets/images/hospital1/a3.jpg"
+                  },
+                  {
+                    "name":"مركز تبارك للأطفال",
+                    "brand": "24 hours service",
+                    "price": 2.99,
+                    "image": "assets/images/hospital1/a4.jpg"
+                  },
+                ],
+              )));
+        },
+        markerId: const MarkerId('positionOld4'),
         icon: BitmapDescriptor.defaultMarker,
-        infoWindow: InfoWindow(title: 'مركز تبارك للأطفال'),
-        position: LatLng(30.11875176101537, 31.320729370564067));
+        infoWindow: const InfoWindow(title: 'مركز تبارك للأطفال'),
+        position: const LatLng(30.11875176101537, 31.320729370564067));
 
     Marker hospital14 = Marker(
         markerId: const MarkerId('kLake8'),
@@ -353,16 +506,16 @@ class BlocPage extends Cubit<BlocState>  {
         icon: BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueBlue),
         infoWindow: const InfoWindow(
           title:
-          'مستشفى الجمعية الشرعية للاطفال المبتسرين وحديثى الولادة(فرع الماظة-القاهرة)',
+              'مستشفى الجمعية الشرعية للاطفال المبتسرين وحديثى الولادة(فرع الماظة-القاهرة)',
         ),
         position: const LatLng(30.083156210945962, 31.354493647593657));
 
-    Marker hospital16 =  Marker(
+    Marker hospital16 = const Marker(
         markerId: MarkerId('positionOld5'),
         icon: BitmapDescriptor.defaultMarker,
         infoWindow: InfoWindow(
             title:
-            'مستشفى الجمعية الشرعية للاطفال المبتسرين وحديثى الولادة(فرع الحي السادس القاهرة)'),
+                'مستشفى الجمعية الشرعية للاطفال المبتسرين وحديثى الولادة(فرع الحي السادس القاهرة)'),
         position: LatLng(30.04791938287215, 31.31356655149757));
 
     Marker hospital17 = Marker(
@@ -370,7 +523,7 @@ class BlocPage extends Cubit<BlocState>  {
         icon: BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueBlue),
         infoWindow: const InfoWindow(
           title:
-          'مستشفى الجمعية الشرعية للاطفال المبتسرين وحديثى الولادة(فرع عين شمس- القاهرة)',
+              'مستشفى الجمعية الشرعية للاطفال المبتسرين وحديثى الولادة(فرع عين شمس- القاهرة)',
         ),
         position: const LatLng(30.136947945925815, 31.367895078606384));
 
@@ -379,40 +532,73 @@ class BlocPage extends Cubit<BlocState>  {
         icon: BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueBlue),
         infoWindow: const InfoWindow(
           title:
-          'مركز الاسراء الطبى للاطفال و الحضانات لحديثى الولادة والمبتسرين',
+              'مركز الاسراء الطبى للاطفال و الحضانات لحديثى الولادة والمبتسرين',
         ),
         onTap: () {},
         position: const LatLng(30.008143781365394, 31.309437893253282));
 
-    Marker hospital19 =  Marker(
-        markerId: MarkerId('positionOld6'),
+    Marker hospital19 = Marker(
+        onTap: () {
+          Navigator.of(context).push(MaterialPageRoute(
+              builder: (context) => HospitalDetails(
+                url: 'assets/images/hospital1/n.jpg',
+                id: '19',
+                data: const[
+                  {
+                    "name":"د. شهيرة لويز - استشارى طب اطفال وحديثى الولادة",
+                    "brand": "Protect your child with us",
+                    "price": 2.99,
+                    "image": "assets/images/hospital1/z1.jpg"
+                  },
+                  {
+                    "name":"د. شهيرة لويز - استشارى طب اطفال وحديثى الولادة",
+                    "brand": "Your child is safe",
+                    "price": 4.99,
+                    "image": "assets/images/hospital1/z2.jpg"
+                  },
+                  {
+                    "name":"د. شهيرة لويز - استشارى طب اطفال وحديثى الولادة",
+                    "brand": "The best baby care",
+                    "price": 1.49,
+                    "image": "assets/images/hospital1/z3.jpg"
+                  },
+                  {
+                    "name":"د. شهيرة لويز - استشارى طب اطفال وحديثى الولادة",
+                    "brand": "24 hours service",
+                    "price": 2.99,
+                    "image": "assets/images/hospital1/z4.jpg"
+                  },
+                ],
+              )));
+        },
+        markerId: const MarkerId('positionOld6'),
         icon: BitmapDescriptor.defaultMarker,
-        infoWindow:
-        InfoWindow(title: 'د. شهيرة لويز - استشارى طب اطفال وحديثى الولادة'),
-        position: LatLng(29.98439261419109, 31.28498639745618));
+        infoWindow: const InfoWindow(
+            title: 'د. شهيرة لويز - استشارى طب اطفال وحديثى الولادة'),
+        position: const LatLng(29.98439261419109, 31.28498639745618));
 
     Marker hospital21 = Marker(
         markerId: const MarkerId('kLake13'),
         icon: BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueBlue),
         infoWindow: const InfoWindow(
           title:
-          'مستشفى الجمعية الشرعية للاطفال المبتسرين وحديثى الولادة(فرع شبرا الخيمة)',
+              'مستشفى الجمعية الشرعية للاطفال المبتسرين وحديثى الولادة(فرع شبرا الخيمة)',
         ),
         position: const LatLng(30.1233281847178, 31.26093435119303));
 
-    Marker hospital22 =  Marker(
-        markerId: MarkerId('positionOld7'),
+    Marker hospital22 = const Marker(
+        markerId: const MarkerId('positionOld7'),
         icon: BitmapDescriptor.defaultMarker,
         infoWindow:
-        InfoWindow(title: 'مركز حياة لرعاية حديثى الولادة والمبتسرين'),
-        position: LatLng(30.791849022546675, 30.99442753738349));
+            InfoWindow(title: 'مركز حياة لرعاية حديثى الولادة والمبتسرين'),
+        position: const LatLng(30.791849022546675, 30.99442753738349));
 
     Marker hospital23 = Marker(
         markerId: const MarkerId('kLake15'),
         icon: BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueBlue),
         infoWindow: const InfoWindow(
           title:
-          'مستشفى الجمعية الشرعية للاطفال المبتسرين وحديثى الولادة(ايتاي البارود)',
+              'مستشفى الجمعية الشرعية للاطفال المبتسرين وحديثى الولادة(ايتاي البارود)',
         ),
         position: const LatLng(30.823681303102756, 30.81452307784013));
 
@@ -421,7 +607,7 @@ class BlocPage extends Cubit<BlocState>  {
         icon: BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueBlue),
         infoWindow: const InfoWindow(
           title:
-          'مستشفى الجمعية الشرعية للاطفال المبتسرين وحديثى الولادة فرع اسكندرية)',
+              'مستشفى الجمعية الشرعية للاطفال المبتسرين وحديثى الولادة فرع اسكندرية)',
         ),
         position: const LatLng(31.118223715014565, 29.792431406746726));
 
@@ -430,23 +616,23 @@ class BlocPage extends Cubit<BlocState>  {
         icon: BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueBlue),
         infoWindow: const InfoWindow(
           title:
-          'مستشفى الجمعية الشرعية للاطفال المبتسرين وحديثى الولادة(فرع كفر الشيخ)',
+              'مستشفى الجمعية الشرعية للاطفال المبتسرين وحديثى الولادة(فرع كفر الشيخ)',
         ),
         position: const LatLng(31.11088609642273, 30.938184808462147));
 
-    Marker hospital26 =  Marker(
-        markerId: MarkerId('positionOld8'),
+    Marker hospital26 = const Marker(
+        markerId: const MarkerId('positionOld8'),
         icon: BitmapDescriptor.defaultMarker,
         infoWindow:
-        InfoWindow(title: 'المركز الطبى التخصصى للاطفال وحديثى الولادة'),
-        position: LatLng(27.179640495499928, 31.18842327656822));
+            const InfoWindow(title: 'المركز الطبى التخصصى للاطفال وحديثى الولادة'),
+        position: const LatLng(27.179640495499928, 31.18842327656822));
 
     Marker hospital27 = Marker(
         markerId: const MarkerId('kLake18'),
         icon: BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueBlue),
         infoWindow: const InfoWindow(
           title:
-          'مستشفى الجمعية الشرعية للاطفال المبتسرين وحديثى الولادة(فرع سوهاج)',
+              'مستشفى الجمعية الشرعية للاطفال المبتسرين وحديثى الولادة(فرع سوهاج)',
         ),
         position: const LatLng(26.560327675317097, 31.691802015395293));
     return Stack(
@@ -457,7 +643,6 @@ class BlocPage extends Cubit<BlocState>  {
           myLocationEnabled: true,
           myLocationButtonEnabled: false,
           zoomControlsEnabled: false,
-
           onMapCreated: (GoogleMapController controller) {
             _controller.complete(controller);
           },
@@ -577,8 +762,6 @@ class BlocPage extends Cubit<BlocState>  {
     print('done');
   }
 
-
-
   void removeImageSender() {
     imageSend = null;
     emit(RemoveImageSenderSuccess());
@@ -622,8 +805,6 @@ class BlocPage extends Cubit<BlocState>  {
       emit(ErrorSendAllChatsDetailsStateHome(error.toString()));
     });
   }
-
-
 
   List<ChatDetailsModel> messages = [];
 

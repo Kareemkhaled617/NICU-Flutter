@@ -6,11 +6,9 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
-import 'package:project/pages/payment.dart';
 import 'package:project/widgets/button.dart';
 
 import '../resources/color_manger.dart';
-import 'hospital_details.dart';
 
 class apply extends StatefulWidget {
   apply({Key? key, required this.id}) : super(key: key);
@@ -30,6 +28,7 @@ class _applyState extends State<apply> {
   String? name;
   String? email;
   String? image;
+  String? phone;
   String user = FirebaseAuth.instance.currentUser!.uid;
 
   getData() async {
@@ -56,7 +55,7 @@ class _applyState extends State<apply> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor:ColorManager.primary,
+        backgroundColor: ColorManager.primary,
         elevation: 0,
       ),
       body: Container(
@@ -101,8 +100,7 @@ class _applyState extends State<apply> {
                         ),
                       ),
                     ),
-                    // const Image(image: AssetImage('assets/images/frist.png')),
-                     Text('Welcome..'.tr,
+                    Text('Welcome..'.tr,
                         style: const TextStyle(
                             fontSize: 22.0,
                             fontWeight: FontWeight.w900,
@@ -125,6 +123,22 @@ class _applyState extends State<apply> {
                             },
                         onTap: () {},
                         label: 'Children Name'.tr,
+                        sIcon: const Icon(Icons.done)),
+                    buildTextFormField(
+                        hint: 'Phone'.tr,
+                        validate: () => (val) {
+                              if (val!.isEmpty) {
+                                return "Phone is empty".tr;
+                              }
+                              return null;
+                            },
+                        onSave: () => (val) {
+                              setState(() {
+                                phone = val;
+                              });
+                            },
+                        onTap: () {},
+                        label: 'Phone'.tr,
                         sIcon: const Icon(Icons.done)),
                     const SizedBox(
                       height: 20.0,
@@ -264,7 +278,6 @@ class _applyState extends State<apply> {
                         color: Colors.white,
                         onTap: () {
                           _submit();
-
                         },
                         color1: ColorManager.primary),
                   ],
@@ -326,20 +339,23 @@ class _applyState extends State<apply> {
   void _submit() async {
     if (_formKey.currentState!.validate()) {
       _formKey.currentState!.save();
-      addData();
-      Navigator.of(context).push(MaterialPageRoute(builder: (context)=>const HospitalDetails()));
-    } else {
-    }
+      addData(widget.id);
+      Navigator.of(context).pop();
+    } else {}
   }
 
-  addData() async {
-    request = FirebaseFirestore.instance.collection('hospital').doc('20').collection('Request');
+  addData(String id) async {
+    request = FirebaseFirestore.instance
+        .collection('hospital')
+        .doc(id)
+        .collection('Request');
     request?.add({
       "Name": childrenName,
       "Weight": weight,
       "Birthday": _birthday!.text,
       "Gender": _value == 1 ? "Male" : "Female",
       'Email': email,
+      'phone':phone,
       'name': name,
       'image': image
     });
