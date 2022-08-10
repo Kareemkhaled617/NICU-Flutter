@@ -158,27 +158,27 @@ class _NotificationState extends State<Notification_Page> {
       );
   }
 
-  _buildBottomSheet(
-      {String? label, Function()? onTap, Color? clr, bool isClose = false}) {
-    return GestureDetector(
-      onTap: onTap,
-      child: Container(
-        margin: const EdgeInsets.symmetric(vertical: 4),
-        height: 65,
-        width: SizeConfig.screenWidth * 0.9,
-        decoration: BoxDecoration(
-          border: Border.all(
-            width: 2,
-          ),
-          borderRadius: BorderRadius.circular(20),
-          color: isClose ? Colors.transparent : clr,
-        ),
-        child: Center(
-          child: Text(
-            label!,
-          ),
-        ),
-      ),
-    );
-  }
+  // _buildBottomSheet(
+  //     {String? label, Function()? onTap, Color? clr, bool isClose = false}) {
+  //   return GestureDetector(
+  //     onTap: onTap,
+  //     child: Container(
+  //       margin: const EdgeInsets.symmetric(vertical: 4),
+  //       height: 65,
+  //       width: SizeConfig.screenWidth * 0.9,
+  //       decoration: BoxDecoration(
+  //         border: Border.all(
+  //           width: 2,
+  //         ),
+  //         borderRadius: BorderRadius.circular(20),
+  //         color: isClose ? Colors.transparent : clr,
+  //       ),
+  //       child: Center(
+  //         child: Text(
+  //           label!,
+  //         ),
+  //       ),
+  //     ),
+  //   );
+  // }
 }

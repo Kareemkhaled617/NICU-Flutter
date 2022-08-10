@@ -126,11 +126,23 @@ class _HomePageState extends State<HomePage> {
     const ChatsScreen(),
     const Profile()
   ];
-
+  addDataEmail() async {
+    var addUser = FirebaseFirestore.instance
+        .collection('hospital').doc('21');
+    addUser.set({
+      'Email': 'elmobtsryen_shobra@gmail.com',
+      'Username': 'elmobtsryen_shobra',
+      'Hospital': 21,
+      'ID': 21,
+      'Image': 'null'
+    });
+    print('added');
+  }
   @override
   void initState() {
-    getData();
-    notificationConfigure();
+    addDataEmail();
+    // getData();
+    // notificationConfigure();
     super.initState();
   }
 

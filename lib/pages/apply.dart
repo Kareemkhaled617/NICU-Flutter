@@ -8,7 +8,6 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
 import 'package:project/widgets/button.dart';
 
-import '../main.dart';
 import '../resources/color_manger.dart';
 
 class apply extends StatefulWidget {
@@ -56,14 +55,14 @@ class _applyState extends State<apply> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: the?ColorManager.darkPrimary:ColorManager.primary,
+        backgroundColor: ColorManager.primary,
         elevation: 0,
       ),
       body: Container(
         width: double.infinity,
-        decoration:  BoxDecoration(
+        decoration: const BoxDecoration(
           image: DecorationImage(
-            image:the?const AssetImage("assets/images/dark.jpg"):const AssetImage('assets/images/pg1.png'),
+            image: AssetImage('assets/images/pg1.png'),
             fit: BoxFit.cover,
           ),
         ),
@@ -84,7 +83,7 @@ class _applyState extends State<apply> {
                         ..translate(-10.0),
                       decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(20),
-                        color:the?ColorManager.darkPrimary: ColorManager.primary,
+                        color: ColorManager.primary,
                         boxShadow: const [
                           BoxShadow(
                             blurRadius: 12,
@@ -125,11 +124,7 @@ class _applyState extends State<apply> {
                         onTap: () {},
                         label: 'Children Name'.tr,
                         sIcon: const Icon(Icons.done)),
-                    const SizedBox(
-                      height: 20.0,
-                    ),
                     buildTextFormField(
-                      type: TextInputType.number,
                         hint: 'Phone'.tr,
                         validate: () => (val) {
                               if (val!.isEmpty) {
@@ -237,7 +232,7 @@ class _applyState extends State<apply> {
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         Radio(
-                            activeColor:the?ColorManager.darkPrimary: ColorManager.primary,
+                            activeColor: ColorManager.primary,
                             value: 1,
                             groupValue: _value,
                             onChanged: (value) {
@@ -258,7 +253,7 @@ class _applyState extends State<apply> {
                         ),
                         Radio(
                             value: 2,
-                            activeColor:the?ColorManager.darkPrimary: ColorManager.primary,
+                            activeColor: ColorManager.primary,
                             groupValue: _value,
                             onChanged: (value) {
                               setState(() {
@@ -284,7 +279,7 @@ class _applyState extends State<apply> {
                         onTap: () {
                           _submit();
                         },
-                        color1:the?ColorManager.darkPrimary: ColorManager.primary,),
+                        color1: ColorManager.primary),
                   ],
                 ),
               ),
